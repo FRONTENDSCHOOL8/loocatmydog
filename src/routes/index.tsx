@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { navigationItems } from './navigation';
-import RootLayout from '@/components/layouts/Rootlayout';
+import RootLayout from '@/components/layouts/RootLayout';
 
 // const options = {
 //   basename: import.meta,
