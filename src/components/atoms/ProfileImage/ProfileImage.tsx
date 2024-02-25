@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 interface ProfileWrapperProps {
@@ -25,7 +24,7 @@ const ProfileImg = styled.img.attrs((props) => ({
   object-fit: cover;
 `;
 
-const ProfileImage: React.FC<ProfileImageProps> = ({ widthHeight }) => {
+const ProfileImage = ({ widthHeight }: ProfileImageProps) => {
   const { blockSize = 40, inlineSize = 40 } = widthHeight;
   return (
     <ProfileWrapper $blockSize={blockSize} $inlineSize={inlineSize}>
