@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 interface InlineProps {
@@ -17,7 +16,7 @@ interface LogoInlineProps {
   widthHeight: { blockSize: number; inlineSize: number };
 }
 
-const LogoInline: React.FC<LogoInlineProps> = ({ widthHeight }) => {
+const LogoInline = ({ widthHeight }: LogoInlineProps) => {
   const { blockSize = 50, inlineSize = 20 } = widthHeight;
   return (
     <Inline
