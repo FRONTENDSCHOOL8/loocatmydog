@@ -1,3 +1,5 @@
+import Header from '@/components/Header/Header';
+import OutletLayout from '@/components/layouts/OutletLayout';
 import Main from '@/pages/Main';
 
 export const navigationItems = [
@@ -19,7 +21,12 @@ export const navigationItems = [
   },
   {
     path: '/main',
-    element: <Main />,
+    element: (
+      <OutletLayout>
+        <Header />
+        <Main />
+      </OutletLayout>
+    ),
   },
   {
     path: '/place_detail/:id',
