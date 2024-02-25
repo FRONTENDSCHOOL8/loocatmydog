@@ -8,9 +8,6 @@ export default {
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    widthHeight: {
-      blockSize: 20,
-      inlineSize: 10,
-    },
+    dogSize: '중형견',
   },
 };
