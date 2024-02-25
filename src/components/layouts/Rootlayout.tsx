@@ -1,13 +1,23 @@
 import { Outlet } from 'react-router-dom';
-import GlobalNavBar from './GlobalNavBar';
+import GlobalNavBar from '../GlobalNavBar/GlobalNavBar';
+import styled from 'styled-components';
 
-function Rootlayout() {
+const StyledRootLayout = styled.div`
+  min-inline-size: 280px;
+  max-inline-size: 420px;
+  block-size: 100dvh;
+  background-color: skyblue;
+  display: flex;
+  flex-flow: column nowrap;
+`;
+
+function RootLayout() {
   return (
-    <div>
+    <StyledRootLayout>
       <Outlet />
       <GlobalNavBar />
-    </div>
+    </StyledRootLayout>
   );
 }
 
-export default Rootlayout;
+export default RootLayout;
