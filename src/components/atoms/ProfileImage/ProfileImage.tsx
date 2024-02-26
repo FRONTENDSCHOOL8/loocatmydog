@@ -5,7 +5,7 @@ interface ProfileWrapperProps {
   $blockSize: number;
 }
 
-const ProfileWrapper = styled.div<ProfileWrapperProps>`
+const StyledProfileWrapper = styled.div<ProfileWrapperProps>`
   border-radius: 70%;
   overflow: hidden;
   inline-size: ${(props) => props.$inlineSize}px;
@@ -16,7 +16,7 @@ interface ProfileImageProps {
   widthHeight: { blockSize: number; inlineSize: number };
 }
 
-const ProfileImg = styled.img.attrs((props) => ({
+const StyledProfileImg = styled.img.attrs((props) => ({
   src: props.src,
 }))`
   block-size: 100%;
@@ -27,9 +27,9 @@ const ProfileImg = styled.img.attrs((props) => ({
 const ProfileImage = ({ widthHeight }: ProfileImageProps) => {
   const { blockSize = 40, inlineSize = 40 } = widthHeight;
   return (
-    <ProfileWrapper $blockSize={blockSize} $inlineSize={inlineSize}>
-      <ProfileImg src={'/images/Star.svg'} alt="프로필" />
-    </ProfileWrapper>
+    <StyledProfileWrapper $blockSize={blockSize} $inlineSize={inlineSize}>
+      <StyledProfileImg src={'/images/Star.svg'} alt="프로필" />
+    </StyledProfileWrapper>
   );
 };
 

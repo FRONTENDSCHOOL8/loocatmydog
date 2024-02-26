@@ -22,6 +22,7 @@
     "react-router-dom": "^6.22.1",
     "styled-components": "^6.1.8",
     "swiper": "^11.0.6",
+    "types-6-0": "link:@storybook/react/types-6-0",
     "zustand": "^4.5.1"
   },
   "devDependencies": {
