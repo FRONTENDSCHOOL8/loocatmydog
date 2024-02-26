@@ -2,16 +2,16 @@ import styled from 'styled-components';
 
 interface ButtonProps {
   size: number;
-  invalid?: boolean;
-  rounded?: boolean;
+  isInvalid?: boolean;
+  isRounded?: boolean;
   mode?: 'kakao' | 'google' | 'chat';
   children: string;
 }
 
 interface StyledButtonProps {
   $size: number;
-  $invalid?: boolean;
-  $rounded?: boolean;
+  $isInvalid?: boolean;
+  $isRounded?: boolean;
   $mode?: 'kakao' | 'google' | 'chat';
 }
 
@@ -22,10 +22,10 @@ const StyledButton = styled.button<StyledButtonProps>`
   padding-inline: 10px;
   width: ${(props) => props.$size + '%'};
   background-color: ${(props) =>
-    props.$invalid === true ? '#F7F7F7' : '#FFD233'};
+    props.$isInvalid === true ? '#F7F7F7' : '#FFD233'};
   border: 1px solid
-    ${(props) => (props.$invalid === true ? '#D9D9D9' : '#FFD233')};
-  border-radius: ${(props) => (props.$rounded === true ? '100px' : '4px')};
+    ${(props) => (props.$isInvalid === true ? '#D9D9D9' : '#FFD233')};
+  border-radius: ${(props) => (props.$isRounded === true ? '100px' : '4px')};
 
   ${(props) => {
     if (props.$mode === 'kakao') {
@@ -57,7 +57,7 @@ const StyledButton = styled.button<StyledButtonProps>`
 
   & span {
     flex: 1;
-    color: ${(props) => (props.$invalid === true ? '#868686' : '#000')};
+    color: ${(props) => (props.$isInvalid === true ? '#868686' : '#000')};
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
@@ -72,7 +72,13 @@ const StyledButton = styled.button<StyledButtonProps>`
   }
 `;
 
-const Button = ({ size, invalid, rounded, mode, children }: ButtonProps) => {
+const Button = ({
+  size,
+  isInvalid,
+  isRounded,
+  mode,
+  children,
+}: ButtonProps) => {
   let iconSvg;
 
   switch (mode) {
@@ -92,8 +98,8 @@ const Button = ({ size, invalid, rounded, mode, children }: ButtonProps) => {
   return (
     <StyledButton
       $size={size}
-      $invalid={invalid}
-      $rounded={rounded}
+      $isInvalid={isInvalid}
+      $isRounded={isRounded}
       $mode={mode}
     >
       {mode ? iconSvg : undefined}
