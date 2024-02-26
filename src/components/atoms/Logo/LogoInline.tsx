@@ -17,7 +17,7 @@ interface LogoInlineProps {
 }
 
 const LogoInline = ({ widthHeight }: LogoInlineProps) => {
-  const { blockSize = 50, inlineSize = 20 } = widthHeight;
+  const { blockSize = 20, inlineSize = 50 } = widthHeight;
   return (
     <Inline
       src={'/images/logo.svg'}

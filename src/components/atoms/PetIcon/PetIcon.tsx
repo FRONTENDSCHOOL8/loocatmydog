@@ -28,8 +28,6 @@ const StyledPet = styled.img.attrs((props) => ({
       `;
     }
   }}
-  padding-inline: 2px;
-  padding-block: 4px;
 `;
 
 interface PetIconProps {
