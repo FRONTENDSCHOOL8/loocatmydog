@@ -39,7 +39,7 @@ interface PetIconProps {
 
 const PetIcon = ({ dogSize }: PetIconProps) => {
   return (
-    <StyledPet src={'/images/BigDog.svg'} $dogSize={dogSize} alt={dogSize} />
+    <StyledPet src={'/images/bigDog.svg'} $dogSize={dogSize} alt={dogSize} />
   );
 };
 
