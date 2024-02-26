@@ -1,14 +1,13 @@
-import CheckBox from './CheckBox';
+import Tab from './Tab';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: CheckBox,
+  component: Tab,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    isChecked: false,
-    children: 'test',
+    mode: 'present',
   },
 };

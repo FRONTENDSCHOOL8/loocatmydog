@@ -5,7 +5,7 @@ const StyledMain = styled.div`
 `;
 
 function Main() {
-  return <StyledMain style={{ background: 'yellow' }}>Main</StyledMain>;
+  return <StyledMain style={{ background: 'yellow' }}></StyledMain>;
 }
 
 export default Main;

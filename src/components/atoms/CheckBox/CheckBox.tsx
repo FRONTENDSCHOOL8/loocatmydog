@@ -7,7 +7,6 @@ const StyledCheckBoxWrap = styled.div`
 
 const StyledLabel = styled.label`
   background: url('/images/unchecked.svg') no-repeat 0 0 / contain;
-  inline-size: 20px;
   block-size: 20px;
   padding-inline-start: 25px;
   position: absolute;
@@ -38,7 +37,7 @@ const CheckBox = ({ isChecked, setIsChecked, children }: CheckBoxProps) => {
   return (
     <StyledCheckBoxWrap>
       <StyledCheckBox
-        type={'checkbox'}
+        type="checkbox"
         id={id}
         name="test"
         checked={isChecked}
