@@ -1,29 +1,27 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Dropdown, { DropdownProps } from './Dropdown.tsx';
+import DropDownTest from './DropDown';
 
-const meta: Meta<DropdownProps> = {
-  title: 'Dropdown',
-  component: Dropdown,
+/**@type{import('@storybook/react').Meta} */
+export default {
+  component: DropDownTest,
 };
 
-export default meta;
-
-type Story = StoryObj<DropdownProps>;
-
-export const inActive: Story = {
+/**@type{import('@storybook/react').StoryObj} */
+export const 기본상태 = {
   args: {
-    type: 'inactive',
+    current: '거리순',
+    items: ['거리순', '가격순', '인기순'],
+    setCurrent: (value: any) => {
+      console.log(value);
+    },
   },
 };
 
-export const Active: Story = {
+export const 추가상태 = {
   args: {
-    type: 'active',
-  },
-};
-
-export const More: Story = {
-  args: {
-    type: 'more',
+    current: '햄버거',
+    items: ['피자', '치킨', '곱창볶음나라', '떡볶이'],
+    setCurrent: (value: any) => {
+      console.log(value);
+    },
   },
 };

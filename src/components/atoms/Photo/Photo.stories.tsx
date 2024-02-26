@@ -1,32 +1,25 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import Photo from './Photo.tsx';
-import { ButtonProps } from './Photo.tsx';
 
-const meta: Meta<ButtonProps> = {
-  title: 'Photo',
+/**@type{import('@storybook/react').Meta} */
+export default {
   component: Photo,
 };
 
-export default meta;
-
-type Story = StoryObj<ButtonProps>;
-
-export const Default: Story = {
+/**@type{import('@storybook/react').StoryObj} */
+export const 기본표시 = {
   args: {
     type: 'default',
   },
 };
 
-export const Picture: Story = {
+export const 사진표시 = {
   args: {
-    type: 'picture',
-    imgSrc: '',
+    type: 'photo',
   },
 };
 
-export const Total: Story = {
+export const 총_개수 = {
   args: {
     type: 'total',
-    imgSrc: '',
   },
 };

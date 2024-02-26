@@ -1,134 +1,142 @@
-import { MouseEventHandler } from 'react';
 import styled, { css } from 'styled-components';
+import '@/styles/reset.css';
+import {
+  MouseEvent,
+  useEffect,
+  useRef,
+  useState,
+  Dispatch,
+  SetStateAction,
+  KeyboardEvent,
+} from 'react';
 
-export interface DropdownProps {
-  current?: '거리순' | '가격순' | '인기순';
-  type: 'inactive' | 'active' | 'more';
-  onClick: MouseEventHandler<HTMLButtonElement>;
+interface DropDownTestProps {
+  current: string;
+  setCurrent: Dispatch<SetStateAction<string>>;
+  items?: string[];
 }
 
-export interface StyledDropdownProps {
-  $type: 'inactive' | 'active' | 'more';
+interface StyledDropDownTestProps {
+  $current: string;
+  $isOpen: boolean;
 }
 
-const StyledDropdown = styled.div<StyledDropdownProps>`
+const MenuList = ['거리순', '가격순', '인기순'];
+
+const StyledDropDownTest = styled.div<StyledDropDownTestProps>`
   display: inline-flex;
   flex-flow: column nowrap;
 
-  & button {
-    border: 0px;
-    font-size: 10px;
-    padding-block: 3px;
-    padding-inline: 10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+  & div {
+    display: inline-flex;
     gap: 5px;
+    padding: 3px 10px 3px 10px;
+    background-color: #f1f1f1;
+    ${(props) => {
+      if (props.$isOpen) {
+        return css`
+          border-radius: 5px 5px 0 0;
+        `;
+      } else if (!props.$isOpen) {
+        return css`
+          border-radius: 10px;
+        `;
+      }
+    }}
   }
 
-  ${(props) => {
-    if (props.$type === 'inactive' || props.$type === 'more') {
+  & input {
+    margin: 0px;
+    padding: 0px;
+    font-size: 10px;
+    border: 0px;
+    background-color: transparent;
+    ${(props) => {
+      const size = Number(props.$current.length) * 10;
+
       return css`
-        & button {
-          border-radius: 10px;
-        }
+        inline-size: ${size}px;
       `;
-    } else if (props.$type === 'active') {
-      return css`
-        :first-child {
-          border-radius: 5px 5px 0 0;
-        }
-        :last-child {
-          border-radius: 0 0 5px 5px;
-        }
-      `;
-    }
-  }}
+    }}
+  }
+
+  & button {
+    background-color: transparent;
+    padding: 0;
+    border: 0px;
+  }
+
+  & ul {
+    background-color: #f1f1f1;
+    border-radius: 0 0 5px 5px;
+  }
+
+  & li {
+    padding: 0 10px 3px 10px;
+    font-size: 10px;
+  }
 `;
 
-const ArrowDown = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="8"
-    height="5"
-    viewBox="0 0 8 5"
-    fill="none"
-  >
-    <path
-      d="M1 1L4 4L7 1"
-      stroke="#868686"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+const DropDownTest = ({
+  items = MenuList,
+  current = '거리순',
+  setCurrent,
+}: DropDownTestProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [value, setValue] = useState(current);
+  const newMenuList = useRef(items.filter((menu) => menu !== value));
 
-const ArrowUp = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="8"
-    height="5"
-    viewBox="0 0 8 5"
-    fill="none"
-  >
-    <path
-      d="M1 4L4 1L7 4"
-      stroke="#868686"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+  useEffect(() => {
+    newMenuList.current = items.filter((menu) => menu !== value);
+    setCurrent(value);
+  }, [value, items]);
 
-const ArrowRight = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="5"
-    height="7"
-    viewBox="0 0 5 7"
-    fill="none"
-  >
-    <path
-      d="M1 6.5L4 3.5L1 0.5"
-      stroke="#868686"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+  const handleDropDown = () => {
+    setIsOpen(!isOpen);
+  };
 
-const DropDownMenuList = ['거리순', '가격순', '인기순'];
+  const handleKeyPress = (e: KeyboardEvent<HTMLLIElement>) => {
+    if (e.key === 'Enter') {
+      const item = e.currentTarget.innerText;
+      setValue(item);
+      setIsOpen(!isOpen);
+    }
+  };
 
-const Dropdown = ({ type, current = '거리순', onClick }: DropdownProps) => {
-  let DropDownMenu;
-  const changedMenuList = DropDownMenuList.filter((Menu) => Menu !== current);
+  const handleValue = (e: MouseEvent<HTMLLIElement>) => {
+    const item = e.currentTarget.innerText;
+    setValue(item);
+    setIsOpen(!isOpen);
+  };
 
-  switch (type) {
-    case 'inactive':
-      DropDownMenu = (
-        <button onClick={onClick}>
-          {current} {ArrowDown}
+  return (
+    <StyledDropDownTest $current={value} $isOpen={isOpen}>
+      <label htmlFor="menuValue"></label>
+      <div>
+        <input type="text" id="menuValue" readOnly value={value} />
+        <button type="button" onClick={handleDropDown}>
+          {isOpen ? (
+            <img src="/images/arrow/arrowUp.svg" alt="닫기" />
+          ) : (
+            <img src="/images/arrow/arrowDown.svg" alt="열기" />
+          )}
         </button>
-      );
-      break;
-    case 'active':
-      DropDownMenu = (
-        <>
-          <button onClick={onClick}>
-            {current} {ArrowUp}
-          </button>
-          <button onClick={onClick}>{changedMenuList[0]}</button>
-          <button onClick={onClick}>{changedMenuList[1]}</button>
-        </>
-      );
-      break;
-    case 'more':
-      DropDownMenu = <button onClick={onClick}>더보기 {ArrowRight}</button>;
-      break;
-  }
-
-  return <StyledDropdown $type={type}>{DropDownMenu}</StyledDropdown>;
+      </div>
+      <ul>
+        {isOpen &&
+          newMenuList.current.map((menu) => (
+            <li
+              key={menu}
+              onClick={handleValue}
+              onKeyPress={handleKeyPress}
+              tabIndex={0}
+            >
+              {menu}
+            </li>
+          ))}
+      </ul>
+    </StyledDropDownTest>
+  );
 };
 
-export default Dropdown;
+export default DropDownTest;
