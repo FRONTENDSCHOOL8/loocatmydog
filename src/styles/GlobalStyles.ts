@@ -1,3 +1,32 @@
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyles = createGlobalStyle`
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+body {
+  font-family:
+    'Pretendard Variable',
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    sans-serif;
+}
+
+img {
+  display: block;
+}
+
+
 /* Box sizing rules */
 *,
 *::before,
@@ -62,6 +91,7 @@ select {
 button {
   padding: 0;
   cursor: pointer;
+  border: 0;
 }
 
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
@@ -79,3 +109,7 @@ button {
     scroll-behavior: auto !important;
   }
 }
+
+`;
+
+export default GlobalStyles;

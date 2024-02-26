@@ -1,4 +1,3 @@
-import Calendar from '@/components/atoms/Calendar/Calendar';
 import styled from 'styled-components';
 
 const StyledMain = styled.div`
@@ -6,11 +5,7 @@ const StyledMain = styled.div`
 `;
 
 function Main() {
-  return (
-    <StyledMain style={{ background: 'yellow' }}>
-      <Calendar />
-    </StyledMain>
-  );
+  return <StyledMain style={{ background: 'yellow' }}></StyledMain>;
 }
 
 export default Main;
