@@ -28,7 +28,7 @@ const ProfileImage = ({ widthHeight }: ProfileImageProps) => {
   const { blockSize = 40, inlineSize = 40 } = widthHeight;
   return (
     <StyledProfileWrapper $blockSize={blockSize} $inlineSize={inlineSize}>
-      <StyledProfileImg src={'/images/Star.svg'} alt="프로필" />
+      <StyledProfileImg src={'/images/starDog.svg'} alt="프로필" />
     </StyledProfileWrapper>
   );
 };

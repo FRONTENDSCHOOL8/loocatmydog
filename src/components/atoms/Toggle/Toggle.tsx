@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useId } from 'react';
 import styled from 'styled-components';
 
 const StyledToggleLabel = styled.label`
@@ -46,16 +46,16 @@ interface ToggleProps {
 
 const Toggle = ({ isActive, setIsActive }: ToggleProps) => {
   const toggleIsActive = () => setIsActive(!isActive);
-
+  const toggleId = useId();
   return (
     <>
       <StyledCheckBox
-        id="toggle"
+        id={toggleId}
         type="checkbox"
         checked={isActive}
         onChange={toggleIsActive}
       />
-      <StyledToggleLabel htmlFor="toggle">
+      <StyledToggleLabel htmlFor={toggleId}>
         <span></span>
       </StyledToggleLabel>
     </>
