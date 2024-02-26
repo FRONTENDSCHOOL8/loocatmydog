@@ -21,6 +21,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   padding-block: 12px;
   padding-inline: 10px;
   width: ${(props) => props.$size + '%'};
+  cursor: ${(props) => (props.$isInvalid === true ? 'default' : 'pointer')};
   background-color: ${(props) =>
     props.$isInvalid === true ? '#F7F7F7' : '#FFD233'};
   border: 1px solid
