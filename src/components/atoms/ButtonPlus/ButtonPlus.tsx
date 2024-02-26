@@ -5,7 +5,6 @@ const StyledButtonPlus = styled.button`
   width: 45px;
   height: 45px;
   border: none;
-  transition: all 0.3s;
   &:hover {
     cursor: pointer;
   }
