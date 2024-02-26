@@ -4,7 +4,7 @@ interface PetProps {
   $dogSize: string;
 }
 
-const Pet = styled.img.attrs((props) => ({
+const StyledPet = styled.img.attrs((props) => ({
   src: props.src,
   alt: props.alt,
 }))<PetProps>`
@@ -28,8 +28,6 @@ const Pet = styled.img.attrs((props) => ({
       `;
     }
   }}
-  padding-inline: 2px;
-  padding-block: 4px;
 `;
 
 interface PetIconProps {
@@ -38,7 +36,9 @@ interface PetIconProps {
 }
 
 const PetIcon = ({ dogSize }: PetIconProps) => {
-  return <Pet src={'/images/BigDog.svg'} $dogSize={dogSize} alt={dogSize} />;
+  return (
+    <StyledPet src={'/images/bigDog.svg'} $dogSize={dogSize} alt={dogSize} />
+  );
 };
 
 export default PetIcon;

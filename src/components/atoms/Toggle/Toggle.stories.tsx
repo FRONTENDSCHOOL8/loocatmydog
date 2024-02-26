@@ -1,16 +1,13 @@
-import LogoInline from './LogoInline';
+import Toggle from './Toggle';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: LogoInline,
+  component: Toggle,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    widthHeight: {
-      blockSize: 20,
-      inlineSize: 50,
-    },
+    isActive: false,
   },
 };

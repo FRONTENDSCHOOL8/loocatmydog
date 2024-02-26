@@ -1,16 +1,13 @@
-import LogoInline from './LogoInline';
+import Tag from './Tag';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: LogoInline,
+  component: Tag,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    widthHeight: {
-      blockSize: 20,
-      inlineSize: 50,
-    },
+    children: '태그',
   },
 };
