@@ -16,8 +16,6 @@ interface StyledButtonProps {
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
-  position: relative;
-  column-gap: 10px;
   padding-block: 12px;
   padding-inline: 10px;
   width: ${(props) => props.$size + '%'};
@@ -31,18 +29,21 @@ const StyledButton = styled.button<StyledButtonProps>`
   ${(props) => {
     if (props.$mode === 'kakao') {
       return `
+        position: relative;
         padding-inline: 20px;
         background: #FBE84F;
         border-color: #FBE84F;
     `;
     } else if (props.$mode === 'google') {
       return `
+        position: relative;
         padding-inline: 20px;
         background:#FFF;
         border-color: #F1F1F1;
         `;
     } else if (props.$mode === 'chat') {
       return `
+        display: flex;
         background:#FFF;
         border-color: #FFB62A;
         `;
@@ -50,19 +51,25 @@ const StyledButton = styled.button<StyledButtonProps>`
   }};
 
   & img {
-    position: absolute;
-    top: 14px;
-    left: ${(props) =>
-      props.$mode === 'kakao' || props.$mode === 'google' ? '20px' : '10px'};
+    left: 10px;
+    ${(props) => {
+      if (props.$mode === 'kakao' || props.$mode === 'google') {
+        return `
+          position: absolute;
+          top: 12px;
+          left: 20px;
+        `;
+      }
+    }};
   }
 
   & span {
     flex: 1;
+    display: block;
     color: ${(props) => (props.$isInvalid === true ? '#868686' : '#000')};
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
-    line-height: 150%;
     ${(props) => {
       if (props.$mode === 'chat') {
         return `
