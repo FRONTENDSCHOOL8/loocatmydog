@@ -1,4 +1,10 @@
-import { ReactNode, forwardRef, useState } from 'react';
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  forwardRef,
+  useState,
+} from 'react';
 import DatePicker, {
   CalendarContainer,
   ReactDatePickerCustomHeaderProps,
@@ -131,11 +137,12 @@ const DatePickerContainer = ([startDate, endDate]: (Date | null)[]) => {
   return innerFunc;
 };
 
-const Calendar = () => {
-  const [dateRange, setDateRange] = useState<(Date | null)[]>([
-    new Date(),
-    new Date(),
-  ]);
+interface CalenderProps {
+  dateRange: (Date | null)[];
+  setDateRange: Dispatch<SetStateAction<(Date | null)[]>>;
+}
+
+const Calendar = ({ dateRange, setDateRange }: CalenderProps) => {
   const [startDate, endDate] = dateRange;
   return (
     <DatePicker
