@@ -9,8 +9,8 @@ export default {
 export const 기본표시 = {
   args: {
     size: 10,
-    invalid: false,
-    rounded: false,
+    isInvalid: false,
+    isRounded: false,
     mode: '',
     children: '버튼',
   },
