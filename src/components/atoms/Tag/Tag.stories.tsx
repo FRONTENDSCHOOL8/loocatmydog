@@ -9,6 +9,5 @@ export default {
 export const 기본표시 = {
   args: {
     children: '태그',
-    inlineSize: 24,
   },
 };

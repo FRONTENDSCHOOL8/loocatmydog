@@ -1,17 +1,13 @@
-import Button from './Button';
+import NameInput from './NameInput';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: Button,
+  component: NameInput,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    size: 10,
-    isInvalid: false,
-    isRounded: false,
-    mode: '',
-    children: '버튼',
+    mode: 'register',
   },
 };
