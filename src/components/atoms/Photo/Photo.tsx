@@ -22,6 +22,11 @@ const StyledPhotoButton = styled.button<StyledButtonProps>`
   background-color: white;
   font-size: 10px;
 
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+
   ${(props) => {
     if (props.$type === 'picture') {
       return css`
@@ -54,7 +59,14 @@ const Photo = ({
       PhotoImage = imgSource;
       break;
     case 'total':
-      PhotoImage = `사진 ${currentImageNum}/${totalImgaeNum}`;
+      PhotoImage = (
+        <>
+          <span>사진</span>
+          <span>
+            {`${currentImageNum}`} / {`${totalImgaeNum}`}
+          </span>
+        </>
+      );
       break;
   }
 

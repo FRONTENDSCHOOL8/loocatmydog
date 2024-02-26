@@ -1,8 +1,8 @@
-import DropDownTest from './DropDown';
+import DropDown from './DropDown.tsx';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: DropDownTest,
+  component: DropDown,
 };
 
 /**@type{import('@storybook/react').StoryObj} */

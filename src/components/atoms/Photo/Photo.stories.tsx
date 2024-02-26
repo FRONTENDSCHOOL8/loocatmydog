@@ -21,5 +21,7 @@ export const 사진표시 = {
 export const 총_개수 = {
   args: {
     type: 'total',
+    totalImageNum: 4,
+    currentImageNum: 1,
   },
 };

@@ -77,7 +77,7 @@ const StyledDropDownTest = styled.div<StyledDropDownTestProps>`
   }
 `;
 
-const DropDownTest = ({
+const DropDown = ({
   items = MenuList,
   current = '거리순',
   setCurrent,
@@ -139,4 +139,4 @@ const DropDownTest = ({
   );
 };
 
-export default DropDownTest;
+export default DropDown;
