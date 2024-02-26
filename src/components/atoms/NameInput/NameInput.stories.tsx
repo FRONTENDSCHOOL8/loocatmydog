@@ -1,13 +1,13 @@
-import Tag from './Tag';
+import NameInput from './NameInput';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: Tag,
+  component: NameInput,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    children: '태그',
+    mode: 'register',
   },
 };
