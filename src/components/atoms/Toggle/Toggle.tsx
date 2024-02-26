@@ -4,10 +4,10 @@ import styled from 'styled-components';
 const StyledToggleLabel = styled.label`
   display: block;
   position: relative;
-  inline-size: 28px;
-  block-size: 12px;
-  padding-inline: 5px;
-  padding-block: 4px;
+  inline-size: 32px;
+  block-size: 17px;
+  padding-inline: 4px;
+  padding-block: 5px;
   background-color: #fff;
   border: solid 1px #f1f1f1;
   border-radius: 50px;
@@ -34,7 +34,7 @@ const StyledCheckBox = styled.input`
 
     & span {
       background: #ffb62b;
-      left: calc(60%);
+      left: calc(50%);
     }
   }
 `;

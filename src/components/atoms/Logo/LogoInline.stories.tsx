@@ -9,8 +9,8 @@ export default {
 export const 기본표시 = {
   args: {
     widthHeight: {
-      blockSize: 50,
-      inlineSize: 20,
+      blockSize: 20,
+      inlineSize: 50,
     },
   },
 };
