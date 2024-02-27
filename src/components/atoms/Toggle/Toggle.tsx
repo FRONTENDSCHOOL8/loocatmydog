@@ -8,8 +8,8 @@ const StyledToggleLabel = styled.label`
   block-size: 17px;
   padding-inline: 4px;
   padding-block: 5px;
-  background-color: #fff;
-  border: solid 1px #f1f1f1;
+  background-color: ${(props) => props.theme.colors.white};
+  border: solid 1px ${(props) => props.theme.colors.lineColorGray};
   border-radius: 50px;
   cursor: pointer;
 
@@ -30,10 +30,10 @@ const StyledCheckBox = styled.input`
   display: none;
 
   &:checked + ${StyledToggleLabel} {
-    border: 1px solid #ffb62b;
+    border: 1px solid ${(props) => props.theme.colors.orange};
 
     & span {
-      background: #ffb62b;
+      background: ${(props) => props.theme.colors.orange};
       left: calc(50%);
     }
   }
