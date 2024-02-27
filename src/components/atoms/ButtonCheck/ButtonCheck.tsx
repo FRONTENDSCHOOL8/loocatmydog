@@ -22,8 +22,7 @@ const StyledButtonCheckContainer = styled.div`
   min-block-size: 60px;
 `;
 const StyledButtonCheckP = styled.p<FontTypeProps>`
-  font-size: ${(props) => props.fontSize};
-  font-weight: ${(props) => props.fontWeight};
+  ${(props) => props.theme.fontStyles.headingMd}
   color: #333;
   text-align: center;
 `;
