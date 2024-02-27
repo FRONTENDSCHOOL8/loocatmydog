@@ -10,5 +10,6 @@ export const 기본표시 = {
   args: {
     isChecked: false,
     children: 'test',
+    reservation: true,
   },
 };

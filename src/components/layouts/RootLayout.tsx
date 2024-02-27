@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import GlobalNavBar from '../GlobalNavBar/GlobalNavBar';
+import GlobalNavBar from '@/components/molecules/GlobalNavBar/GlobalNavBar';
 import styled from 'styled-components';
 
 const StyledRootLayout = styled.div`
