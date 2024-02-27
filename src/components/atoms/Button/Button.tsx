@@ -6,6 +6,7 @@ interface ButtonProps {
   isRounded?: boolean;
   mode?: 'kakao' | 'google' | 'chat';
   children: string;
+  [restProps: string]: any;
 }
 
 interface StyledButtonProps {
@@ -15,10 +16,10 @@ interface StyledButtonProps {
   $mode?: 'kakao' | 'google' | 'chat';
 }
 
-const StyledButton = styled.button<StyledButtonProps>`
+const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
   padding-block: 12px;
   padding-inline: 10px;
-  width: ${(props) => props.$size + '%'};
+  inline-size: ${(props) => props.$size + '%'};
   cursor: ${(props) => (props.$isInvalid === true ? 'default' : 'pointer')};
   background-color: ${(props) =>
     props.$isInvalid === true ? '#F7F7F7' : '#FFD233'};
@@ -86,6 +87,7 @@ const Button = ({
   isRounded,
   mode,
   children,
+  ...restProps
 }: ButtonProps) => {
   let iconSvg;
 
@@ -109,6 +111,7 @@ const Button = ({
       $isInvalid={isInvalid}
       $isRounded={isRounded}
       $mode={mode}
+      {...restProps}
     >
       {mode ? iconSvg : undefined}
       <span>{children}</span>
