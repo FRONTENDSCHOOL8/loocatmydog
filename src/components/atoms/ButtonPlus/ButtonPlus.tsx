@@ -3,11 +3,8 @@ import styled from 'styled-components';
 
 interface ButtonPlusProps {
   path: string;
-  text: string;
 }
-interface StyleButtonPlusProps {
-  'aria-label': string;
-}
+
 const StyledButtonPlus = styled(Link).attrs({
   'aria-label': '글작성 페이지 이동',
 })`
@@ -16,13 +13,13 @@ const StyledButtonPlus = styled(Link).attrs({
   width: 45px;
   height: 45px;
   border: none;
-  &:hover {
-    cursor: pointer;
-  }
+  position: fixed;
+  right: 10%;
+  bottom: 20%;
 `;
 
 const ButtonPlus = ({ path = '/' }: ButtonPlusProps) => {
-  return <StyledButtonPlus to={path}></StyledButtonPlus>;
+  return <StyledButtonPlus to={path} />;
 };
 
 export default ButtonPlus;
