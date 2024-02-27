@@ -20,6 +20,10 @@ const StyledPresentTabLabel = styled.label<TabBoxLabelProps>`
   ${(props) => props.theme.fontStyles.textSemiboldBase}
   padding-inline: 30px;
   padding-block: 15px;
+  color: ${(props) =>
+    props.$mode === 'after'
+      ? `${props.theme.colors.textGray}`
+      : `${props.theme.colors.textBlack}`};
   border-bottom: ${(props) =>
     props.$mode === 'front'
       ? `2px solid ${props.theme.colors.orange}`
@@ -30,6 +34,10 @@ const StyledPreviousTabLabel = styled.label<TabBoxLabelProps>`
   ${(props) => props.theme.fontStyles.textSemiboldBase}
   padding-inline: 30px;
   padding-block: 15px;
+  color: ${(props) =>
+    props.$mode === 'front'
+      ? `${props.theme.colors.textGray}`
+      : `${props.theme.colors.textBlack}`};
   border-bottom: ${(props) =>
     props.$mode === 'after'
       ? `2px solid ${props.theme.colors.orange}`

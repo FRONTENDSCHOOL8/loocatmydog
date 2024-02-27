@@ -1,15 +1,14 @@
-import ProfileImage from './ProfileImage';
+import UserProfile from './UserProfile';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: ProfileImage,
+  component: UserProfile,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    src: '/images/starDog.svg',
-    blockSize: 40,
-    inlineSize: 40,
+    src: '/images/grayCircle.svg',
+    name: '홍길동',
   },
 };
