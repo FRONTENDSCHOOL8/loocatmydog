@@ -1,16 +1,12 @@
-import { Dispatch, SetStateAction, useId } from 'react';
+import { Dispatch, ReactNode, SetStateAction, useId } from 'react';
 import styled from 'styled-components';
 
 // type 지정
 interface ButtonCheckProps {
   name: string;
-  children: string;
+  children: string | ReactNode;
   isChecked: boolean;
   setIsChecked: Dispatch<SetStateAction<boolean>>;
-}
-interface FontTypeProps {
-  fontSize: string;
-  fontWeight: string;
 }
 
 //styled component 작성
@@ -20,10 +16,12 @@ const StyledButtonCheckContainer = styled.div`
   inline-size: 33.333%;
   max-inline-size: 140px;
   min-block-size: 60px;
+  ${(props) => props.theme.fontStyles.textRegularMd}
+  ${(props) => props.theme.colors.textGray}
 `;
-const StyledButtonCheckP = styled.p<FontTypeProps>`
-  ${(props) => props.theme.fontStyles.headingMd}
-  color: #333;
+const StyledButtonCheckP = styled.p`
+  ${(props) => props.theme.fontStyles.textSemiboldMd}
+  ${(props) => props.theme.colors.textBlack}
   text-align: center;
 `;
 const StyledButtonCheckLabel = styled.label`
@@ -37,8 +35,8 @@ const StyledButtonCheckLabel = styled.label`
   justify-content: center;
   gap: 5px;
   text-align: center;
-  border: 1px solid #f1f1f1;
-  background: #fff;
+  border: 1px solid ${(props) => props.theme.colors.lineColorGray};
+  background: ${(props) => props.theme.colors.white};
 `;
 
 const StyledButtonCheck = styled.input`
@@ -49,12 +47,12 @@ const StyledButtonCheck = styled.input`
   left: 0;
 
   &:checked + ${StyledButtonCheckLabel} {
-    border: 1px solid #ffb62a;
+    border: 1px solid ${(props) => props.theme.colors.orange};
     background: rgba(255, 182, 43, 0.1);
   }
 `;
 
-const ButtonList = ({
+const ButtonCheck = ({
   name,
   children,
   isChecked,
@@ -72,15 +70,11 @@ const ButtonList = ({
         onChange={checkBoxChecked}
       />
       <StyledButtonCheckLabel htmlFor={id}>
-        <StyledButtonCheckP fontSize="14px" fontWeight="600">
-          {name}
-        </StyledButtonCheckP>
-        <StyledButtonCheckP fontSize="12px" fontWeight="300">
-          {children}
-        </StyledButtonCheckP>
+        <StyledButtonCheckP>{name}</StyledButtonCheckP>
+        <p>{children}</p>
       </StyledButtonCheckLabel>
     </StyledButtonCheckContainer>
   );
 };
 
-export default ButtonList;
+export default ButtonCheck;

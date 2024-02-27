@@ -1,8 +1,8 @@
-import ButtonList from './ButtonCheck';
+import ButtonCheck from './ButtonCheck';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: ButtonList,
+  component: ButtonCheck,
 };
 
 /**@type{import('@storybook/react').StoryObj} */

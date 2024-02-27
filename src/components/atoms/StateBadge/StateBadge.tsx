@@ -4,11 +4,10 @@ const StyledStateBadgeBox = styled.div`
   display: inline-block;
   padding-block: 2px;
   padding-inline: 6px;
-  border: 1px solid#FFB62B;
+  border: 1px solid ${(props) => props.theme.colors.orange};
   border-radius: 2px;
-  font-size: 10px;
-  color: #ffb62b;
-  font-weight: 600;
+  ${(props) => props.theme.fontStyles.textSemiboldSm}
+  color: ${(props) => props.theme.colors.orange}
 `;
 
 interface StateBadgeProps {

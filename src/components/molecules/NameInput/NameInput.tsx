@@ -13,22 +13,21 @@ const StyledNameInputDiv = styled.div<NameInputLabelProps>`
   & input {
     padding-block-end: 5px;
     border: 0;
-    border-bottom: 1px solid #d9d9d9;
+    border-bottom: 1px solid ${(props) => props.theme.colors.gray300};
     outline: none;
 
     & ::placeholder {
-      color: #b8b5ad;
-      font-size: 14;
-      font-weight: 600;
+      color: ${(props) => props.theme.colors.textGray};
+      ${(props) => props.theme.fontStyles.textSemiboldBase}
     }
   }
   & label {
-    color: #333333;
+    color: ${(props) => props.theme.colors.textBlack};
     ${(props) => {
       if (props.$mode === 'register') {
-        return `font-size: 10px;`;
+        return `${props.theme.fontStyles.textRegularSm}`;
       } else if (props.$mode === 'place') {
-        return `font-size: 14px;`;
+        return `${props.theme.fontStyles.textSemiboldBase}`;
       }
     }}
   }
