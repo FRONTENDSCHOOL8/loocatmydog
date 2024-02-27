@@ -11,6 +11,10 @@ const StyledLabel = styled.label`
   padding-inline-start: 25px;
   position: absolute;
   left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  ${(props) => props.theme.fontStyles.textRegularBase}
 `;
 
 const StyledCheckBox = styled.input`
