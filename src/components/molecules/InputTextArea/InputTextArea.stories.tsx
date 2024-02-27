@@ -1,8 +1,8 @@
-import PagePetCard from './PagePetCard';
+import InputTextArea from './InputTextArea';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: PagePetCard,
+  component: InputTextArea,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
