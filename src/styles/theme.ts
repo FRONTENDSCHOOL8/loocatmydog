@@ -44,7 +44,7 @@ const fontStyles = {
     font-weight:${fontWeight.semiBold};
   `,
   textMediumBase: `
-    font-size:${fontSizes.nameTitle};
+    font-size:${fontSizes.subTitle};
     font-weight:${fontWeight.medium};
   `,
   textRegularLd: `
