@@ -2,9 +2,7 @@ import styled from 'styled-components';
 
 interface HeartButtonProps {
   fill: boolean;
-  restProps: {
-    [key: string]: string;
-  };
+  [key: string]: any;
 }
 
 const StyledHeartButton = styled.button.attrs({ type: 'button' })`

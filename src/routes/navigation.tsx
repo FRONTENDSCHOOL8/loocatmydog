@@ -1,4 +1,4 @@
-import Header from '@/components/Header/Header';
+import Header from '@/components/molecules/Header/Header';
 import OutletLayout from '@/components/layouts/OutletLayout';
 import Main from '@/pages/Main';
 
@@ -23,7 +23,7 @@ export const navigationItems = [
     path: '/main',
     element: (
       <OutletLayout>
-        <Header />
+        <Header type="main" title="테스트테스트" />
         <Main />
       </OutletLayout>
     ),
