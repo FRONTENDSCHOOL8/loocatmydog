@@ -15,5 +15,9 @@ export default {
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 홈 = {
-  args: {},
+  args: {
+    text: '홈',
+    dataName: 'home',
+    active: 'inactive',
+  },
 };

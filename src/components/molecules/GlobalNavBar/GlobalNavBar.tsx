@@ -1,21 +1,18 @@
-import { MouseEvent, MouseEventHandler, useState } from 'react';
-import styled from 'styled-components';
+import { useState } from 'react';
+import styled, { css } from 'styled-components';
+import GlobalNavList from './GlobalNavList';
 
 interface GlobalNavBarProps {
-  onClick: MouseEventHandler<HTMLLIElement>;
+  isShown?: boolean;
 }
 
-const StyledGlobalNavBar = styled.nav`
+interface StyledGlobalNavBarProps {
+  $isShown: boolean;
+}
+
+const StyledGlobalNavBar = styled.nav<StyledGlobalNavBarProps>`
   inline-size: 100%;
   block-size: 70px;
-
-  // 임시
-  border: 1px solid black;
-  font-size: 10px;
-  font-weight: 600;
-  //
-
-  /* font-size: ${(props) => props.theme.textRegularSm}; */
 
   & ul {
     display: flex;
@@ -24,31 +21,77 @@ const StyledGlobalNavBar = styled.nav`
 
     padding: 12px;
   }
+
+  ${(props) => {
+    if (props.$isShown) {
+      return null;
+    } else if (!props.$isShown) {
+      return css`
+        display: none;
+      `;
+    }
+  }}
 `;
 
-const StyledNavList = styled.li`
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.25rem;
+const NAVIGATION_LIST = [
+  {
+    path: '/main',
+    text: '홈',
+    dataName: 'home',
+  },
+  {
+    path: '/reservation_list',
+    text: '예약 내역',
+    dataName: 'reservationList',
+  },
+  {
+    path: '/stories',
+    text: '스토리',
+    dataName: 'stories',
+  },
+  {
+    path: '/chat_list',
+    text: '채팅 목록',
+    dataName: 'chatList',
+  },
+  {
+    path: '/mypage',
+    text: '내 프로필',
+    dataName: 'profile',
+  },
+];
 
-  cursor: pointer;
+export interface hoverType {
+  [key: string]: boolean;
+}
 
-  &:hover {
-    background-color: #b1b1b1;
-  }
+const INITIAL_ACTIVE: hoverType = {
+  home: false,
+  network: false,
+  store: false,
+  adopt: false,
+  profile: false,
+};
 
-  & img {
-    inline-size: 25px;
-    block-size: 25px;
-  }
-`;
+const GlobalNavBar = ({ isShown = true }: GlobalNavBarProps) => {
+  const [hover, setHover] = useState(INITIAL_ACTIVE);
 
-const GlobalNavBar = () => {
   return (
-    <StyledGlobalNavBar>
-      <ul></ul>
+    <StyledGlobalNavBar $isShown={isShown}>
+      <ul>
+        {NAVIGATION_LIST.map((item) => (
+          <li key={item.dataName}>
+            <GlobalNavList
+              path={item.path}
+              text={item.text}
+              dataName={item.dataName}
+              active={hover[item.dataName]}
+              hover={hover}
+              setHover={setHover}
+            />
+          </li>
+        ))}
+      </ul>
     </StyledGlobalNavBar>
   );
 };

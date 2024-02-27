@@ -19,7 +19,7 @@ const StyledMoreButton = styled(Link)<StyledMoreButtonProps>`
 
   background-color: #f1f1f1;
   block-size: 21px;
-  font-size: 10px;
+  ${(props) => props.theme.fontStyles.textRegularSm}
   border: 0px;
   border-radius: 10px;
 
@@ -32,7 +32,7 @@ const StyledMoreButton = styled(Link)<StyledMoreButtonProps>`
     background-color: #d1d1d1;
   }
   ${(props) => {
-    const size = Number(props.$text.length) * 10 + 12;
+    const size = Number(props.$text.length) * 10 + 32;
 
     return css`
       inline-size: ${size}px;
