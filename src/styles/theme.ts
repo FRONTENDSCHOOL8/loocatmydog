@@ -31,11 +31,11 @@ const fontStyles = {
     font-size:${fontSizes.headTitle};
     font-weight:${fontWeight.semiBold};
   `,
-  textSemiboldMd: `
+  textSemiboldBase: `
     font-size:${fontSizes.subTitle};
     font-weight:${fontWeight.semiBold};
   `,
-  textSemiboldBase: `
+  textSemiboldMd: `
     font-size:${fontSizes.nameTitle};
     font-weight:${fontWeight.semiBold};
   `,
@@ -51,16 +51,16 @@ const fontStyles = {
     font-size:${fontSizes.headTitle};
     font-weight:${fontWeight.regular};
   `,
+  textRegularBase: `
+    font-size:${fontSizes.subTitle};
+    font-weight:${fontWeight.regular};
+  `,
   textRegularMd: `
     font-size:${fontSizes.nameTitle};
     font-weight:${fontWeight.regular};
   `,
   textRegularSm: `
     font-size:${fontSizes.description};
-    font-weight:${fontWeight.regular};
-  `,
-  textRegularBase: `
-    font-size:${fontSizes.subTitle};
     font-weight:${fontWeight.regular};
   `,
 };

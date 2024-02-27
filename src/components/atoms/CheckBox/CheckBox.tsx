@@ -5,7 +5,7 @@ const StyledCheckBoxWrap = styled.div`
   position: relative;
 `;
 
-const StyledLabel = styled.label`
+const StyledLabel = styled.label<StyleCheckBoxLabelProps>`
   background: url('/images/unchecked.svg') no-repeat 0 0 / contain;
   block-size: 20px;
   padding-inline-start: 25px;
@@ -14,7 +14,11 @@ const StyledLabel = styled.label`
   top: 0;
   display: flex;
   align-items: center;
-  ${(props) => props.theme.fontStyles.textRegularBase}
+  color: ${(props) =>
+    props.$reservation
+      ? props.theme.colors.textDarkGray
+      : props.theme.colors.textBlack};
+  ${(props) => props.theme.fontStyles.textRegularBase};
 `;
 
 const StyledCheckBox = styled.input`
@@ -29,13 +33,22 @@ const StyledCheckBox = styled.input`
   }
 `;
 interface CheckBoxProps {
-  id: string;
   isChecked: boolean;
+  reservation?: boolean;
   children: string;
   setIsChecked: Dispatch<SetStateAction<boolean>>;
 }
+interface StyleCheckBoxLabelProps {
+  $reservation?: boolean;
+}
 
-const CheckBox = ({ isChecked, setIsChecked, children }: CheckBoxProps) => {
+const CheckBox = ({
+  isChecked,
+  setIsChecked,
+  reservation,
+  children,
+  ...restProps
+}: CheckBoxProps) => {
   const checkBoxChecked = () => setIsChecked(!isChecked);
   const id = useId();
   return (
@@ -46,8 +59,11 @@ const CheckBox = ({ isChecked, setIsChecked, children }: CheckBoxProps) => {
         name="test"
         checked={isChecked}
         onChange={checkBoxChecked}
+        {...restProps}
       ></StyledCheckBox>
-      <StyledLabel htmlFor={id}>{children}</StyledLabel>
+      <StyledLabel htmlFor={id} $reservation={reservation}>
+        {children}
+      </StyledLabel>
     </StyledCheckBoxWrap>
   );
 };
