@@ -20,9 +20,10 @@ const StyledButtonCheckContainer = styled.div`
   inline-size: 33.333%;
   max-inline-size: 140px;
   min-block-size: 60px;
+  ${(props) => props.theme.fontStyles.textRegularMd}
 `;
 const StyledButtonCheckP = styled.p<FontTypeProps>`
-  ${(props) => props.theme.fontStyles.headingMd}
+  ${(props) => props.theme.fontStyles.textSemiboldMd}
   color: #333;
   text-align: center;
 `;
@@ -37,8 +38,8 @@ const StyledButtonCheckLabel = styled.label`
   justify-content: center;
   gap: 5px;
   text-align: center;
-  border: 1px solid #f1f1f1;
-  background: #fff;
+  border: 1px solid ${(props) => props.theme.colors.lineColorGray};
+  background: ${(props) => props.theme.colors.white};
 `;
 
 const StyledButtonCheck = styled.input`
@@ -49,7 +50,7 @@ const StyledButtonCheck = styled.input`
   left: 0;
 
   &:checked + ${StyledButtonCheckLabel} {
-    border: 1px solid #ffb62a;
+    border: 1px solid ${(props) => props.theme.colors.orange};
     background: rgba(255, 182, 43, 0.1);
   }
 `;
@@ -75,9 +76,7 @@ const ButtonList = ({
         <StyledButtonCheckP fontSize="14px" fontWeight="600">
           {name}
         </StyledButtonCheckP>
-        <StyledButtonCheckP fontSize="12px" fontWeight="300">
-          {children}
-        </StyledButtonCheckP>
+        <p>{children}</p>
       </StyledButtonCheckLabel>
     </StyledButtonCheckContainer>
   );
