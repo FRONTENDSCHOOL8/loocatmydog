@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useId } from 'react';
+import { Dispatch, ReactNode, SetStateAction, useId } from 'react';
 import styled from 'styled-components';
 
 // type 지정
 interface ButtonCheckProps {
   name: string;
-  children: string;
+  children: string | ReactNode;
   isChecked: boolean;
   setIsChecked: Dispatch<SetStateAction<boolean>>;
 }
@@ -52,7 +52,7 @@ const StyledButtonCheck = styled.input`
   }
 `;
 
-const ButtonList = ({
+const ButtonCheck = ({
   name,
   children,
   isChecked,
@@ -77,4 +77,4 @@ const ButtonList = ({
   );
 };
 
-export default ButtonList;
+export default ButtonCheck;
