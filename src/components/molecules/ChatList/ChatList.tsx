@@ -63,20 +63,16 @@ const ChatList = ({
   timeAgo,
   chatCount,
 }: ChatListProps) => {
-  const widthHeight = {
-    blockSize: 35,
-    inlineSize: 35,
-  };
   return (
     <StyledChatList>
-      <ProfileImage widthHeight={widthHeight} />
+      <ProfileImage blockSize={35} inlineSize={35} />
       <div className="chatContentWrapper">
         <span>{name}</span>
         <span>{recentMessage}</span>
       </div>
       <div className="chatAlarmWrapper">
         <span>{timeAgo}</span>
-        {chatCount !== 0 && <span className="span-chatCount">{chatCount}</span>}
+        {chatCount > 0 && <span className="span-chatCount">{chatCount}</span>}
       </div>
     </StyledChatList>
   );
