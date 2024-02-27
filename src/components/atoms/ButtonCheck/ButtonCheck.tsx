@@ -1,16 +1,12 @@
-import { Dispatch, SetStateAction, useId } from 'react';
+import { Dispatch, ReactNode, SetStateAction, useId } from 'react';
 import styled from 'styled-components';
 
 // type 지정
 interface ButtonCheckProps {
   name: string;
-  children: string;
+  children: string | ReactNode;
   isChecked: boolean;
   setIsChecked: Dispatch<SetStateAction<boolean>>;
-}
-interface FontTypeProps {
-  fontSize: string;
-  fontWeight: string;
 }
 
 //styled component 작성
@@ -21,10 +17,11 @@ const StyledButtonCheckContainer = styled.div`
   max-inline-size: 140px;
   min-block-size: 60px;
   ${(props) => props.theme.fontStyles.textRegularMd}
+  ${(props) => props.theme.colors.textGray}
 `;
-const StyledButtonCheckP = styled.p<FontTypeProps>`
+const StyledButtonCheckP = styled.p`
   ${(props) => props.theme.fontStyles.textSemiboldMd}
-  color: #333;
+  ${(props) => props.theme.colors.textBlack}
   text-align: center;
 `;
 const StyledButtonCheckLabel = styled.label`
@@ -55,7 +52,7 @@ const StyledButtonCheck = styled.input`
   }
 `;
 
-const ButtonList = ({
+const ButtonCheck = ({
   name,
   children,
   isChecked,
@@ -73,13 +70,11 @@ const ButtonList = ({
         onChange={checkBoxChecked}
       />
       <StyledButtonCheckLabel htmlFor={id}>
-        <StyledButtonCheckP fontSize="14px" fontWeight="600">
-          {name}
-        </StyledButtonCheckP>
+        <StyledButtonCheckP>{name}</StyledButtonCheckP>
         <p>{children}</p>
       </StyledButtonCheckLabel>
     </StyledButtonCheckContainer>
   );
 };
 
-export default ButtonList;
+export default ButtonCheck;
