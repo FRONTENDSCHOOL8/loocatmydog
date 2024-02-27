@@ -32,7 +32,7 @@ const StyledMoreButton = styled(Link)<StyledMoreButtonProps>`
     background-color: #d1d1d1;
   }
   ${(props) => {
-    const size = Number(props.$text.length) * 10 + 32;
+    const size = Number(props.$text.length) * 10 + 12;
 
     return css`
       inline-size: ${size}px;

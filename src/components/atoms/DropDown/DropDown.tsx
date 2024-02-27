@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import '@/styles/reset.css';
 import {
   MouseEvent,
   useEffect,
