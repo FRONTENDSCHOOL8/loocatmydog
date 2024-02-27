@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const StyledTabBox = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
   padding-inline: 70px;
   gap: 30px;
 
@@ -13,48 +13,65 @@ const StyledTabBox = styled.div`
 `;
 
 interface TabBoxLabelProps {
-  $mode: 'present' | 'previous';
+  $mode: 'front' | 'after';
 }
 
 const StyledPresentTabLabel = styled.label<TabBoxLabelProps>`
-  font-size: 14px;
-  font-weight: 600;
+  ${(props) => props.theme.fontStyles.textSemiboldBase}
   padding-inline: 30px;
   padding-block: 15px;
-  ${(props) => {
-    if (props.$mode === 'present') {
-      return `border-bottom: 2px solid #ffb62b;`;
-    }
-  }}
+  border-bottom: ${(props) =>
+    props.$mode === 'front'
+      ? `2px solid ${props.theme.colors.orange}`
+      : 'none'};
 `;
 
 const StyledPreviousTabLabel = styled.label<TabBoxLabelProps>`
-  font-size: 14px;
-  font-weight: 600;
+  ${(props) => props.theme.fontStyles.textSemiboldBase}
   padding-inline: 30px;
   padding-block: 15px;
-  ${(props) => {
-    if (props.$mode === 'previous') {
-      return `border-bottom: 2px solid #ffb62b;`;
-    }
-  }}
+  border-bottom: ${(props) =>
+    props.$mode === 'after'
+      ? `2px solid ${props.theme.colors.orange}`
+      : 'none'};
 `;
 
 interface TabBoxProps {
-  mode: 'present' | 'previous';
+  mode: 'front' | 'after';
+  front: '진행 예약' | '스토리';
+  after: '지난 예약' | '내가 쓴 글';
+  onModeChange: (mode: 'front' | 'after') => void;
 }
 
-const Tab = ({ mode }: TabBoxProps) => {
+const Tab = ({ mode, front, after, onModeChange }: TabBoxProps) => {
   return (
     <StyledTabBox>
-      <StyledPresentTabLabel $mode={mode} htmlFor="presentBook">
-        진행 예약
+      <StyledPresentTabLabel
+        $mode={mode}
+        htmlFor="presentBook"
+        onClick={() => onModeChange('front')}
+      >
+        {front}
       </StyledPresentTabLabel>
-      <input type="radio" name="books" id="presentBook" />
-      <StyledPreviousTabLabel $mode={mode} htmlFor="previousBook">
-        지난 예약
+      <input
+        type="radio"
+        name="books"
+        id="presentBook"
+        checked={mode === 'front'}
+      />
+      <StyledPreviousTabLabel
+        $mode={mode}
+        htmlFor="previousBook"
+        onClick={() => onModeChange('after')}
+      >
+        {after}
       </StyledPreviousTabLabel>
-      <input type="radio" name="books" id="previousBook" />
+      <input
+        type="radio"
+        name="books"
+        id="previousBook"
+        checked={mode === 'after'}
+      />
     </StyledTabBox>
   );
 };
