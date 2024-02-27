@@ -1,8 +1,8 @@
-import PagePetCard from './PagePetCard';
+import Payment from './Payment';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: PagePetCard,
+  component: Payment,
 };
 
 /**@type{import('@storybook/react').StoryObj} */

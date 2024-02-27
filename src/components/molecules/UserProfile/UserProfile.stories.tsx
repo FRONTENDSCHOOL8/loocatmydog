@@ -1,15 +1,14 @@
-import CheckBox from './CheckBox';
+import UserProfile from './UserProfile';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: CheckBox,
+  component: UserProfile,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    isChecked: false,
-    children: 'test',
-    reservation: true,
+    src: '/images/grayCircle.svg',
+    name: '홍길동',
   },
 };

@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 interface ProfileWrapperProps {
@@ -5,7 +6,7 @@ interface ProfileWrapperProps {
   $blockSize: number;
 }
 
-const StyledProfileWrapper = styled.div<ProfileWrapperProps>`
+const StyledProfileWrapper = styled.figure<ProfileWrapperProps>`
   border-radius: 70%;
   overflow: hidden;
   inline-size: ${(props) => props.$inlineSize}px;
@@ -13,7 +14,9 @@ const StyledProfileWrapper = styled.div<ProfileWrapperProps>`
 `;
 
 interface ProfileImageProps {
-  widthHeight: { blockSize: number; inlineSize: number };
+  blockSize?: number;
+  inlineSize?: number;
+  src?: string;
 }
 
 const StyledProfileImg = styled.img.attrs((props) => ({
@@ -24,11 +27,15 @@ const StyledProfileImg = styled.img.attrs((props) => ({
   object-fit: cover;
 `;
 
-const ProfileImage = ({ widthHeight }: ProfileImageProps) => {
-  const { blockSize = 40, inlineSize = 40 } = widthHeight;
+const ProfileImage = ({
+  blockSize = 40,
+  inlineSize = 40,
+  src = '/images/starDog.svg',
+  ...restProps
+}: ProfileImageProps & React.ImgHTMLAttributes<HTMLImageElement>) => {
   return (
     <StyledProfileWrapper $blockSize={blockSize} $inlineSize={inlineSize}>
-      <StyledProfileImg src={'/images/starDog.svg'} alt="프로필" />
+      <StyledProfileImg src={src} alt="프로필" {...restProps} />
     </StyledProfileWrapper>
   );
 };

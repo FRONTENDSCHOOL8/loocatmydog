@@ -31,11 +31,11 @@ const fontStyles = {
     font-size:${fontSizes.headTitle};
     font-weight:${fontWeight.semiBold};
   `,
-  textSemiboldMd: `
+  textSemiboldBase: `
     font-size:${fontSizes.subTitle};
     font-weight:${fontWeight.semiBold};
   `,
-  textSemiboldBase: `
+  textSemiboldMd: `
     font-size:${fontSizes.nameTitle};
     font-weight:${fontWeight.semiBold};
   `,
@@ -44,11 +44,15 @@ const fontStyles = {
     font-weight:${fontWeight.semiBold};
   `,
   textMediumBase: `
-    font-size:${fontSizes.nameTitle};
+    font-size:${fontSizes.subTitle};
     font-weight:${fontWeight.medium};
   `,
   textRegularLd: `
     font-size:${fontSizes.headTitle};
+    font-weight:${fontWeight.regular};
+  `,
+  textRegularBase: `
+    font-size:${fontSizes.subTitle};
     font-weight:${fontWeight.regular};
   `,
   textRegularMd: `
@@ -57,10 +61,6 @@ const fontStyles = {
   `,
   textRegularSm: `
     font-size:${fontSizes.description};
-    font-weight:${fontWeight.regular};
-  `,
-  textRegularBase: `
-    font-size:${fontSizes.subTitle};
     font-weight:${fontWeight.regular};
   `,
 };
@@ -73,3 +73,4 @@ const theme = {
 };
 
 export default theme;
+export type ThemeType = typeof theme;
