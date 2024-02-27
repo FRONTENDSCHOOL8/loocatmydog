@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import styled, { css } from 'styled-components';
 
 interface BigPhotoProps {
@@ -7,6 +8,7 @@ interface BigPhotoProps {
     block: number;
     inline: number;
   };
+  onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 interface StyledBigPhotoProps {
@@ -50,6 +52,7 @@ const BigPhoto = ({
   type = 'default',
   imgSrc = '',
   size = { inline: 320, block: 142 },
+  onClick,
 }: BigPhotoProps) => {
   const imgSource = <img src={imgSrc} alt="" />;
 
@@ -71,7 +74,7 @@ const BigPhoto = ({
   }
 
   return (
-    <StyledBigPhoto $type={type} $size={size}>
+    <StyledBigPhoto $type={type} $size={size} type="button" onClick={onClick}>
       {BigPhotoImage}
     </StyledBigPhoto>
   );

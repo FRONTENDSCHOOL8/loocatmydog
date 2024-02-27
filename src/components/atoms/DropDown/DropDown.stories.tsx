@@ -1,4 +1,4 @@
-import DropDown from './DropDown.tsx';
+import DropDown from './DropDown';
 
 /**@type{import('@storybook/react').Meta} */
 export default {

@@ -71,7 +71,7 @@ const Photo = ({
   }
 
   return (
-    <StyledPhotoButton $type={type} onClick={onClick}>
+    <StyledPhotoButton $type={type} type="button" onClick={onClick}>
       {PhotoImage}
     </StyledPhotoButton>
   );
