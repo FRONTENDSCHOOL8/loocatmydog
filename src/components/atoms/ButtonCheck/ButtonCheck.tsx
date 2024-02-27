@@ -16,14 +16,13 @@ interface StyledButtonCheckProps {
 //styled component 작성
 const profileStyles = `
   display: flex;
-  flex-direction: row
-  // justify-content: space-between;
+  flex-direction: row;
 `;
 const StyledButtonCheckContainer = styled.div<StyledButtonCheckProps>`
   position: relative;
-  inline-size: 33.333%;
-  max-inline-size: ${(props) => (props.$profile ? '' : '140px')};
-  min-block-size: ${(props) => (props.$profile ? '' : '70px')};
+  max-inline-size: ${(props) => (props.$profile ? '190px' : '140px')};
+  min-block-size: ${(props) => (props.$profile ? '80px' : '70px')};
+  inline-size: ${(props) => (props.$profile ? '50%' : '33.333%')};
   ${(props) => props.theme.fontStyles.textRegularSm}
   ${(props) => props.theme.colors.textGray}
 `;
@@ -50,7 +49,7 @@ const StyledButtonCheckLabel = styled.label<StyledButtonCheckProps>`
   ${(props) => (props.$profile ? profileStyles : '')};
 
   .textWrap {
-    inline-size: 65%;
+    inline-size: ${(props) => (props.$profile ? '60%' : 'normal')};
   }
 `;
 
@@ -77,21 +76,24 @@ const ButtonCheck = ({
   const checkBoxChecked = () => setIsChecked(!isChecked);
   const id = useId();
   return (
-    <StyledButtonCheckContainer>
+    <StyledButtonCheckContainer $profile={profile}>
       <StyledButtonCheck
         id={id}
         type="checkbox"
         checked={isChecked}
         value={name}
         onChange={checkBoxChecked}
-        $profile={profile}
       />
       <StyledButtonCheckLabel $profile={profile} htmlFor={id}>
         <div className="textWrap">
           <StyledButtonCheckP>{name}</StyledButtonCheckP>
           <p>{children}</p>
         </div>
-        {profile ? <ProfileImage /> : ''}
+        {profile ? (
+          <ProfileImage />
+        ) : (
+          <ProfileImage src={'/images/plusIcon.svg'} />
+        )}
       </StyledButtonCheckLabel>
     </StyledButtonCheckContainer>
   );
