@@ -1,3 +1,4 @@
+import { Children, ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface StateBadgeBoxProps {
@@ -22,14 +23,20 @@ const StyledStateBadgeBox = styled.div<StateBadgeBoxProps>`
 interface StateBadgeProps {
   isActive: boolean;
   mode: 'normal' | 'fill';
+  children?: ReactNode;
   [key: string]: any;
 }
 
-const StateBadge = ({ isActive, mode, ...restProps }: StateBadgeProps) => {
+const StateBadge = ({
+  isActive,
+  mode,
+  children = '당일가능',
+  ...restProps
+}: StateBadgeProps) => {
   if (isActive)
     return (
       <StyledStateBadgeBox $mode={mode} {...restProps}>
-        당일가능
+        {children}
       </StyledStateBadgeBox>
     );
   else {
