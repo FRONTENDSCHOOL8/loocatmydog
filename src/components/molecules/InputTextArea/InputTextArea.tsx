@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const InputTextAreaBox = styled.div`
+const StyledInputTextAreaBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -49,13 +49,13 @@ const InputTextArea = ({
   requestCheck = '필수',
 }: InputTextAreaProps) => {
   return (
-    <InputTextAreaBox>
+    <StyledInputTextAreaBox>
       <InputTextAreaSpanWrapper $mode={requestCheck}>
         <span className="walkRequest">{request}</span>
         <span className="essential">&#40;{requestCheck}&#41;</span>
       </InputTextAreaSpanWrapper>
       <textarea name="contents" cols={20} rows={10}></textarea>
-    </InputTextAreaBox>
+    </StyledInputTextAreaBox>
   );
 };
 
