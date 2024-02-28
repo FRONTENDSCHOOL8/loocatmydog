@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const StyledCheckBoxWrap = styled.div`
   position: relative;
+  flex-grow: 1;
 `;
 
 const StyledLabel = styled.label`
