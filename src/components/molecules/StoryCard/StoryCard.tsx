@@ -1,6 +1,7 @@
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import StarRating from '@/components/atoms/StarRating/StarRating';
 import { convertTime } from '@/utils';
+import { format } from 'date-fns';
 import styled, { css } from 'styled-components';
 
 interface StoryCardProps {
@@ -46,7 +47,8 @@ const StyledStoryContents = styled.div`
     & .star-rating {
       display: inline-flex;
     }
-    & .created-time {
+    & .created-time,
+    & .report {
       color: ${(props) => props.theme.colors.textGray};
       ${(props) => props.theme.fontStyles.textRegularSm};
     }
@@ -148,9 +150,13 @@ const StoryCard = ({
               ))}
             </span>
           )}
-          <span className="created-time">
-            {convertTime(createdDate)} | 신고
-          </span>
+          <time
+            dateTime={format(createdDate, 'yyyy-MM-dd hh:mm:ss.SSS')}
+            className="created-time"
+          >
+            {convertTime(createdDate)}
+          </time>
+          <span className="report">| 신고</span>
         </div>
         {attachImageUrl.length > 0 && (
           <StyledStoryImageContainer $imageCount={attachImageUrl.length}>
