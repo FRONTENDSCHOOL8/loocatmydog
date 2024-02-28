@@ -6,16 +6,16 @@ const StyledBooleanBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  inline-size: 20rem;
-  block-size: 3.75rem;
-  padding: 0.6rem 1.25rem;
+  inline-size: 100%;
+  block-size: 60px;
+  padding: 10px 20px;
   border-bottom: solid 1px ${(props) => props.theme.colors.lineColorGray};
 `;
 
 const StyledBooleanSpanBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 15px;
 `;
 
 const StyledBooleanBookSpan = styled.span`
