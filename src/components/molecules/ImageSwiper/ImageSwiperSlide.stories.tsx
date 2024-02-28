@@ -1,8 +1,8 @@
-import BigPhoto from './BigPhoto.tsx';
+import ImageSwiperSlide from './ImageSwiperSlide';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: BigPhoto,
+  component: ImageSwiperSlide,
   decorators: [
     (Story: any) => (
       <div style={{ inlineSize: '320px' }}>
@@ -14,13 +14,5 @@ export default {
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
-  args: {
-    type: 'default',
-  },
-};
-
-export const 사진표시 = {
-  args: {
-    type: 'picture',
-  },
+  args: {},
 };

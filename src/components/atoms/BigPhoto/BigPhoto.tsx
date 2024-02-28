@@ -2,21 +2,15 @@ import { MouseEventHandler } from 'react';
 import styled, { css } from 'styled-components';
 
 interface BigPhotoProps {
-  type: 'default' | 'picture';
-  imgSrc: string;
-  size: {
-    block: number;
-    inline: number;
-  };
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  type?: 'default' | 'picture';
+  imgSrc?: string;
+  block?: number;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 interface StyledBigPhotoProps {
   $type: 'default' | 'picture';
-  $size: {
-    block: number;
-    inline: number;
-  };
+  $block: number;
 }
 
 const StyledBigPhoto = styled.button<StyledBigPhotoProps>`
@@ -27,21 +21,27 @@ const StyledBigPhoto = styled.button<StyledBigPhotoProps>`
   gap: 5px;
   border: 0px;
 
+  position: relative;
+  overflow: hidden;
+
+  inline-size: 100%;
+
   ${(props) => {
-    const { inline, block } = props.$size;
+    const block = props.$block;
 
     return css`
-      inline-size: ${inline}px;
       block-size: ${block}px;
     `;
   }}
+
   ${(props) => {
     if (props.$type === 'picture') {
       return css`
         & img {
-          block-size: 100%;
-          inline-size: 100%;
-          object-fit: cover;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       `;
     }
@@ -50,8 +50,8 @@ const StyledBigPhoto = styled.button<StyledBigPhotoProps>`
 
 const BigPhoto = ({
   type = 'default',
-  imgSrc = '',
-  size = { inline: 320, block: 142 },
+  imgSrc = '/images/story_sample1.jpg',
+  block = 160,
   onClick,
 }: BigPhotoProps) => {
   const imgSource = <img src={imgSrc} alt="" />;
@@ -74,7 +74,7 @@ const BigPhoto = ({
   }
 
   return (
-    <StyledBigPhoto $type={type} $size={size} type="button" onClick={onClick}>
+    <StyledBigPhoto $type={type} $block={block} type="button" onClick={onClick}>
       {BigPhotoImage}
     </StyledBigPhoto>
   );

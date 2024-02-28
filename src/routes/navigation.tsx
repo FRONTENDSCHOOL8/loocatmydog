@@ -1,6 +1,7 @@
 import Header from '@/components/molecules/Header/Header';
 import OutletLayout from '@/components/layouts/OutletLayout';
 import Main from '@/pages/Main';
+import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
 
 export const navigationItems = [
   {
@@ -94,6 +95,11 @@ export const navigationItems = [
   },
   {
     path: '/reservation_list',
-    element: '',
+    element: (
+      <OutletLayout>
+        <Header type="main" title="테스트테스트" />
+        <ImageSwiperContainer />
+      </OutletLayout>
+    ),
   },
 ];
