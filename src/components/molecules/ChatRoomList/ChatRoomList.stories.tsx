@@ -1,8 +1,8 @@
-import ChatList from './ChatList';
+import ChatRoomList from './ChatRoomList';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: ChatList,
+  component: ChatRoomList,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
