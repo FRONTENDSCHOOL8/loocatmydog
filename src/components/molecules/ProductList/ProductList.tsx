@@ -7,6 +7,10 @@ interface ProductListProps {
   children: string;
   like?: boolean;
   review?: boolean;
+  year: number;
+  month: number;
+  day: number;
+  dDay: string;
 }
 interface DateListProps {
   year: number;
@@ -79,11 +83,10 @@ const DateList = ({
   day,
   month,
   dDay = 'd-day',
-  review = false,
-  ...restProps
+  review,
 }: DateListProps) => {
   return (
-    <StyledDateList className={review ? 'reviewtext' : ''} {...restProps}>
+    <StyledDateList className={review ? 'reviewtext' : ''}>
       <span className="year">{year}</span>
       <span className="date">
         {month}/{day}
@@ -97,7 +100,11 @@ function ProductList({
   title = '테스트',
   children = '테스트입니다',
   like = false,
-  review,
+  review = false,
+  year,
+  month,
+  day,
+  dDay,
   ...restProps
 }: ProductListProps) {
   return (
@@ -114,7 +121,13 @@ function ProductList({
       {like ? (
         <HeartButton fill />
       ) : (
-        <DateList year={2024} month={2} day={22} dDay="d-day" review />
+        <DateList
+          year={year}
+          month={month}
+          day={day}
+          dDay={dDay}
+          review={review}
+        />
       )}
     </StyledProductListContainer>
   );
