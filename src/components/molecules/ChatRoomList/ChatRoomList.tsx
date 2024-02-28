@@ -1,7 +1,7 @@
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import styled from 'styled-components';
 
-interface ChatListProps {
+interface ChatRoomListProps {
   name: string;
   recentMessage: string;
   timeAgo: string;
@@ -57,12 +57,12 @@ const StyledChatList = styled.div`
   }
 `;
 
-const ChatList = ({
+const ChatRoomList = ({
   name,
   recentMessage,
   timeAgo,
   chatCount,
-}: ChatListProps) => {
+}: ChatRoomListProps) => {
   return (
     <StyledChatList>
       <ProfileImage blockSize={35} inlineSize={35} />
@@ -78,4 +78,4 @@ const ChatList = ({
   );
 };
 
-export default ChatList;
+export default ChatRoomList;

@@ -5,7 +5,7 @@ interface InlineProps {
   $blockSize: number;
 }
 
-const Inline = styled.img.attrs((props) => ({
+const StyledInline = styled.img.attrs((props) => ({
   src: props.src,
 }))<InlineProps>`
   inline-size: ${(props) => props.$inlineSize}px;
@@ -13,13 +13,13 @@ const Inline = styled.img.attrs((props) => ({
 `;
 
 interface LogoInlineProps {
-  widthHeight: { blockSize: number; inlineSize: number };
+  blockSize?: number;
+  inlineSize?: number;
 }
 
-const LogoInline = ({ widthHeight }: LogoInlineProps) => {
-  const { blockSize = 20, inlineSize = 50 } = widthHeight;
+const LogoInline = ({ blockSize = 20, inlineSize = 50 }: LogoInlineProps) => {
   return (
-    <Inline
+    <StyledInline
       src={'/images/logo.svg'}
       alt="봐주개냥 가로버전 로고"
       $blockSize={blockSize}

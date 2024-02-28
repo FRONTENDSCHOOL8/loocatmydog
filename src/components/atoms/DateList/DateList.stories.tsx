@@ -1,14 +1,16 @@
-import StateBadge from './StateBadge';
+import DateList from './DateList';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: StateBadge,
+  component: DateList,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    isActive: true,
-    mode: 'normal',
+    year: 2022,
+    month: 2,
+    day: 22,
+    dDay: '5-day',
   },
 };

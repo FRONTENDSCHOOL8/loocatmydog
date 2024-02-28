@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Circle = styled.img.attrs((props) => ({
+const StyledCircle = styled.img.attrs((props) => ({
   src: props.src,
 }))`
   inline-size: 150px;
@@ -9,7 +9,7 @@ const Circle = styled.img.attrs((props) => ({
 
 const LogoCircle = () => {
   return (
-    <Circle
+    <StyledCircle
       src={'/images/splashImg.svg'}
       alt="동그란 원 안에 있는 봐주개냥 로고"
     />
