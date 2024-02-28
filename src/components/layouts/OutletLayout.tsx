@@ -5,6 +5,7 @@ const StyledOutletLayout = styled.div`
   flex: 1;
   display: flex;
   flex-flow: column nowrap;
+  overflow-y: auto;
 `;
 
 function OutletLayout({ children }: { children: React.ReactNode }) {
