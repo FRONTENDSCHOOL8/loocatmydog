@@ -35,7 +35,7 @@ const StyledDateList = styled.div`
     margin-bottom: 3px;
   }
 `;
-
+//Date 기능 가져온 후 연도/월/일 변수 나누기
 const DateList = ({
   year,
   day,

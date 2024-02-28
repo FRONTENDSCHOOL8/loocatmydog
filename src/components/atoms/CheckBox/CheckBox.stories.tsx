@@ -11,5 +11,6 @@ export const 기본표시 = {
     isChecked: false,
     children: 'test',
     reservation: true,
+    label: true,
   },
 };

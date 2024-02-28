@@ -1,8 +1,8 @@
-import ProductList from './ProductList';
+import MyPlaceList from './MyPlaceList';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: ProductList,
+  component: MyPlaceList,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
