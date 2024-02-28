@@ -58,6 +58,11 @@ function MyPlaceList({
   dDay,
   ...restProps
 }: MyPlaceListProps) {
+  const isLike = like ? (
+    <HeartButton fill />
+  ) : (
+    <DateList year={year} month={month} day={day} dDay={dDay} review={review} />
+  );
   return (
     <StyledMyPlaceListContainer {...restProps}>
       <div className="inner">
@@ -69,17 +74,7 @@ function MyPlaceList({
           <span>{children}</span>
         </div>
       </div>
-      {like ? (
-        <HeartButton fill />
-      ) : (
-        <DateList
-          year={year}
-          month={month}
-          day={day}
-          dDay={dDay}
-          review={review}
-        />
-      )}
+      {isLike}
     </StyledMyPlaceListContainer>
   );
 }

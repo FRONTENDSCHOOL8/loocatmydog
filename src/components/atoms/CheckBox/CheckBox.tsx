@@ -67,7 +67,11 @@ const CheckBox = ({
         onChange={checkBoxChecked}
       ></StyledCheckBox>
       <StyledLabel htmlFor={id} $reservation={reservation} {...restProps}>
-        {label ? <span>{children}</span> : <A11yHidden>{children}</A11yHidden>}
+        {label ? (
+          <span>{children}</span>
+        ) : (
+          <A11yHidden as="p">{children}</A11yHidden>
+        )}
       </StyledLabel>
     </StyledCheckBoxWrap>
   );
