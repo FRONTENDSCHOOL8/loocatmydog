@@ -1,5 +1,5 @@
+import DateList from '@/components/atoms/DateList/DateList';
 import HeartButton from '@/components/atoms/HeartButton/HeartButton';
-import StateBadge from '@/components/atoms/StateBadge/StateBadge';
 import styled from 'styled-components';
 //type 선언
 interface ProductListProps {
@@ -11,13 +11,6 @@ interface ProductListProps {
   month: number;
   day: number;
   dDay: string;
-}
-interface DateListProps {
-  year: number;
-  month: number;
-  day: number;
-  dDay: string;
-  review?: boolean;
 }
 
 //styled 컴포넌트
@@ -53,48 +46,6 @@ const StyledProductListContainer = styled.div`
     ${(props) => props.theme.fontStyles.textSemiboldMd};
   }
 `;
-
-const StyledDateList = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  color: ${(props) => props.theme.colors.textBlack};
-  font-size: ${(props) => props.theme.fontSizes.nameTitle};
-
-  &.reviewtext {
-    color: ${(props) => props.theme.colors.textGray};
-    font-size: ${(props) => props.theme.fontSizes.description};
-    margin-bottom: 3px;
-  }
-
-  .dDay {
-    color: ${(props) => props.theme.colors.red};
-    font-size: ${(props) => props.theme.fontSizes.description};
-    font-weight: ${(props) => props.theme.fontWeight.regular};
-    margin-top: 3px;
-  }
-  .date {
-    margin-bottom: 3px;
-  }
-`;
-const DateList = ({
-  year,
-  day,
-  month,
-  dDay = 'd-day',
-  review,
-}: DateListProps) => {
-  return (
-    <StyledDateList className={review ? 'reviewtext' : ''}>
-      <span className="year">{year}</span>
-      <span className="date">
-        {month}/{day}
-      </span>
-      {review ? <StateBadge isActive /> : <span className="dDay">{dDay}</span>}
-    </StyledDateList>
-  );
-};
 
 function ProductList({
   title = '테스트',

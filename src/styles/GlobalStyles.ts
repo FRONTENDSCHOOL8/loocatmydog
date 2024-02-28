@@ -92,6 +92,7 @@ button {
   padding: 0;
   cursor: pointer;
   border: 0;
+  background: transparent;
 }
 
 figure {
