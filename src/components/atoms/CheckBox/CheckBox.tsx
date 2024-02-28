@@ -1,3 +1,4 @@
+import A11yHidden from '@/components/A11yHidden/A11yHidden';
 import { Dispatch, SetStateAction, useId } from 'react';
 import styled from 'styled-components';
 
@@ -16,8 +17,8 @@ const StyledLabel = styled.label<StyleCheckBoxLabelProps>`
   align-items: center;
   color: ${(props) =>
     props.$reservation
-      ? props.theme.colors.textDarkGray
-      : props.theme.colors.textBlack};
+      ? props.theme.colors.textBlack
+      : props.theme.colors.textDarkGray};
   ${(props) => props.theme.fontStyles.textRegularBase};
 `;
 
@@ -36,7 +37,10 @@ interface CheckBoxProps {
   isChecked: boolean;
   reservation?: boolean;
   children: string;
+  label?: boolean;
+  type?: 'checkbox' | 'radio';
   setIsChecked: Dispatch<SetStateAction<boolean>>;
+  [key: string]: any;
 }
 interface StyleCheckBoxLabelProps {
   $reservation?: boolean;
@@ -45,8 +49,10 @@ interface StyleCheckBoxLabelProps {
 const CheckBox = ({
   isChecked,
   setIsChecked,
-  reservation,
+  reservation = true,
+  type = 'checkbox',
   children,
+  label = true,
   ...restProps
 }: CheckBoxProps) => {
   const checkBoxChecked = () => setIsChecked(!isChecked);
@@ -54,15 +60,16 @@ const CheckBox = ({
   return (
     <StyledCheckBoxWrap>
       <StyledCheckBox
-        type="checkbox"
+        type={type}
         id={id}
         name="test"
         checked={isChecked}
         onChange={checkBoxChecked}
         {...restProps}
       ></StyledCheckBox>
+
       <StyledLabel htmlFor={id} $reservation={reservation}>
-        {children}
+        {label ? <span>{children}</span> : <A11yHidden>{children}</A11yHidden>}
       </StyledLabel>
     </StyledCheckBoxWrap>
   );

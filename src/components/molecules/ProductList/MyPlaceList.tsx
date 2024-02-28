@@ -2,7 +2,7 @@ import DateList from '@/components/atoms/DateList/DateList';
 import HeartButton from '@/components/atoms/HeartButton/HeartButton';
 import styled from 'styled-components';
 //type 선언
-interface ProductListProps {
+interface MyPlaceListProps {
   title: string;
   children: string;
   like?: boolean;
@@ -15,7 +15,7 @@ interface ProductListProps {
 
 //styled 컴포넌트
 
-const StyledProductListContainer = styled.div`
+const StyledMyPlaceListContainer = styled.div`
   inline-size: 100%;
   max-inline-size: 420px;
   background: #f1f1f1;
@@ -47,7 +47,7 @@ const StyledProductListContainer = styled.div`
   }
 `;
 
-function ProductList({
+function MyPlaceList({
   title = '테스트',
   children = '테스트입니다',
   like = false,
@@ -57,9 +57,9 @@ function ProductList({
   day,
   dDay,
   ...restProps
-}: ProductListProps) {
+}: MyPlaceListProps) {
   return (
-    <StyledProductListContainer {...restProps}>
+    <StyledMyPlaceListContainer {...restProps}>
       <div className="inner">
         <figure>
           <img src="/src/assets/test.png" alt="플레이스사진" />
@@ -80,8 +80,8 @@ function ProductList({
           review={review}
         />
       )}
-    </StyledProductListContainer>
+    </StyledMyPlaceListContainer>
   );
 }
 
-export default ProductList;
+export default MyPlaceList;
