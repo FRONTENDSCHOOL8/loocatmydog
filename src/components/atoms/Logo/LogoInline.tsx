@@ -13,11 +13,11 @@ const Inline = styled.img.attrs((props) => ({
 `;
 
 interface LogoInlineProps {
-  widthHeight: { blockSize: number; inlineSize: number };
+  blockSize?: number;
+  inlineSize?: number;
 }
 
-const LogoInline = ({ widthHeight }: LogoInlineProps) => {
-  const { blockSize = 20, inlineSize = 50 } = widthHeight;
+const LogoInline = ({ blockSize = 20, inlineSize = 50 }: LogoInlineProps) => {
   return (
     <Inline
       src={'/images/logo.svg'}
