@@ -6,8 +6,7 @@ interface StateBadgeBoxProps {
 
 const StyledStateBadgeBox = styled.div<StateBadgeBoxProps>`
   display: inline-block;
-  padding-block: 2px;
-  padding-inline: 6px;
+  padding: 6px 2px;
   border: 1px solid ${(props) => props.theme.colors.orange};
   border-radius: 2px;
   ${(props) => props.theme.fontStyles.textSemiboldSm}

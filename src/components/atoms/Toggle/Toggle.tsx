@@ -4,10 +4,9 @@ import styled from 'styled-components';
 const StyledToggleLabel = styled.label`
   display: block;
   position: relative;
-  inline-size: 32px;
+  inline-size: 100%;
   block-size: 17px;
-  padding-inline: 4px;
-  padding-block: 5px;
+  padding: 4px 5px;
   background-color: ${(props) => props.theme.colors.white};
   border: solid 1px ${(props) => props.theme.colors.lineColorGray};
   border-radius: 50px;
@@ -53,7 +52,7 @@ const Toggle = ({ isActive, setIsActive }: ToggleProps) => {
         id={toggleId}
         type="checkbox"
         checked={isActive}
-        onChange={toggleIsActive}
+        onClick={toggleIsActive}
       />
       <StyledToggleLabel htmlFor={toggleId}>
         <span></span>

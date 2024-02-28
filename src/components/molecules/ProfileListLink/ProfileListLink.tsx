@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const StyledProfileListLinkBox = styled(Link)`
-  inline-size: 20rem;
+  inline-size: 100%;
   padding: 16px 20px;
   display: flex;
   flex-direction: row;
@@ -27,16 +27,15 @@ const StyledProfileListLinkBox = styled(Link)`
 
 const StyledAccordionContent = styled.div`
   /* 아코디언 내용에 적용할 스타일을 여기에 작성 */
-  inline-size: 20rem;
+  inline-size: 100%;
   border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
 `;
 
 interface ProfileListLinkProps {
-  to: string;
+  to?: string;
   accordion?: boolean;
   children?: ReactNode;
-  accordionContent: ReactNode;
-  accordionContent1?: ReactNode;
+  accordionContent?: ReactNode;
   [key: string]: any;
 }
 
