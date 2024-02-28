@@ -2,7 +2,7 @@ import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-const UserProfileBox = styled.div`
+const StyledUserProfileBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,7 +11,7 @@ const UserProfileBox = styled.div`
   padding: 0.6rem 1.25rem;
 `;
 
-const UserProfileSpanBox = styled.div`
+const StyledUserProfileSpanBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -34,13 +34,13 @@ const UserProfile = ({
   src: string;
 }) => {
   return (
-    <UserProfileBox>
-      <UserProfileSpanBox>
+    <StyledUserProfileBox>
+      <StyledUserProfileSpanBox>
         <span className="userName">{name} 님</span>
         <span className="welcome">환영합니다!</span>
-      </UserProfileSpanBox>
+      </StyledUserProfileSpanBox>
       <ProfileImage blockSize={43} inlineSize={43} src={src} />
-    </UserProfileBox>
+    </StyledUserProfileBox>
   );
 };
 

@@ -2,7 +2,7 @@ import { useState, ReactNode, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const ProfileListLinkBox = styled(Link)`
+const StyledProfileListLinkBox = styled(Link)`
   inline-size: 20rem;
   padding: 16px 20px;
   display: flex;
@@ -25,7 +25,7 @@ const ProfileListLinkBox = styled(Link)`
   }
 `;
 
-const AccordionContent = styled.div`
+const StyledAccordionContent = styled.div`
   /* 아코디언 내용에 적용할 스타일을 여기에 작성 */
   inline-size: 20rem;
   border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
@@ -60,7 +60,7 @@ const ProfileListLink = ({
 
   return (
     <>
-      <ProfileListLinkBox
+      <StyledProfileListLinkBox
         to={to}
         onClick={accordion ? handleToggle : undefined}
         {...restProps}
@@ -69,9 +69,9 @@ const ProfileListLink = ({
         <button type="button">
           <img src={`/images/arrow/${arrowIcon}`} alt={arrowAlt} />
         </button>
-      </ProfileListLinkBox>
+      </StyledProfileListLinkBox>
       {accordion && isOpen && (
-        <AccordionContent>{accordionContent}</AccordionContent>
+        <StyledAccordionContent>{accordionContent}</StyledAccordionContent>
       )}
     </>
   );
