@@ -1,18 +1,17 @@
-import { Dispatch, MouseEventHandler, SetStateAction } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { hoverType } from './GlobalNavBar';
+import { NavLink, useLocation } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 interface GlobalNavListProps {
   path: string;
   text: string;
   dataName: string;
-  active: boolean;
-  hover: hoverType;
-  setHover: Dispatch<SetStateAction<hoverType>>;
 }
 
-const StyledGlobalNavLink = styled(Link)`
+interface StyledGlobalNavListProps {
+  $name: string;
+}
+
+const StyledGlobalNavLink = styled(NavLink)<StyledGlobalNavListProps>`
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -29,44 +28,54 @@ const StyledGlobalNavLink = styled(Link)`
     color: ${(props) => props.theme.colors.textGray};
   }
 
+  .icon {
+    content: ${(props) => {
+      const dataName = props.$name;
+
+      const imageUrl = `/images/navigation/${dataName}-inactive.svg`;
+
+      return css`
+        url(${imageUrl})
+      `;
+    }};
+  }
+
   &:hover {
     color: #3b6b77;
+
+    .icon {
+      content: ${(props) => {
+        const dataName = props.$name;
+
+        const imageUrl = `/images/navigation/${dataName}-active.svg`;
+
+        return css`
+            url(${imageUrl})
+          `;
+      }};
+    }
+  }
+
+  .active {
+    content: ${(props) => {
+      const dataName = props.$name;
+
+      const imageUrl = `/images/navigation/${dataName}-active.svg`;
+
+      return css`
+            url(${imageUrl})
+          `;
+    }};
   }
 `;
 
-const GlobalNavList = ({
-  path = '/',
-  text,
-  dataName,
-  active = false,
-  hover,
-  setHover,
-}: GlobalNavListProps) => {
-  const handleMouseEnter = () => {
-    setHover({
-      ...hover,
-      [dataName]: true,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setHover({
-      ...hover,
-      [dataName]: false,
-    });
-  };
+const GlobalNavList = ({ path = '/', text, dataName }: GlobalNavListProps) => {
+  const location = useLocation();
+  const className = location.pathname === path ? 'active' : 'icon';
 
   return (
-    <StyledGlobalNavLink
-      to={path}
-      data-name={dataName}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <img
-        src={`/images/navigation/${dataName}-${active ? 'active' : 'inactive'}.svg`}
-        aria-labelledby={dataName}
-      />
+    <StyledGlobalNavLink to={path} data-name={dataName} $name={dataName}>
+      <img className={className} aria-labelledby={dataName} />
       <span id={dataName}>{text}</span>
     </StyledGlobalNavLink>
   );

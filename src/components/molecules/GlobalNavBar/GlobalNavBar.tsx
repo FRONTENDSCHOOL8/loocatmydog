@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import GlobalNavList from './GlobalNavList';
 
@@ -61,21 +60,7 @@ const NAVIGATION_LIST = [
   },
 ];
 
-export interface hoverType {
-  [key: string]: boolean;
-}
-
-const INITIAL_ACTIVE: hoverType = {
-  home: false,
-  network: false,
-  store: false,
-  adopt: false,
-  profile: false,
-};
-
 const GlobalNavBar = ({ isShown = true }: GlobalNavBarProps) => {
-  const [hover, setHover] = useState(INITIAL_ACTIVE);
-
   return (
     <StyledGlobalNavBar $isShown={isShown}>
       <ul>
@@ -85,9 +70,6 @@ const GlobalNavBar = ({ isShown = true }: GlobalNavBarProps) => {
               path={item.path}
               text={item.text}
               dataName={item.dataName}
-              active={hover[item.dataName]}
-              hover={hover}
-              setHover={setHover}
             />
           </li>
         ))}
