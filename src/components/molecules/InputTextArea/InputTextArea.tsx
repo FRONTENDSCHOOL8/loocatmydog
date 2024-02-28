@@ -3,6 +3,15 @@ import styled from 'styled-components';
 const InputTextAreaBox = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 15px;
+
+  & textarea {
+    border: none;
+    outline: none;
+    resize: none;
+    border: 1px solid ${(props) => props.theme.colors.lineColorGray};
+    border-radius: 4px;
+  }
 `;
 
 interface InputTextAreaSpanWrapperProps {
@@ -18,6 +27,7 @@ const InputTextAreaSpanWrapper = styled.div<InputTextAreaSpanWrapperProps>`
   }
 
   & .essential {
+    padding-block-start: 1px;
     ${(props) => props.theme.fontStyles.textRegularMd}
     color: ${(props) => {
       if (props.$mode === '필수') {

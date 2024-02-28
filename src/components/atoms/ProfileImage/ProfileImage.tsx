@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 interface ProfileWrapperProps {
@@ -17,6 +16,7 @@ interface ProfileImageProps {
   blockSize?: number;
   inlineSize?: number;
   src?: string;
+  [key: string]: any;
 }
 
 const StyledProfileImg = styled.img.attrs((props) => ({
@@ -32,10 +32,14 @@ const ProfileImage = ({
   inlineSize = 40,
   src = '/images/starDog.svg',
   ...restProps
-}: ProfileImageProps & React.ImgHTMLAttributes<HTMLImageElement>) => {
+}: ProfileImageProps) => {
   return (
-    <StyledProfileWrapper $blockSize={blockSize} $inlineSize={inlineSize}>
-      <StyledProfileImg src={src} alt="프로필" {...restProps} />
+    <StyledProfileWrapper
+      $blockSize={blockSize}
+      $inlineSize={inlineSize}
+      {...restProps}
+    >
+      <StyledProfileImg src={src} alt="프로필" />
     </StyledProfileWrapper>
   );
 };
