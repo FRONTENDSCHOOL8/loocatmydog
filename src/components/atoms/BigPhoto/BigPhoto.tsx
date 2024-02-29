@@ -1,80 +1,116 @@
-import { MouseEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 interface BigPhotoProps {
-  type: 'default' | 'picture';
-  imgSrc: string;
-  size: {
-    block: number;
-    inline: number;
-  };
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  type?: 'default' | 'picture' | 'link';
+  link?: string;
+  imgSrc?: string;
+  block?: number;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  [key: string]: any;
 }
 
 interface StyledBigPhotoProps {
-  $type: 'default' | 'picture';
-  $size: {
-    block: number;
-    inline: number;
-  };
+  $type?: 'default' | 'picture' | 'link';
+  $block?: number;
 }
 
-const StyledBigPhoto = styled.button<StyledBigPhotoProps>`
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  border: 0px;
+const StyledBigPhoto = styled.div<StyledBigPhotoProps>`
+  position: relative;
+  overflow: hidden;
+
+  inline-size: 100%;
 
   ${(props) => {
-    const { inline, block } = props.$size;
-
-    return css`
-      inline-size: ${inline}px;
-      block-size: ${block}px;
-    `;
-  }}
-  ${(props) => {
-    if (props.$type === 'picture') {
+    if (props.$type === 'picture' || props.$type === 'link') {
       return css`
         & img {
-          block-size: 100%;
-          inline-size: 100%;
-          object-fit: cover;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       `;
     }
   }}
+
+  & a, & div {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    inline-size: 100%;
+
+    ${(props) => {
+      const block = props.$block;
+
+      return css`
+        block-size: ${block}px;
+      `;
+    }}
+
+    & label {
+      cursor: pointer;
+    }
+
+    #addImg {
+      display: none;
+    }
+  }
 `;
+/* 
+  - default : 사진 등록 input
+  - picture : 사진 표시 ( 클릭 시 새창에 사진 보여주기 )
+  - link : 사진 클릭 시 페이지 이동 ( Link )
+*/
 
 const BigPhoto = ({
   type = 'default',
-  imgSrc = '',
-  size = { inline: 320, block: 142 },
-  onClick,
+  link = '/',
+  imgSrc = '/images/story_sample1.jpg',
+  block = 160,
+  onChange,
+  ...restProps
 }: BigPhotoProps) => {
-  const imgSource = <img src={imgSrc} alt="" />;
-
   let BigPhotoImage;
 
   switch (type) {
-    case 'picture':
-      BigPhotoImage = imgSource;
-      break;
-
     case 'default':
       BigPhotoImage = (
-        <>
+        <div>
           <span>사진을 추가해주세요.</span>
-          <img src="/images/plusButton.svg" alt="+" />
-        </>
+          <label htmlFor="addImg">
+            <img src="/images/plusButton.svg" alt="+" />
+          </label>
+          <input type="file" name="addImg" id="addImg" onChange={onChange} />
+          {/* <img src="/images/plusButton.svg" alt="+" /> */}
+        </div>
+      );
+      break;
+
+    case 'picture':
+      BigPhotoImage = (
+        <a href={imgSrc} target="_blank" rel="noopener noreferrer">
+          <img src={imgSrc} alt="" />
+        </a>
+      );
+      break;
+
+    case 'link':
+      BigPhotoImage = (
+        <Link to={link}>
+          <a href={imgSrc} target="_blank" rel="noopener noreferrer">
+            <img src={imgSrc} alt="" />
+          </a>
+        </Link>
       );
       break;
   }
 
   return (
-    <StyledBigPhoto $type={type} $size={size} type="button" onClick={onClick}>
+    <StyledBigPhoto $type={type} $block={block} {...restProps}>
       {BigPhotoImage}
     </StyledBigPhoto>
   );

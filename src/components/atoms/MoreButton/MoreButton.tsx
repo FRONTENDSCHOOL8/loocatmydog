@@ -17,7 +17,7 @@ const StyledMoreButton = styled(Link)<StyledMoreButtonProps>`
   padding-inline: 10px;
   text-decoration: none;
 
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.colors.lineColorGray};
   block-size: 21px;
   ${(props) => props.theme.fontStyles.textRegularSm}
   border: 0px;
@@ -25,11 +25,11 @@ const StyledMoreButton = styled(Link)<StyledMoreButtonProps>`
 
   &:active,
   &:visited {
-    color: black;
+    color: ${(props) => props.theme.colors.textBlack};
   }
 
   &:hover {
-    background-color: #d1d1d1;
+    background-color: ${(props) => props.theme.colors.gray300};
   }
   ${(props) => {
     const size = Number(props.$text.length) * 10 + 32;
