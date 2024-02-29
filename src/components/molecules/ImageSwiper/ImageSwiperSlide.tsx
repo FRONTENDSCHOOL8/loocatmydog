@@ -5,6 +5,7 @@ import BigPhoto from '@/components/atoms/BigPhoto/BigPhoto';
 interface ImageSwiperSlideProps {
   url: string;
   type: 'default' | 'picture';
+  [key: string]: any;
 }
 
 const StyledSwiperSlide = styled(SwiperSlide)`
