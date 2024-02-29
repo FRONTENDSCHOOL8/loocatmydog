@@ -20,6 +20,7 @@ const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
   padding-block: 12px;
   padding-inline: 10px;
   inline-size: ${(props) => props.$size};
+  min-inline-size: fit-content;
   cursor: ${(props) => (props.$isInvalid === true ? 'not-allowed' : 'pointer')};
   background-color: ${(props) =>
     props.$isInvalid === true ? '#F7F7F7' : '#FFD233'};
