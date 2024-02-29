@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 //type 정의
 interface PaymentProps {
-  src: string;
+  src?: string;
   userPay: boolean;
   name: string;
   [key: string]: any;
@@ -41,9 +41,9 @@ function Payment({
   ...restProps
 }: PaymentProps) {
   return (
-    <StyledPayment>
+    <StyledPayment {...restProps}>
       <figure>
-        <img src={src} alt={name} {...restProps} />
+        <img src={src} alt={name} />
         <figcaption>
           <p className="title">{userPay ? name : '등록하기'}</p>
           <p>

@@ -15,6 +15,7 @@ const StyledLabel = styled.label<StyleCheckBoxLabelProps>`
   left: 0;
   top: 0;
   display: flex;
+
   align-items: center;
   color: ${(props) =>
     props.$reservation
