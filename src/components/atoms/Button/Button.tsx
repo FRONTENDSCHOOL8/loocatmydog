@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface ButtonProps {
-  size: number;
+  size: string;
   isInvalid?: boolean;
   isRounded?: boolean;
   mode?: 'kakao' | 'google' | 'chat';
@@ -10,7 +10,7 @@ interface ButtonProps {
 }
 
 interface StyledButtonProps {
-  $size: number;
+  $size: string;
   $isInvalid?: boolean;
   $isRounded?: boolean;
   $mode?: 'kakao' | 'google' | 'chat';
@@ -19,8 +19,8 @@ interface StyledButtonProps {
 const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
   padding-block: 12px;
   padding-inline: 10px;
-  inline-size: ${(props) => props.$size + '%'};
-  cursor: ${(props) => (props.$isInvalid === true ? 'default' : 'pointer')};
+  inline-size: ${(props) => props.$size};
+  cursor: ${(props) => (props.$isInvalid === true ? 'not-allowed' : 'pointer')};
   background-color: ${(props) =>
     props.$isInvalid === true ? '#F7F7F7' : '#FFD233'};
   border: 1px solid
@@ -82,28 +82,15 @@ const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
 `;
 
 const Button = ({
-  size,
-  isInvalid,
-  isRounded,
+  size = '100%',
+  isInvalid = false,
+  isRounded = false,
   mode,
   children,
   ...restProps
 }: ButtonProps) => {
-  let iconSvg;
-
-  switch (mode) {
-    case 'kakao':
-      iconSvg = <img src="/images/kakao.svg" />;
-      break;
-    case 'google':
-      iconSvg = <img src="/images/google.svg" />;
-      break;
-    case 'chat':
-      iconSvg = <img src="/images/chat.svg" />;
-      break;
-    default:
-      break;
-  }
+  const src = `/images/${mode}.svg`;
+  const iconSvg = <img src={src} alt="카카오톡 로고" />;
 
   return (
     <StyledButton
