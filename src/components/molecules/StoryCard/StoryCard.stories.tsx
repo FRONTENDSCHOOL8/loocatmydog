@@ -28,9 +28,11 @@ export const 스토리카드: Story = {
 
 export const 리뷰카드: Story = {
   args: {
+    id: '1',
     type: 'review',
     profileImageUrl: 'images/starDog.svg',
     username: '김개냥',
+    userId: '1q2w3e4r',
     starCount: 3,
     attachImageUrl: [
       '/images/story_sample1.jpg',
