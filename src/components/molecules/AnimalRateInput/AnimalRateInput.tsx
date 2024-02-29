@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import CheckBox from './../../atoms/CheckBox/CheckBox';
 import React, { useState } from 'react';
+import InputWrapper from '@/components/atoms/InputWrapper/InputWrapper';
 
 //type 정의
 interface AnimalRateInputProps {
-  price: number;
+  price?: number;
   name: string;
   size: '소형' | '중형' | '대형';
   [key: string]: any;
@@ -19,29 +20,6 @@ const StyledAnimalRateInput = styled.div`
   color: ${(props) => props.theme.colors.textBlack};
   & span {
     min-inline-size: 25px;
-  }
-  .inputTextWrapper {
-    position: relative;
-
-    & span {
-      position: absolute;
-      right: 0;
-      ${(props) => props.theme.fontStyles.textRegularMd};
-      color: ${(props) => props.theme.colors.textBlack};
-    }
-  }
-
-  .inputTextWrapper input {
-    padding: 8px 0;
-    padding-inline-start: 5px;
-    padding-inline-end: 20px;
-    inline-size: 100%;
-    display: inline-block;
-    background: ${(props) => props.theme.colors.white};
-    border: none;
-    border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
-    ${(props) => props.theme.fontStyles.textRegularMd};
-    color: ${(props) => props.theme.colors.textDarkGray};
   }
   div {
     display: flex;
@@ -64,31 +42,23 @@ const AnimalRateInput = ({
     setPrice(e.target.value);
   };
   return (
-    <StyledAnimalRateInput>
-      <span className="span-title">소형</span>
-      <div className="inputTextWrapper">
-        <input
-          type="text"
-          value={price}
-          name={name}
-          onChange={handlePrice}
-          disabled={isChecked}
-          className="input-animalRate"
-          placeholder={isChecked ? '-' : '단위) 천'}
-          {...restProps}
-        />
-        <span>원</span>
-      </div>
-
+    <StyledAnimalRateInput {...restProps}>
+      <span className="span-title">{size}</span>
+      <InputWrapper
+        placeholder={isChecked ? '-' : '단위) 천'}
+        name={name}
+        value={price}
+        onChange={handlePrice}
+        disabled={isChecked}
+      />
       <div>
         <CheckBox
           isChecked={isChecked}
           reservation={isChecked}
           onChange={handleChange}
           name={size}
-          style={{ fontSize: '0.75rem' }}
         >
-          예약불가
+          <span style={{ fontSize: '0.75rem' }}>예약불가</span>
         </CheckBox>
       </div>
     </StyledAnimalRateInput>

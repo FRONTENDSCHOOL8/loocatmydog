@@ -9,5 +9,10 @@ export default {
 type Story = StoryObj<typeof InputTypes>;
 
 export const 기본표시: Story = {
-  args: {},
+  args: {
+    check: false,
+    name: '이름',
+    list: ['댕댕이'],
+    unit: '',
+  },
 };

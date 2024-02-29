@@ -1,14 +1,14 @@
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
-import { ChangeEventHandler, useId } from 'react';
+import { ChangeEventHandler, ReactNode, useId } from 'react';
 import styled from 'styled-components';
 
 //type 설정
 interface CheckBoxProps {
   isChecked?: boolean;
   reservation?: boolean;
-  children: string;
+  children?: string | ReactNode;
   label?: boolean;
-  name: string;
+  name?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   type?: 'checkbox' | 'radio';
   [key: string]: any;
@@ -62,7 +62,7 @@ const CheckBox = ({
 }: CheckBoxProps) => {
   const id = useId();
   return (
-    <StyledCheckBoxWrap>
+    <StyledCheckBoxWrap {...restProps}>
       <StyledCheckBox
         type={type}
         id={id}
@@ -70,7 +70,7 @@ const CheckBox = ({
         checked={isChecked}
         onChange={onChange}
       ></StyledCheckBox>
-      <StyledLabel htmlFor={id} $reservation={reservation} {...restProps}>
+      <StyledLabel htmlFor={id} $reservation={reservation}>
         {label ? (
           <span>{children}</span>
         ) : (
