@@ -7,7 +7,7 @@ const StyledUserProfileBox = styled.div`
   justify-content: space-between;
   align-items: center;
   inline-size: 100%;
-  block-size: 43px;
+  block-size: 63px;
   padding: 10px 20px;
 `;
 
@@ -29,12 +29,14 @@ const StyledUserProfileSpanBox = styled.div`
 const UserProfile = ({
   name,
   src,
+  ...restProps
 }: {
   name: string | ReactNode;
   src: string;
+  [key: string]: any;
 }) => {
   return (
-    <StyledUserProfileBox>
+    <StyledUserProfileBox {...restProps}>
       <StyledUserProfileSpanBox>
         <span className="userName">{name} 님</span>
         <span className="welcome">환영합니다!</span>
