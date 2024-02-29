@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const StyledToggleLabel = styled.label`
   display: block;
   position: relative;
-  inline-size: 100%;
+  inline-size: 34px;
   block-size: 17px;
   padding: 4px 5px;
   background-color: ${(props) => props.theme.colors.white};

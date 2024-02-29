@@ -3,6 +3,7 @@ import OutletLayout from '@/components/layouts/OutletLayout';
 import Main from '@/pages/Main';
 import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
 import MyPage from '@/components/organisms/MyPage/MyPage';
+import Settings from '@/components/organisms/Settings/Settings';
 
 export const navigationItems = [
   {
@@ -73,7 +74,12 @@ export const navigationItems = [
   },
   {
     path: '/settings',
-    element: '',
+    element: (
+      <OutletLayout>
+        <Header type="main" title="테스트테스트" />
+        <Settings />
+      </OutletLayout>
+    ),
   },
   {
     path: '/add_place',

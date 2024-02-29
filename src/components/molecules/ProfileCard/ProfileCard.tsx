@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction, useId } from 'react';
+import { ChangeEventHandler, ReactNode, useId } from 'react';
 import styled from 'styled-components';
 import ProfileImage from '../../atoms/ProfileImage/ProfileImage';
 
@@ -6,9 +6,9 @@ import ProfileImage from '../../atoms/ProfileImage/ProfileImage';
 interface ButtonCheckProps {
   name: string;
   children: string | ReactNode;
-  isChecked: boolean;
+  isChecked?: boolean;
   profile: boolean;
-  setIsChecked: Dispatch<SetStateAction<boolean>>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 //styled component 작성
@@ -26,11 +26,12 @@ const StyledButtonCheckP = styled.p`
   text-align: center;
   margin-bottom: 5px;
 `;
-const StyledButtonCheckLabel = styled.label`
+const StyledButtonCheckLabel = styled.label<{ profile: boolean }>`
   inline-size: 100%;
   block-size: 100%;
   border-radius: 4px;
   position: absolute;
+  cursor: pointer;
   left: 0;
   display: flex;
   padding: 6px 10px;
@@ -61,12 +62,11 @@ const StyledButtonCheck = styled.input`
 const ProfileCard = ({
   name,
   children,
-  isChecked,
-  setIsChecked,
+  onChange,
+  isChecked = true,
   profile = true,
   ...restProps
 }: ButtonCheckProps) => {
-  const checkBoxChecked = () => setIsChecked(!isChecked);
   const id = useId();
   return (
     <StyledButtonCheckContainer>
@@ -75,7 +75,7 @@ const ProfileCard = ({
         type="checkbox"
         checked={isChecked}
         value={name}
-        onChange={checkBoxChecked}
+        onChange={onChange}
       />
       <StyledButtonCheckLabel profile={profile} htmlFor={id} {...restProps}>
         <div className="textWrap">

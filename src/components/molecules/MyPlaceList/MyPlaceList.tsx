@@ -5,11 +5,9 @@ import styled from 'styled-components';
 interface MyPlaceListProps {
   title: string;
   children: string;
+  src: string;
   like?: boolean;
   review?: boolean;
-  year: number;
-  month: number;
-  day: number;
   dDay: string;
 }
 
@@ -35,6 +33,9 @@ const StyledMyPlaceListContainer = styled.div`
     block-size: 60px;
     border-radius: 4px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .textWrap {
     ${(props) => props.theme.colors.textDarkGray};
@@ -52,22 +53,20 @@ function MyPlaceList({
   children = '테스트입니다',
   like = false,
   review = false,
-  year,
-  month,
-  day,
   dDay,
+  src = '/src/assets/test.png',
   ...restProps
 }: MyPlaceListProps) {
   const isLike = like ? (
     <HeartButton fill />
   ) : (
-    <DateList year={year} month={month} day={day} dDay={dDay} review={review} />
+    <DateList mode="normal" date={'yyyy.mm.dd'} dDay={dDay} review={review} />
   );
   return (
     <StyledMyPlaceListContainer {...restProps}>
       <div className="inner">
         <figure>
-          <img src="/src/assets/test.png" alt="플레이스사진" />
+          <img src={src} alt="플레이스사진" />
         </figure>
         <div className="textWrap">
           <p>{title}</p>

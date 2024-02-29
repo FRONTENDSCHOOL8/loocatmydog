@@ -1,5 +1,5 @@
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
-import { Dispatch, SetStateAction, useId } from 'react';
+import { ChangeEventHandler, useId } from 'react';
 import styled from 'styled-components';
 
 const StyledCheckBoxWrap = styled.div`
@@ -15,6 +15,7 @@ const StyledLabel = styled.label<StyleCheckBoxLabelProps>`
   left: 0;
   top: 0;
   display: flex;
+
   align-items: center;
   color: ${(props) =>
     props.$reservation
@@ -29,7 +30,6 @@ const StyledCheckBox = styled.input`
   height: 15px;
   transition: all 0.3s;
   appearance: none;
-
   &:checked + ${StyledLabel} {
     background: url('/images/checked.svg') no-repeat 0 0 / contain;
   }
@@ -40,8 +40,8 @@ interface CheckBoxProps {
   children: string;
   label?: boolean;
   name: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   type?: 'checkbox' | 'radio';
-  setIsChecked: Dispatch<SetStateAction<boolean>>;
   [key: string]: any;
 }
 interface StyleCheckBoxLabelProps {
@@ -50,15 +50,14 @@ interface StyleCheckBoxLabelProps {
 
 const CheckBox = ({
   isChecked,
-  setIsChecked,
   reservation = true,
   type = 'checkbox',
   children,
   label = true,
   name,
+  onChange,
   ...restProps
 }: CheckBoxProps) => {
-  const checkBoxChecked = () => setIsChecked(!isChecked);
   const id = useId();
   return (
     <StyledCheckBoxWrap>
@@ -67,7 +66,7 @@ const CheckBox = ({
         id={id}
         name={name}
         checked={isChecked}
-        onChange={checkBoxChecked}
+        onChange={onChange}
       ></StyledCheckBox>
       <StyledLabel htmlFor={id} $reservation={reservation} {...restProps}>
         {label ? (

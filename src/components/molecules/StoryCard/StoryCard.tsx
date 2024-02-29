@@ -1,15 +1,18 @@
+import React, { ReactNode, useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
+import { format } from 'date-fns';
+import A11yHidden from '@/components/A11yHidden/A11yHidden';
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import StarRating from '@/components/atoms/StarRating/StarRating';
 import { convertTime } from '@/utils';
-import { format } from 'date-fns';
-import styled, { css } from 'styled-components';
 
 interface StoryCardProps {
-  id: number;
+  id: string;
   type: 'review' | 'story';
   profileImageUrl: string;
   attachImageUrl?: string[];
   username: string;
+  userId: string;
   starCount?: number;
   createdDate: number;
   text: string;
@@ -19,9 +22,14 @@ interface StyledStoryImageContainerProps {
   $imageCount: number;
 }
 
+interface StyledMoreViewButtonProps {
+  $isExpand: boolean;
+}
+
 const StyledStoryCard = styled.div`
   position: relative;
   inline-size: 97%;
+  min-inline-size: 280px;
   padding: 15px 20px;
   background-color: ${(props) => props.theme.colors.white};
   border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
@@ -34,6 +42,7 @@ const StyledStoryCard = styled.div`
 const StyledStoryContents = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  align-items: flex-start;
   row-gap: 7px;
   & .username {
     ${(props) => props.theme.fontStyles.textSemiboldBase};
@@ -47,8 +56,7 @@ const StyledStoryContents = styled.div`
     & .star-rating {
       display: inline-flex;
     }
-    & .created-time,
-    & .report {
+    & .created-time {
       color: ${(props) => props.theme.colors.textGray};
       ${(props) => props.theme.fontStyles.textRegularSm};
     }
@@ -57,6 +65,7 @@ const StyledStoryContents = styled.div`
   & .text {
     color: ${(props) => props.theme.colors.textBlack};
     ${(props) => props.theme.fontStyles.textRegularMd};
+    line-height: 1.4;
   }
 `;
 
@@ -115,10 +124,52 @@ const StyledStoryImageContainer = styled.figure<StyledStoryImageContainerProps>`
   }}
 `;
 
+const StyledPopUpButton = styled.button.attrs({ type: 'button' })`
+  background: url('/images/more.svg') no-repeat center;
+  inline-size: 30px;
+  block-size: 30px;
+  border-radius: 15px;
+  transition: background-color 0.2s;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.gray100};
+  }
+`;
+
+const StyledPopUpButtonContainer = styled.div`
+  position: absolute;
+  top: 15px;
+  right: 20px;
+`;
+
+const StyledMoreViewButton = styled.button.attrs({
+  type: 'button',
+})<StyledMoreViewButtonProps>`
+  position: relative;
+  ${(props) => props.theme.fontStyles.textRegularSm};
+  color: ${(props) => props.theme.colors.textDarkGray};
+  padding-inline-start: 15px;
+  padding-block: 5px;
+
+  &::before {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 0;
+    translate: 0 -50%;
+    rotate: ${(props) => (props.$isExpand ? '180deg' : '0deg')};
+    background: url('/images/direction_down.svg') no-repeat;
+    inline-size: 10px;
+    block-size: 6px;
+    transition: rotate 0.2s;
+  }
+`;
+
 const StoryCard = ({
+  id,
   type,
   profileImageUrl,
   username,
+  userId,
   starCount = 0,
   attachImageUrl = [],
   createdDate,
@@ -128,13 +179,23 @@ const StoryCard = ({
   const starRating = new Array(MAX_STAR_COUNT)
     .fill(false)
     .map((_, idx) => idx < starCount);
-  // 개발용 임시 props 변수
-  // const attachImageUrl = [
-  //   '/images/story_sample1.jpg',
-  //   '/images/story_sample2.jpg',
-  //   '/images/story_sample3.jpg',
-  //   '/images/story_sample4.jpg',
-  // ];
+  const [isPopUpMenuOpen, setIsPopUpMenuOpen] = useState<boolean>(false);
+  const [isExpandText, setIsExpandText] = useState<boolean>(false);
+
+  const textContents = isExpandText ? text : text.slice(0, 150) + '...';
+
+  const handleDeleteStory = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('story deleted');
+  };
+
+  useEffect(() => {
+    const handleClosePopupMenu = () => setIsPopUpMenuOpen(false);
+
+    if (isPopUpMenuOpen) window.addEventListener('click', handleClosePopupMenu);
+
+    return () => window.removeEventListener('click', handleClosePopupMenu);
+  }, [isPopUpMenuOpen]);
+
   return (
     <StyledStoryCard>
       <figure className="profile-image">
@@ -142,6 +203,7 @@ const StoryCard = ({
       </figure>
       <StyledStoryContents>
         <span className="username">{username}</span>
+
         <div className="review-time">
           {type === 'review' && (
             <span className="star-rating">
@@ -156,8 +218,8 @@ const StoryCard = ({
           >
             {convertTime(createdDate)}
           </time>
-          <span className="report">| 신고</span>
         </div>
+
         {attachImageUrl.length > 0 && (
           <StyledStoryImageContainer $imageCount={attachImageUrl.length}>
             {attachImageUrl.map((url, idx) => (
@@ -174,9 +236,91 @@ const StoryCard = ({
             ))}
           </StyledStoryImageContainer>
         )}
-        <p className="text">{text}</p>
+
+        <p className="text">{textContents}</p>
+
+        {text.length > 150 && (
+          <StyledMoreViewButton
+            $isExpand={isExpandText}
+            onClick={() => setIsExpandText((prev) => !prev)}
+          >
+            {isExpandText ? '접기' : '펼치기'}
+          </StyledMoreViewButton>
+        )}
       </StyledStoryContents>
+
+      <StyledPopUpButtonContainer>
+        <StyledPopUpButton
+          aria-labelledby="more"
+          aria-haspopup={true}
+          onClick={(e) => {
+            e.stopPropagation();
+            console.log('popup open clicked');
+            setIsPopUpMenuOpen(true);
+          }}
+        >
+          <A11yHidden id="more">더보기</A11yHidden>
+        </StyledPopUpButton>
+        {isPopUpMenuOpen && (
+          <PopUpMenu aria-expanded={isPopUpMenuOpen}>
+            <li role="none">
+              <button
+                className="delete-story"
+                type="button"
+                onClick={handleDeleteStory}
+              >
+                삭제하기
+              </button>
+            </li>
+          </PopUpMenu>
+        )}
+      </StyledPopUpButtonContainer>
     </StyledStoryCard>
+  );
+};
+
+const StyledPopUpMenuContainer = styled.ul.attrs({ role: 'menu' })`
+  position: absolute;
+  top: 100%;
+  left: -250%;
+  inline-size: 100px;
+  background-color: ${(props) => props.theme.colors.white};
+  border: 1px solid ${(props) => props.theme.colors.gray300};
+  border-radius: 10px;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+
+  & > li {
+    inline-size: 100%;
+    block-size: 100%;
+    &:hover {
+      background-color: ${(props) => props.theme.colors.gray100};
+    }
+  }
+
+  & button {
+    padding-block: 10px;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  & .delete-story {
+    color: ${(props) => props.theme.colors.red};
+  }
+`;
+
+interface PopUpMenuProps {
+  children: ReactNode;
+  [key: string]: any;
+}
+
+const PopUpMenu = ({ children, ...restProps }: PopUpMenuProps) => {
+  return (
+    <StyledPopUpMenuContainer {...restProps}>
+      {children}
+    </StyledPopUpMenuContainer>
   );
 };
 
