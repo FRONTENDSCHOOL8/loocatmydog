@@ -15,7 +15,7 @@ const StyledBooleanBox = styled.div`
 const StyledBooleanSpanBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 `;
 
 const StyledBooleanBookSpan = styled.span`

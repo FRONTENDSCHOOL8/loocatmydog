@@ -4,7 +4,8 @@ import styled from 'styled-components';
 const StyledSettingsBox = styled.div`
   & .settings {
     display: block;
-    margin-block: 10px;
+    margin-block-start: 40px;
+    margin-block-end: 10px;
     padding: 10px 20px;
     ${(props) => props.theme.fontStyles.headingMd}
   }
