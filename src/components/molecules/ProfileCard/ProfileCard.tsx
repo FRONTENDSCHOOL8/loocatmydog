@@ -63,7 +63,7 @@ const ProfileCard = ({
   name,
   children,
   onChange,
-  isChecked = true,
+  isChecked = false,
   profile = true,
   ...restProps
 }: ButtonCheckProps) => {

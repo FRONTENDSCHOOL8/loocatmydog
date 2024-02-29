@@ -17,6 +17,7 @@ const colors = {
   gray300: '#D9D9D9',
   textDarkGray: '#868686',
   red: '#FC5555',
+  orangeBg: 'rgba(255, 182, 43, 0.1)',
 };
 
 const fontWeight = {
