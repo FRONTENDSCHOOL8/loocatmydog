@@ -9,5 +9,9 @@ export default {
 type Story = StoryObj<typeof AnimalRateInput>;
 
 export const 기본표시: Story = {
-  args: {},
+  args: {
+    price: 62000,
+    name: '소형금액',
+    size: '소형',
+  },
 };
