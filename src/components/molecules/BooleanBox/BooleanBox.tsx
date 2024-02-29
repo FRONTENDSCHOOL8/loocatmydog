@@ -29,21 +29,20 @@ const StyledBooleanPlaceSpan = styled.span`
 `;
 
 interface BooleanBoxProps {
-  title: string;
-  children: string;
+  title?: string;
+  children?: string;
 }
 
-const BooleanBox = ({ title, children }: BooleanBoxProps) => {
+const BooleanBox = ({
+  title = '예약현황 알림',
+  children = '플레이스 예약날짜 알림',
+}: BooleanBoxProps) => {
   const [isActive, setIsActive] = useState(false);
   return (
     <StyledBooleanBox>
       <StyledBooleanSpanBox>
-        <StyledBooleanBookSpan>
-          {(title = '예약현황 알림')}
-        </StyledBooleanBookSpan>
-        <StyledBooleanPlaceSpan>
-          {(children = '플레이스 예약날짜 알림')}
-        </StyledBooleanPlaceSpan>
+        <StyledBooleanBookSpan>{title}</StyledBooleanBookSpan>
+        <StyledBooleanPlaceSpan>{children}</StyledBooleanPlaceSpan>
       </StyledBooleanSpanBox>
       <Toggle isActive={isActive} setIsActive={setIsActive} />
     </StyledBooleanBox>
