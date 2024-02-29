@@ -1,15 +1,18 @@
+import React, { ReactNode, useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
+import { format } from 'date-fns';
+import A11yHidden from '@/components/A11yHidden/A11yHidden';
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import StarRating from '@/components/atoms/StarRating/StarRating';
 import { convertTime } from '@/utils';
-import { format } from 'date-fns';
-import styled, { css } from 'styled-components';
 
 interface StoryCardProps {
-  id: number;
+  id: string;
   type: 'review' | 'story';
   profileImageUrl: string;
   attachImageUrl?: string[];
   username: string;
+  userId: string;
   starCount?: number;
   createdDate: number;
   text: string;
@@ -22,6 +25,7 @@ interface StyledStoryImageContainerProps {
 const StyledStoryCard = styled.div`
   position: relative;
   inline-size: 97%;
+  min-inline-size: 280px;
   padding: 15px 20px;
   background-color: ${(props) => props.theme.colors.white};
   border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
@@ -47,8 +51,7 @@ const StyledStoryContents = styled.div`
     & .star-rating {
       display: inline-flex;
     }
-    & .created-time,
-    & .report {
+    & .created-time {
       color: ${(props) => props.theme.colors.textGray};
       ${(props) => props.theme.fontStyles.textRegularSm};
     }
@@ -115,10 +118,29 @@ const StyledStoryImageContainer = styled.figure<StyledStoryImageContainerProps>`
   }}
 `;
 
+const StyledMoreButton = styled.button.attrs({ type: 'button' })`
+  background: url('/images/more.svg') no-repeat center;
+  inline-size: 30px;
+  block-size: 30px;
+  border-radius: 15px;
+  transition: background-color 0.2s;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.gray100};
+  }
+`;
+
+const StyledMoreButtonContainer = styled.div`
+  position: absolute;
+  top: 15px;
+  right: 20px;
+`;
+
 const StoryCard = ({
+  id,
   type,
   profileImageUrl,
   username,
+  userId,
   starCount = 0,
   attachImageUrl = [],
   createdDate,
@@ -128,13 +150,19 @@ const StoryCard = ({
   const starRating = new Array(MAX_STAR_COUNT)
     .fill(false)
     .map((_, idx) => idx < starCount);
-  // 개발용 임시 props 변수
-  // const attachImageUrl = [
-  //   '/images/story_sample1.jpg',
-  //   '/images/story_sample2.jpg',
-  //   '/images/story_sample3.jpg',
-  //   '/images/story_sample4.jpg',
-  // ];
+  const [isPopUpMenuOpen, setIsPopUpMenuOpen] = useState<boolean>(false);
+  const handleDeleteStory = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('story deleted');
+  };
+
+  useEffect(() => {
+    const handleClosePopupMenu = () => setIsPopUpMenuOpen(false);
+
+    if (isPopUpMenuOpen) window.addEventListener('click', handleClosePopupMenu);
+
+    return () => window.removeEventListener('click', handleClosePopupMenu);
+  }, [isPopUpMenuOpen]);
+
   return (
     <StyledStoryCard>
       <figure className="profile-image">
@@ -156,7 +184,6 @@ const StoryCard = ({
           >
             {convertTime(createdDate)}
           </time>
-          <span className="report">| 신고</span>
         </div>
         {attachImageUrl.length > 0 && (
           <StyledStoryImageContainer $imageCount={attachImageUrl.length}>
@@ -176,7 +203,79 @@ const StoryCard = ({
         )}
         <p className="text">{text}</p>
       </StyledStoryContents>
+
+      <StyledMoreButtonContainer>
+        <StyledMoreButton
+          aria-labelledby="more"
+          aria-haspopup={true}
+          onClick={(e) => {
+            e.stopPropagation();
+            console.log('popup open clicked');
+            setIsPopUpMenuOpen(true);
+          }}
+        >
+          <A11yHidden id="more">더보기</A11yHidden>
+        </StyledMoreButton>
+        {isPopUpMenuOpen && (
+          <PopUpMenu aria-expanded={isPopUpMenuOpen}>
+            <li role="none">
+              <button
+                className="delete-story"
+                type="button"
+                onClick={handleDeleteStory}
+              >
+                삭제하기
+              </button>
+            </li>
+          </PopUpMenu>
+        )}
+      </StyledMoreButtonContainer>
     </StyledStoryCard>
+  );
+};
+
+const StyledPopUpMenuContainer = styled.ul.attrs({ role: 'menu' })`
+  position: absolute;
+  top: 100%;
+  left: -250%;
+  inline-size: 100px;
+  background-color: ${(props) => props.theme.colors.white};
+  border: 1px solid ${(props) => props.theme.colors.gray300};
+  border-radius: 10px;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+
+  & > li {
+    inline-size: 100%;
+    block-size: 100%;
+    &:hover {
+      background-color: ${(props) => props.theme.colors.gray100};
+    }
+  }
+
+  & button {
+    padding-block: 10px;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  & .delete-story {
+    color: ${(props) => props.theme.colors.red};
+  }
+`;
+
+interface PopUpMenuProps {
+  children: ReactNode;
+  [key: string]: any;
+}
+
+const PopUpMenu = ({ children, ...restProps }: PopUpMenuProps) => {
+  return (
+    <StyledPopUpMenuContainer {...restProps}>
+      {children}
+    </StyledPopUpMenuContainer>
   );
 };
 
