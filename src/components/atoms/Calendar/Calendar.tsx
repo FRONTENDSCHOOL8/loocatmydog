@@ -1,12 +1,15 @@
 import {
   Dispatch,
+  MutableRefObject,
   ReactNode,
   SetStateAction,
   forwardRef,
-  useState,
+  useEffect,
+  useRef,
 } from 'react';
 import DatePicker, {
   CalendarContainer,
+  ReactDatePicker,
   ReactDatePickerCustomHeaderProps,
 } from 'react-datepicker';
 import { addMonths, getMonth, getYear, lightFormat } from 'date-fns';
@@ -107,7 +110,10 @@ const CustomInput = forwardRef<any, CustomInputProps>(
 );
 CustomInput.displayName = 'CustomInput';
 
-const DatePickerContainer = ([startDate, endDate]: (Date | null)[]) => {
+const DatePickerContainer = (
+  [startDate, endDate]: (Date | null)[],
+  handleCloseCalendar: any
+) => {
   const innerFunc = ({ className, children }: DatePickerContainerProps) => {
     const startDateText = startDate ? lightFormat(startDate, 'yy.MM.dd') : '';
     const endDateText = endDate ? lightFormat(endDate, 'yy.MM.dd') : '';
@@ -123,7 +129,11 @@ const DatePickerContainer = ([startDate, endDate]: (Date | null)[]) => {
       <div>
         <CalendarContainer className={className}>
           <StyledDatePickerContainerHeader>
-            <button></button>
+            <button
+              type="button"
+              aria-label="닫기"
+              onClick={() => handleCloseCalendar()}
+            ></button>
             <span>날짜선택</span>
           </StyledDatePickerContainerHeader>
           <div>{children}</div>
@@ -139,13 +149,27 @@ const DatePickerContainer = ([startDate, endDate]: (Date | null)[]) => {
 
 interface CalenderProps {
   dateRange: (Date | null)[];
+  minMaxDateRange: (Date | null)[];
   setDateRange: Dispatch<SetStateAction<(Date | null)[]>>;
+  isModal?: boolean;
 }
 
-const Calendar = ({ dateRange, setDateRange }: CalenderProps) => {
+const Calendar = ({
+  minMaxDateRange,
+  dateRange,
+  setDateRange,
+  isModal = false,
+}: CalenderProps) => {
+  const [minDate, maxDate] = minMaxDateRange;
   const [startDate, endDate] = dateRange;
+  const datePickerRef = useRef<any>(null);
+  const handleCloseCalendar = () => {
+    datePickerRef.current?.setOpen(false);
+  };
+
   return (
     <DatePicker
+      ref={datePickerRef}
       renderCustomHeader={({
         date,
         decreaseMonth,
@@ -170,12 +194,16 @@ const Calendar = ({ dateRange, setDateRange }: CalenderProps) => {
       dateFormat="yy.MM.dd"
       startDate={startDate}
       endDate={endDate}
-      minDate={new Date()}
-      maxDate={addMonths(new Date(), 1)}
-      onChange={(e) => setDateRange(e)}
+      minDate={minDate}
+      maxDate={maxDate}
+      onChange={(date) => setDateRange(date)}
       customInput={<CustomInput />}
-      withPortal
-      calendarContainer={DatePickerContainer([startDate, endDate])}
+      inline={!isModal}
+      withPortal={isModal}
+      calendarContainer={DatePickerContainer(
+        [startDate, endDate],
+        handleCloseCalendar
+      )}
     />
   );
 };

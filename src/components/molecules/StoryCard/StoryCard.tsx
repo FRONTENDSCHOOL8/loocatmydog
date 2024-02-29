@@ -22,6 +22,10 @@ interface StyledStoryImageContainerProps {
   $imageCount: number;
 }
 
+interface StyledMoreViewButtonProps {
+  $isExpand: boolean;
+}
+
 const StyledStoryCard = styled.div`
   position: relative;
   inline-size: 97%;
@@ -38,6 +42,7 @@ const StyledStoryCard = styled.div`
 const StyledStoryContents = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  align-items: flex-start;
   row-gap: 7px;
   & .username {
     ${(props) => props.theme.fontStyles.textSemiboldBase};
@@ -60,6 +65,7 @@ const StyledStoryContents = styled.div`
   & .text {
     color: ${(props) => props.theme.colors.textBlack};
     ${(props) => props.theme.fontStyles.textRegularMd};
+    line-height: 1.4;
   }
 `;
 
@@ -118,7 +124,7 @@ const StyledStoryImageContainer = styled.figure<StyledStoryImageContainerProps>`
   }}
 `;
 
-const StyledMoreButton = styled.button.attrs({ type: 'button' })`
+const StyledPopUpButton = styled.button.attrs({ type: 'button' })`
   background: url('/images/more.svg') no-repeat center;
   inline-size: 30px;
   block-size: 30px;
@@ -129,10 +135,33 @@ const StyledMoreButton = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-const StyledMoreButtonContainer = styled.div`
+const StyledPopUpButtonContainer = styled.div`
   position: absolute;
   top: 15px;
   right: 20px;
+`;
+
+const StyledMoreViewButton = styled.button.attrs({
+  type: 'button',
+})<StyledMoreViewButtonProps>`
+  position: relative;
+  ${(props) => props.theme.fontStyles.textRegularSm};
+  color: ${(props) => props.theme.colors.textDarkGray};
+  padding-inline-start: 15px;
+  padding-block: 5px;
+
+  &::before {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 0;
+    translate: 0 -50%;
+    rotate: ${(props) => (props.$isExpand ? '180deg' : '0deg')};
+    background: url('/images/direction_down.svg') no-repeat;
+    inline-size: 10px;
+    block-size: 6px;
+    transition: rotate 0.2s;
+  }
 `;
 
 const StoryCard = ({
@@ -151,6 +180,10 @@ const StoryCard = ({
     .fill(false)
     .map((_, idx) => idx < starCount);
   const [isPopUpMenuOpen, setIsPopUpMenuOpen] = useState<boolean>(false);
+  const [isExpandText, setIsExpandText] = useState<boolean>(false);
+
+  const textContents = isExpandText ? text : text.slice(0, 150) + '...';
+
   const handleDeleteStory = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log('story deleted');
   };
@@ -170,6 +203,7 @@ const StoryCard = ({
       </figure>
       <StyledStoryContents>
         <span className="username">{username}</span>
+
         <div className="review-time">
           {type === 'review' && (
             <span className="star-rating">
@@ -185,6 +219,7 @@ const StoryCard = ({
             {convertTime(createdDate)}
           </time>
         </div>
+
         {attachImageUrl.length > 0 && (
           <StyledStoryImageContainer $imageCount={attachImageUrl.length}>
             {attachImageUrl.map((url, idx) => (
@@ -201,11 +236,21 @@ const StoryCard = ({
             ))}
           </StyledStoryImageContainer>
         )}
-        <p className="text">{text}</p>
+
+        <p className="text">{textContents}</p>
+
+        {text.length > 150 && (
+          <StyledMoreViewButton
+            $isExpand={isExpandText}
+            onClick={() => setIsExpandText((prev) => !prev)}
+          >
+            {isExpandText ? '접기' : '펼치기'}
+          </StyledMoreViewButton>
+        )}
       </StyledStoryContents>
 
-      <StyledMoreButtonContainer>
-        <StyledMoreButton
+      <StyledPopUpButtonContainer>
+        <StyledPopUpButton
           aria-labelledby="more"
           aria-haspopup={true}
           onClick={(e) => {
@@ -215,7 +260,7 @@ const StoryCard = ({
           }}
         >
           <A11yHidden id="more">더보기</A11yHidden>
-        </StyledMoreButton>
+        </StyledPopUpButton>
         {isPopUpMenuOpen && (
           <PopUpMenu aria-expanded={isPopUpMenuOpen}>
             <li role="none">
@@ -229,7 +274,7 @@ const StoryCard = ({
             </li>
           </PopUpMenu>
         )}
-      </StyledMoreButtonContainer>
+      </StyledPopUpButtonContainer>
     </StyledStoryCard>
   );
 };
