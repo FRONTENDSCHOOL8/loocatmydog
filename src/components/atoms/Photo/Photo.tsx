@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 export interface ButtonProps {
   imgSrc?: string;
-  totalImgaeNum?: Number;
+  totalImageNum?: Number;
   currentImageNum?: Number;
   type: 'default' | 'picture' | 'total';
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -43,7 +43,7 @@ const StyledPhotoButton = styled.button<StyledButtonProps>`
 const Photo = ({
   type = 'default',
   imgSrc = '',
-  totalImgaeNum = 0,
+  totalImageNum = 4,
   currentImageNum = 0,
   onClick,
 }: ButtonProps) => {
@@ -63,7 +63,7 @@ const Photo = ({
         <>
           <span>사진</span>
           <span>
-            {`${currentImageNum}`} / {`${totalImgaeNum}`}
+            {`${currentImageNum}`} / {`${totalImageNum}`}
           </span>
         </>
       );

@@ -1,3 +1,4 @@
+import { BrowserRouter } from 'react-router-dom';
 import BigPhoto from './BigPhoto.tsx';
 
 /**@type{import('@storybook/react').Meta} */
@@ -5,9 +6,11 @@ export default {
   component: BigPhoto,
   decorators: [
     (Story: any) => (
-      <div style={{ inlineSize: '320px' }}>
-        <Story />
-      </div>
+      <BrowserRouter>
+        <div style={{ inlineSize: '320px' }}>
+          <Story />
+        </div>
+      </BrowserRouter>
     ),
   ],
 };
@@ -22,5 +25,11 @@ export const 기본표시 = {
 export const 사진표시 = {
   args: {
     type: 'picture',
+  },
+};
+
+export const 페이지이동사진 = {
+  args: {
+    type: 'link',
   },
 };
