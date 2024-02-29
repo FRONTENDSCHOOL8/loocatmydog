@@ -5,7 +5,7 @@ interface A11yHiddenProps {
   [key: string]: any;
 }
 
-const StyleA11yHidden = styled.span`
+const StyledA11yHidden = styled.span`
   overflow: hidden;
   position: absolute;
   clip: rect(1px, 1px, 1px, 1px);
@@ -16,8 +16,8 @@ const StyleA11yHidden = styled.span`
   white-space: nowrap;
 `;
 
-function A11yHidden({ ...restProps }: A11yHiddenProps) {
-  return <StyleA11yHidden {...restProps} />;
-}
+const A11yHidden = ({ ...restProps }: A11yHiddenProps) => {
+  return <StyledA11yHidden {...restProps} />;
+};
 
 export default A11yHidden;

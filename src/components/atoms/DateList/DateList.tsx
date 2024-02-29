@@ -49,7 +49,11 @@ const DateList = ({
       <span className="date">
         {month}/{day}
       </span>
-      {review ? <StateBadge isActive /> : <span className="dDay">{dDay}</span>}
+      {review ? (
+        <StateBadge mode="fill" isActive />
+      ) : (
+        <span className="dDay">{dDay}</span>
+      )}
     </StyledDateList>
   );
 };

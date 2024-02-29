@@ -2,6 +2,7 @@ import Header from '@/components/molecules/Header/Header';
 import OutletLayout from '@/components/layouts/OutletLayout';
 import Main from '@/pages/Main';
 import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
+import MyPage from '@/components/organisms/MyPage/MyPage';
 
 export const navigationItems = [
   {
@@ -47,7 +48,12 @@ export const navigationItems = [
   },
   {
     path: '/mypage',
-    element: '',
+    element: (
+      <OutletLayout>
+        <Header type="main" title="테스트테스트" />
+        <MyPage />
+      </OutletLayout>
+    ),
   },
   {
     path: '/mypet_profile_list',

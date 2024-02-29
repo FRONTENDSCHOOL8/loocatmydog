@@ -6,15 +6,15 @@ const StyledUserProfileBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  inline-size: 11.875rem;
-  block-size: 2.7rem;
-  padding: 0.6rem 1.25rem;
+  inline-size: 100%;
+  block-size: 43px;
+  padding: 10px 20px;
 `;
 
 const StyledUserProfileSpanBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 15px;
 
   & .userName {
     color: ${(props) => props.theme.colors.textBlack};
