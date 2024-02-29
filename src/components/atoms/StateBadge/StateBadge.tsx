@@ -1,12 +1,11 @@
-import { Children, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface StateBadgeBoxProps {
   $mode: 'normal' | 'fill';
 }
 
-const StyledStateBadgeBox = styled.div<StateBadgeBoxProps>`
-  display: inline-block;
+const StyledStateBadgeBox = styled.span<StateBadgeBoxProps>`
   padding: 6px 2px;
   border: 1px solid ${(props) => props.theme.colors.orange};
   border-radius: 2px;
