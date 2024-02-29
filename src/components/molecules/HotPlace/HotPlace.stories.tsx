@@ -9,7 +9,6 @@ export default {
 export const 기본표시 = {
   args: {
     src: '/images/place-ex.jpg',
-    size: 50,
     title: '플레이스 제목',
     rate: 5,
     reviewNumber: 2,
