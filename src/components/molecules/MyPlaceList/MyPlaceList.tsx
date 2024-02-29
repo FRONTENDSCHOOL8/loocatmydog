@@ -5,19 +5,20 @@ import styled from 'styled-components';
 interface MyPlaceListProps {
   title: string;
   children: string;
-  src: string;
+  dDay?: string;
+  src?: string;
   like?: boolean;
   review?: boolean;
-  dDay: string;
 }
 
 //styled 컴포넌트
 
-const StyledMyPlaceListContainer = styled.div`
+const StyledMyPlaceListContainer = styled.div<{ $dDay: string | undefined }>`
   inline-size: 100%;
   max-inline-size: 420px;
-  background: #f1f1f1;
   display: flex;
+  background: ${(props) =>
+    props.$dDay === 'D-day' ? props.theme.colors.orangeBg : 'none'};
   justify-content: space-between;
   align-items: center;
   padding: 8px 10px;
@@ -54,7 +55,7 @@ function MyPlaceList({
   like = false,
   review = false,
   dDay,
-  src = '/src/assets/test.png',
+  src = '/images/story_sample3.jpg',
   ...restProps
 }: MyPlaceListProps) {
   const isLike = like ? (
@@ -63,7 +64,7 @@ function MyPlaceList({
     <DateList mode="normal" date={'yyyy.mm.dd'} dDay={dDay} review={review} />
   );
   return (
-    <StyledMyPlaceListContainer {...restProps}>
+    <StyledMyPlaceListContainer $dDay={dDay} {...restProps}>
       <div className="inner">
         <figure>
           <img src={src} alt="플레이스사진" />

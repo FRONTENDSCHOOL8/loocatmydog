@@ -4,7 +4,7 @@ import StateBadge from '../StateBadge/StateBadge';
 //type 정의
 interface DateListProps {
   date: string;
-  dDay: string;
+  dDay?: string;
   mode: 'normal' | 'fill';
   review?: boolean;
 }
