@@ -13,6 +13,7 @@ export const 기본표시 = {
     rate: 5,
     reviewNumber: 2,
     address: '서울 구로구',
+    price: 60000,
     isActive: true,
     starFill: true,
     heartFill: true,
