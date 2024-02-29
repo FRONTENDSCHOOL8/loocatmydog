@@ -25,12 +25,13 @@ const MenuList = ['거리순', '가격순', '인기순'];
 const StyledDropDownTest = styled.div<StyledDropDownTestProps>`
   display: inline-flex;
   flex-flow: column nowrap;
+  ${(props) => props.theme.fontStyles.textRegularSm}
 
   & div {
     display: inline-flex;
     gap: 5px;
-    padding: 3px 10px 3px 10px;
-    background-color: #f1f1f1;
+    padding: 3px 10px;
+    background-color: ${(props) => props.theme.colors.lineColorGray};
     ${(props) => {
       if (props.$isOpen) {
         return css`
@@ -47,7 +48,6 @@ const StyledDropDownTest = styled.div<StyledDropDownTestProps>`
   & input {
     margin: 0px;
     padding: 0px;
-    font-size: 10px;
     border: 0px;
     background-color: transparent;
     ${(props) => {
@@ -59,12 +59,6 @@ const StyledDropDownTest = styled.div<StyledDropDownTestProps>`
     }}
   }
 
-  & button {
-    background-color: transparent;
-    padding: 0;
-    border: 0px;
-  }
-
   & ul {
     background-color: #f1f1f1;
     border-radius: 0 0 5px 5px;
@@ -72,7 +66,6 @@ const StyledDropDownTest = styled.div<StyledDropDownTestProps>`
 
   & li {
     padding: 0 10px 3px 10px;
-    font-size: 10px;
   }
 `;
 

@@ -1,4 +1,4 @@
-import { ChangeEventHandler, MouseEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -8,6 +8,7 @@ interface BigPhotoProps {
   imgSrc?: string;
   block?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  [key: string]: any;
 }
 
 interface StyledBigPhotoProps {
@@ -50,12 +51,20 @@ const StyledBigPhoto = styled.div<StyledBigPhotoProps>`
       `;
     }}
 
-    & input {
+    & label {
+      cursor: pointer;
+    }
+
+    #addImg {
+      display: none;
     }
   }
 `;
-
-const StyledAddImageButton = styled.button<StyledBigPhotoProps>``;
+/* 
+  - default : 사진 등록 input
+  - picture : 사진 표시 ( 클릭 시 새창에 사진 보여주기 )
+  - link : 사진 클릭 시 페이지 이동 ( Link )
+*/
 
 const BigPhoto = ({
   type = 'default',
@@ -63,9 +72,8 @@ const BigPhoto = ({
   imgSrc = '/images/story_sample1.jpg',
   block = 160,
   onChange,
+  ...restProps
 }: BigPhotoProps) => {
-  const imgSource = <img src={imgSrc} alt="" />;
-
   let BigPhotoImage;
 
   switch (type) {
@@ -73,6 +81,9 @@ const BigPhoto = ({
       BigPhotoImage = (
         <div>
           <span>사진을 추가해주세요.</span>
+          <label htmlFor="addImg">
+            <img src="/images/plusButton.svg" alt="+" />
+          </label>
           <input type="file" name="addImg" id="addImg" onChange={onChange} />
           {/* <img src="/images/plusButton.svg" alt="+" /> */}
         </div>
@@ -99,7 +110,7 @@ const BigPhoto = ({
   }
 
   return (
-    <StyledBigPhoto $type={type} $block={block}>
+    <StyledBigPhoto $type={type} $block={block} {...restProps}>
       {BigPhotoImage}
     </StyledBigPhoto>
   );

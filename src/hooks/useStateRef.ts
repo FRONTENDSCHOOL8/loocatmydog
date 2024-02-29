@@ -1,14 +1,5 @@
 import { RefObject, useRef, useState } from "react";
 
-export function getRefValue<C>(ref: RefObject<C>){
-  return ref.current as C;
-}
-
-// const numberRef = useRef(0);
-// const number = getRefValue(numberRef);
-// current 값을 바로 뽑아오는 ref 훅 함수
-
-
 export function useStateRef<S>(
   defaultValue: S
 ): [S, (value: S) => void, RefObject<S>]{
@@ -21,3 +12,6 @@ export function useStateRef<S>(
 
   return [state, setState, ref];
 }
+
+// parameter로 받은 값을 state & setState 함수 & ref 값으로 저장
+// setState 함수 사용시 해당 ref 값과 state 값 모두 변경 
