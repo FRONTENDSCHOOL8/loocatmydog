@@ -11,6 +11,5 @@ export const 기본표시 = {
     isChecked: false,
     name: '버튼',
     children: '설명이 들어가는 곳입니다',
-    profile: false,
   },
 };

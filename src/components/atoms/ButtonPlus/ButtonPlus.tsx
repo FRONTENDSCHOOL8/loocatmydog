@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface ButtonPlusProps {
-  path: string;
+  path?: string;
 }
 
 const StyledButtonPlus = styled(Link).attrs({

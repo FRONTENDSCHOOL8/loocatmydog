@@ -39,6 +39,7 @@ interface CheckBoxProps {
   reservation?: boolean;
   children: string;
   label?: boolean;
+  name: string;
   type?: 'checkbox' | 'radio';
   setIsChecked: Dispatch<SetStateAction<boolean>>;
   [key: string]: any;
@@ -54,6 +55,7 @@ const CheckBox = ({
   type = 'checkbox',
   children,
   label = true,
+  name,
   ...restProps
 }: CheckBoxProps) => {
   const checkBoxChecked = () => setIsChecked(!isChecked);
@@ -63,12 +65,16 @@ const CheckBox = ({
       <StyledCheckBox
         type={type}
         id={id}
-        name="test"
+        name={name}
         checked={isChecked}
         onChange={checkBoxChecked}
       ></StyledCheckBox>
       <StyledLabel htmlFor={id} $reservation={reservation} {...restProps}>
-        {label ? <span>{children}</span> : <A11yHidden>{children}</A11yHidden>}
+        {label ? (
+          <span>{children}</span>
+        ) : (
+          <A11yHidden as="p">{children}</A11yHidden>
+        )}
       </StyledLabel>
     </StyledCheckBoxWrap>
   );
