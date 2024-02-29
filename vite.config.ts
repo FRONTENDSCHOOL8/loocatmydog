@@ -4,7 +4,21 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   // base: '/likilion-FEQA/',
-  plugins: [react()],
+  plugins: [
+    react({
+      babel: {
+        plugins: [
+          [
+            'babel-plugin-styled-components',
+            {
+              displayName: true,
+              fileName: false,
+            },
+          ],
+        ],
+      },
+    }),
+  ],
   server: {
     port: 3000, // default: 5173
     open: true, // default: false
