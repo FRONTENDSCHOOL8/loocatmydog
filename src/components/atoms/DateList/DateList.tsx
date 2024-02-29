@@ -3,10 +3,9 @@ import StateBadge from '../StateBadge/StateBadge';
 
 //type 정의
 interface DateListProps {
-  year: number;
-  month: number;
-  day: number;
+  date: string;
   dDay: string;
+  mode: 'normal' | 'fill';
   review?: boolean;
 }
 
@@ -36,21 +35,22 @@ const StyledDateList = styled.div`
   }
 `;
 //Date 기능 가져온 후 연도/월/일 변수 나누기
+
 const DateList = ({
-  year,
-  day,
-  month,
+  date,
   dDay = 'd-day',
   review,
+  mode,
+  ...restProps
 }: DateListProps) => {
   return (
-    <StyledDateList className={review ? 'reviewtext' : ''}>
-      <span className="year">{year}</span>
+    <StyledDateList className={review ? 'reviewtext' : ''} {...restProps}>
+      <span className="year">{date.slice(0, 4)}</span>
       <span className="date">
-        {month}/{day}
+        {date.slice(5, 7)}/{date.slice(8)}
       </span>
       {review ? (
-        <StateBadge mode="fill" isActive />
+        <StateBadge mode={mode} isActive />
       ) : (
         <span className="dDay">{dDay}</span>
       )}
