@@ -1,11 +1,13 @@
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import styled from 'styled-components';
+import { converTimeChat } from '@/utils';
 
 interface ChatRoomListProps {
   name: string;
   recentMessage: string;
-  timeAgo: string;
+  createdDate: number;
   chatCount: number;
+  src: string;
 }
 
 const StyledChatList = styled.div`
@@ -60,19 +62,25 @@ const StyledChatList = styled.div`
 const ChatRoomList = ({
   name,
   recentMessage,
-  timeAgo,
+  createdDate,
   chatCount,
+  src,
 }: ChatRoomListProps) => {
   return (
     <StyledChatList>
-      <ProfileImage blockSize={35} inlineSize={35} />
+      <ProfileImage blockSize={35} inlineSize={35} src={src} />
       <div className="chatContentWrapper">
         <span>{name}</span>
         <span>{recentMessage}</span>
       </div>
       <div className="chatAlarmWrapper">
-        <span>{timeAgo}</span>
-        {chatCount > 0 && <span className="span-chatCount">{chatCount}</span>}
+        <span>{converTimeChat(createdDate)}</span>
+        {0 < chatCount && chatCount <= 300 && (
+          <span className="span-chatCount">{chatCount}</span>
+        )}
+        {chatCount > 300 && (
+          <span className="span-chatCount">{chatCount}+</span>
+        )}
       </div>
     </StyledChatList>
   );

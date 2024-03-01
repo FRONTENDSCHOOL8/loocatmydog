@@ -8,10 +8,9 @@ export default {
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    size: 10,
-    isInvalid: false,
+    size: '50px',
     isRounded: false,
-    mode: '',
+    mode: 'normal',
     children: '버튼',
   },
 };

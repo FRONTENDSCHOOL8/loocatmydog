@@ -1,55 +1,80 @@
 import styled from 'styled-components';
 
 interface ButtonProps {
-  size: number;
-  isInvalid?: boolean;
+  size: string;
   isRounded?: boolean;
-  mode?: 'kakao' | 'google' | 'chat';
+  mode: 'normal' | 'gray' | 'disabled' | 'kakao' | 'google' | 'chat';
   children: string;
   [restProps: string]: any;
 }
 
 interface StyledButtonProps {
-  $size: number;
-  $isInvalid?: boolean;
+  $size: string;
   $isRounded?: boolean;
-  $mode?: 'kakao' | 'google' | 'chat';
+  $mode?: 'normal' | 'gray' | 'disabled' | 'kakao' | 'google' | 'chat';
 }
 
 const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
   padding-block: 12px;
   padding-inline: 10px;
-  inline-size: ${(props) => props.$size + '%'};
-  cursor: ${(props) => (props.$isInvalid === true ? 'default' : 'pointer')};
-  background-color: ${(props) =>
-    props.$isInvalid === true ? '#F7F7F7' : '#FFD233'};
-  border: 1px solid
-    ${(props) => (props.$isInvalid === true ? '#D9D9D9' : '#FFD233')};
-  border-radius: ${(props) => (props.$isRounded === true ? '100px' : '4px')};
-
+  inline-size: ${(props) => props.$size};
+  min-inline-size: fit-content;
+  cursor: ${(props) =>
+    props.$mode === 'disabled' ? 'not-allowed' : 'pointer'};
   ${(props) => {
-    if (props.$mode === 'kakao') {
-      return `
+    let style = '';
+    switch (props.$mode) {
+      case 'normal':
+        style = `
+        background-color: #FFD233;
+        border: 1px solid: #FFD233;
+      `;
+        break;
+      case 'gray':
+        style = `
+        background-color: #F7F7F7;
+        border: 1px solid: #F7F7F7;
+      `;
+        break;
+      case 'disabled':
+        style = `
+        background-color: #F7F7F7;
+        border: 1px solid: #D9D9D9;
+      `;
+        break;
+      case 'kakao':
+        style = `
         position: relative;
         padding-inline: 20px;
         background: #FBE84F;
-        border-color: #FBE84F;
-    `;
-    } else if (props.$mode === 'google') {
-      return `
+        border: 1px solid #FBE84F;
+      `;
+        break;
+      case 'google':
+        style = `
         position: relative;
         padding-inline: 20px;
         background:#FFF;
-        border-color: #F1F1F1;
-        `;
-    } else if (props.$mode === 'chat') {
-      return `
+        border:1px solid #F1F1F1;
+      `;
+        break;
+      case 'chat':
+        style = `
         display: flex;
         background:#FFF;
-        border-color: #FFB62A;
-        `;
+        border: 1px solid #FFB62A;
+      `;
+        break;
+      default:
+        style = `
+        background-color: #FFD233;
+        border: 1px solid: #FFD233;
+      `;
+        break;
     }
-  }};
+    return style;
+  }}
+  border-radius: ${(props) => (props.$isRounded === true ? '100px' : '4px')};
 
   & img {
     left: 10px;
@@ -67,7 +92,7 @@ const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
   & span {
     flex: 1;
     display: block;
-    color: ${(props) => (props.$isInvalid === true ? '#868686' : '#000')};
+    color: ${(props) => (props.$mode === 'disabled' ? '#868686' : '#000')};
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
@@ -82,38 +107,35 @@ const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
 `;
 
 const Button = ({
-  size,
-  isInvalid,
-  isRounded,
-  mode,
+  size = '100%',
+  isRounded = false,
+  mode = 'normal',
   children,
   ...restProps
 }: ButtonProps) => {
-  let iconSvg;
-
-  switch (mode) {
-    case 'kakao':
-      iconSvg = <img src="/images/kakao.svg" />;
-      break;
-    case 'google':
-      iconSvg = <img src="/images/google.svg" />;
-      break;
-    case 'chat':
-      iconSvg = <img src="/images/chat.svg" />;
-      break;
-    default:
-      break;
+  let alt;
+  if (mode === 'kakao') {
+    alt = '카카오톡 로고';
   }
+  if (mode === 'google') {
+    alt = '구글 로고';
+  }
+  if (mode === 'kakao') {
+    alt = '말풍선 이미지';
+  }
+  const src = `/images/${mode}.svg`;
+  const iconSvg = <img src={src} alt={alt} />;
 
   return (
     <StyledButton
       $size={size}
-      $isInvalid={isInvalid}
       $isRounded={isRounded}
       $mode={mode}
       {...restProps}
     >
-      {mode ? iconSvg : undefined}
+      {mode === 'kakao' || mode === 'google' || mode === 'chat'
+        ? iconSvg
+        : undefined}
       <span>{children}</span>
     </StyledButton>
   );

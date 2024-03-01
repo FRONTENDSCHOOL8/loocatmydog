@@ -3,23 +3,18 @@ import styled from 'styled-components';
 
 interface HotPlaceProps {
   src: string;
-  size: number;
   title: string;
   rate: number;
   reviewNumber: number;
   address: string;
 }
 
-interface StyledHotPlaceProps {
-  $size: number;
-}
-
-const StyledHotPlace = styled.div<StyledHotPlaceProps>`
+const StyledHotPlace = styled.div`
   display: inline-block;
+  inline-size: 100%;
 
   & figure img {
     margin-block-end: 10px;
-    inline-size: ${(props) => props.$size + '%'};
     aspect-ratio: 16 / 10;
     border-radius: 8px;
     object-fit: cover;
@@ -45,16 +40,15 @@ const StyledHotPlace = styled.div<StyledHotPlaceProps>`
 
 const HotPlace = ({
   src,
-  size,
   title,
   rate,
   reviewNumber,
   address,
 }: HotPlaceProps) => {
   return (
-    <StyledHotPlace $size={size}>
+    <StyledHotPlace>
       <figure>
-        <img src={src} />
+        <img src={src} alt="플레이스 소개 이미지" />
         <figcaption>{title}</figcaption>
       </figure>
       <div>
