@@ -7,6 +7,7 @@ interface ChatRoomListProps {
   recentMessage: string;
   createdDate: number;
   chatCount: number;
+  src: string;
 }
 
 const StyledChatList = styled.div`
@@ -63,10 +64,11 @@ const ChatRoomList = ({
   recentMessage,
   createdDate,
   chatCount,
+  src,
 }: ChatRoomListProps) => {
   return (
     <StyledChatList>
-      <ProfileImage blockSize={35} inlineSize={35} />
+      <ProfileImage blockSize={35} inlineSize={35} src={src} />
       <div className="chatContentWrapper">
         <span>{name}</span>
         <span>{recentMessage}</span>
