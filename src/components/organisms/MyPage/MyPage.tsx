@@ -2,7 +2,6 @@ import Payment from '@/components/molecules/Payment/Payment';
 import ProfileCard from '@/components/molecules/ProfileCard/ProfileCard';
 import ProfileListLink from '@/components/molecules/ProfileListLink/ProfileListLink';
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
-import { useState } from 'react';
 import styled from 'styled-components';
 
 const StyledMyPage = styled.div`
