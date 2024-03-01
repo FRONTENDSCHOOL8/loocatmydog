@@ -1,3 +1,4 @@
+import { BrowserRouter } from 'react-router-dom';
 import ImageSwiperContainer from './ImageSwiperContainer';
 
 /**@type{import('@storybook/react').Meta} */
@@ -6,7 +7,9 @@ export default {
   decorators: [
     (Story: any) => (
       <div style={{ inlineSize: '320px' }}>
-        <Story />
+        <BrowserRouter>
+          <Story />
+        </BrowserRouter>
       </div>
     ),
   ],
