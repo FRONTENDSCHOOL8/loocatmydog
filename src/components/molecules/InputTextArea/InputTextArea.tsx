@@ -12,6 +12,9 @@ const StyledInputTextAreaBox = styled.div`
     border: 1px solid ${(props) => props.theme.colors.lineColorGray};
     border-radius: 4px;
   }
+  & ::placeholder {
+    padding: 10px 53px 10px 10px;
+  }
 `;
 
 interface InputTextAreaSpanWrapperProps {
@@ -42,11 +45,13 @@ const InputTextAreaSpanWrapper = styled.div<InputTextAreaSpanWrapperProps>`
 interface InputTextAreaProps {
   request?: string;
   requestCheck: '필수' | '선택';
+  placeholder?: string;
 }
 
 const InputTextArea = ({
   request = '산책 요청 사항',
   requestCheck = '필수',
+  placeholder = '',
 }: InputTextAreaProps) => {
   return (
     <StyledInputTextAreaBox>
@@ -54,7 +59,12 @@ const InputTextArea = ({
         <span className="walkRequest">{request}</span>
         <span className="essential">&#40;{requestCheck}&#41;</span>
       </InputTextAreaSpanWrapper>
-      <textarea name="contents" cols={20} rows={10}></textarea>
+      <textarea
+        name="contents"
+        placeholder={placeholder}
+        cols={5}
+        rows={8}
+      ></textarea>
     </StyledInputTextAreaBox>
   );
 };
