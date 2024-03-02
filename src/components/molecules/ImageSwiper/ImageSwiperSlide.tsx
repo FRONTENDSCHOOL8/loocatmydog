@@ -1,17 +1,17 @@
 import styled from 'styled-components';
-import { SwiperSlide } from 'swiper/react';
 import BigPhoto from '@/components/atoms/BigPhoto/BigPhoto';
+import { ChangeEventHandler } from 'react';
 
 interface ImageSwiperSlideProps {
-  url: string;
-  type: 'default' | 'picture';
+  url?: string;
+  type: 'default' | 'picture' | 'link';
+  link?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   [key: string]: any;
 }
 
-const StyledSwiperSlide = styled(SwiperSlide)`
+const StyledSwiperSlide = styled.div`
   inline-size: 100%;
-  block-size: 160px;
-  border: 1px solid pink;
 `;
 
 const testImageUrl = '/images/story_sample1.jpg';
@@ -19,10 +19,12 @@ const testImageUrl = '/images/story_sample1.jpg';
 const ImageSwiperSlide = ({
   url = testImageUrl,
   type = 'picture',
+  link = '/',
+  onChange,
 }: ImageSwiperSlideProps) => {
   return (
     <StyledSwiperSlide>
-      <BigPhoto imgSrc={url} type={type} />
+      <BigPhoto type={type} imgSrc={url} link={link} onChange={onChange} />
     </StyledSwiperSlide>
   );
 };

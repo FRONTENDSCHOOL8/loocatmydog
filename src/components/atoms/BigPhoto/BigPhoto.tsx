@@ -42,6 +42,7 @@ const StyledBigPhoto = styled.div<StyledBigPhotoProps>`
     align-items: center;
     gap: 5px;
     inline-size: 100%;
+    background-color: ${(props) => props.theme.colors.gray100};
 
     ${(props) => {
       const block = props.$block;

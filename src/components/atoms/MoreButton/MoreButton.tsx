@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 interface MoreButtonProps {
   path: string;
-  text: string;
+  text?: string;
 }
 
 interface StyledMoreButtonProps {
