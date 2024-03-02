@@ -1,47 +1,32 @@
-import Header from '@/components/molecules/Header/Header';
-import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import Header from '@/components/molecules/Header/Header';
+import useDateRangeStore from '@/store/useDateRange';
+
+import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const StyledMain = styled.div`
   flex: 1;
 `;
 
-type DateRange = (Date | null)[];
-const INITIAL_DATE_RANGE: DateRange = [null, null];
-
 export function Component() {
-  const [dateRange, setDateRange] = useState<DateRange>(INITIAL_DATE_RANGE);
+  const { dateRange, resetDateRange } = useDateRangeStore();
   const navigate = useNavigate();
-  const handleChangeDate = (date: DateRange) => {
-    console.log('handleChangeDateCalled');
-    return setDateRange(date);
-  };
-
   useEffect(() => {
-    console.log('useEffect called');
     const [startDate, endDate] = dateRange;
     if (startDate && endDate) {
-      const startDateParam = format(startDate, 'yyMMdd');
-      const endDateParam = format(endDate, 'yyMMdd');
-      console.log('다 고름!');
-      console.log(startDateParam, endDateParam);
       navigate(
-        `/place_list?sortType=range&startDate=${startDateParam}&endDate=${endDateParam}`
+        `/place_list?sortType=range&startDate=${format(startDate, 'yyMMdd')}&endDate=${format(endDate, 'yyMMdd')}`
       );
+      resetDateRange();
     }
-  }, [dateRange]);
+  }, [dateRange, navigate, resetDateRange]);
 
   return (
     <StyledMain style={{ background: 'yellow' }}>
-      <Header
-        type="main"
-        dateRange={dateRange}
-        setDateRange={handleChangeDate}
-      />
+      <h2>메인 페이지</h2>
     </StyledMain>
   );
 }
-
 Component.displayName = 'Main';

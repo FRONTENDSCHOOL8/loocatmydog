@@ -1,114 +1,69 @@
-import Header from '@/components/molecules/Header/Header';
-import OutletLayout from '@/components/layouts/OutletLayout';
-import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
 import MyPage from '@/components/organisms/MyPage/MyPage';
 import Settings from '@/components/organisms/Settings/Settings';
 import AddPet from '@/components/organisms/AddPet/AddPet';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import HeartList from '@/components/organisms/HeartList/HeartList';
+import { RouteObject } from 'react-router-dom';
 
-export const navigationItems = [
+export const navigationItems: RouteObject[] = [
+  // 지우님
   {
     path: '/',
     element: '',
+    index: true,
   },
   {
     path: '/signin',
     element: '',
   },
   {
-    path: '/find_account',
-    element: '',
-  },
-  {
     path: '/signup',
     element: '',
   },
+  // 종연님
   {
     path: '/main',
-    lazy: async () => {
-      const { Component } = await import('@/pages/Main/Main');
-      return {
-        element: (
-          <OutletLayout>
-            <Component />
-          </OutletLayout>
-        ),
-      };
-    },
+    lazy: () => import('@/pages/Main/Main'),
+  },
+  {
+    // query parameter 종류
+    // filterType = range | mine | bookmark
+    // filterType=range라면 => &startDate=yyMMdd&endDate=yyMMdd
+    // sortType = distance | popular | price
+    path: '/place_list',
+    lazy: async () => import('@/pages/PlaceList/PlaceList'),
+  },
+
+  // 경화님
+  {
+    path: '/add_place',
+    element: '',
   },
   {
     path: '/place_detail/:id',
     element: '',
   },
   {
-    path: '/place_list',
-    lazy: async () => import('@/pages/PlaceList/PlaceList'),
-  },
-  {
-    path: '/reservation/:id',
+    path: '/reservation_list/:id',
     element: '',
   },
+  {
+    path: '/reservation_done',
+    element: '',
+  },
+
+  // 종명님
   {
     path: '/stories',
     element: '',
   },
   {
-    path: '/모달',
+    path: '/stories/post',
     element: '',
   },
   {
-    path: '/mypage',
-    element: (
-      <OutletLayout>
-        <Header type="main" title="테스트테스트" />
-        <MyPage />
-      </OutletLayout>
-    ),
-  },
-  {
-    path: '/mypet_profile_list',
-    element: '',
-  },
-  {
-    path: '/add_mypet_profile',
-    element: (
-      <OutletLayout>
-        <Header type="main" title="테스트테스트" />
-        <AddPet />
-      </OutletLayout>
-    ),
-  },
-  {
-    path: '/edit_my_profile',
-    element: (
-      <OutletLayout>
-        <Header type="main" title="테스트테스트" />
-        <ModifyProfile />
-      </OutletLayout>
-    ),
-  },
-  {
-    path: '/bookmark',
-    element: (
-      <OutletLayout>
-        <Header type="main" title="테스트테스트" />
-        <HeartList />
-      </OutletLayout>
-    ),
-  },
-  {
-    path: '/settings',
-    element: (
-      <OutletLayout>
-        <Header type="main" title="테스트테스트" />
-        <Settings />
-      </OutletLayout>
-    ),
-  },
-  {
-    path: '/add_place',
-    element: '',
+    path: '/reserve_list',
+    element: <></>,
   },
   {
     path: '/chat_list',
@@ -118,6 +73,38 @@ export const navigationItems = [
     path: '/chat_room',
     element: '',
   },
+
+  // 다영님
+  {
+    path: '/mypage',
+    element: (
+      <>
+        <MyPage />
+      </>
+    ),
+  },
+  {
+    path: '/add_mypet',
+    element: <AddPet />,
+  },
+  {
+    path: '/edit_my_profile',
+    element: <ModifyProfile />,
+  },
+  {
+    path: '/bookmark',
+    element: <HeartList />,
+  },
+  {
+    path: '/settings',
+    element: (
+      <>
+        <Settings />
+      </>
+    ),
+  },
+
+  // 미할당
   {
     path: '/events',
     element: '',
@@ -129,14 +116,5 @@ export const navigationItems = [
   {
     path: '/change_address',
     element: '',
-  },
-  {
-    path: '/reservation_list',
-    element: (
-      <OutletLayout>
-        <Header type="main" title="테스트테스트" />
-        <ImageSwiperContainer />
-      </OutletLayout>
-    ),
   },
 ];

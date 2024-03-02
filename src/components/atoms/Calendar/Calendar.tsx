@@ -16,6 +16,7 @@ import { getDayOfTheWeek } from '@/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '@/styles/customDatePicker.css';
 import styled from 'styled-components';
+import useDateRangeStore from '@/store/useDateRange';
 
 interface CustomInputProps {
   value?: string;
@@ -145,25 +146,24 @@ const DatePickerContainer = (
 };
 
 interface CalenderProps {
-  dateRange: (Date | null)[];
   minMaxDateRange: (Date | null)[];
-  setDateRange: (date: (Date | null)[]) => void;
+
   isModal?: boolean;
   customInput?: ReactNode;
 }
 
 const Calendar = ({
   minMaxDateRange,
-  dateRange,
-  setDateRange,
   isModal = false,
   customInput = <CustomInput />,
 }: CalenderProps) => {
+  const { dateRange, setDateRange, resetDateRange } = useDateRangeStore();
   const [minDate, maxDate] = minMaxDateRange;
   const [startDate, endDate] = dateRange;
   const datePickerRef = useRef<any>(null);
   const handleCloseCalendar = () => {
     datePickerRef.current?.setOpen(false);
+    if (!startDate || !endDate) resetDateRange();
   };
 
   return (
@@ -195,6 +195,7 @@ const Calendar = ({
       endDate={endDate}
       minDate={minDate}
       maxDate={maxDate}
+      onClickOutside={() => resetDateRange()}
       onChange={(date) => setDateRange(date)}
       customInput={customInput}
       inline={!isModal}

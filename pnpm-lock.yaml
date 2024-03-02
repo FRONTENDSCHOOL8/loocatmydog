@@ -17,6 +17,9 @@ dependencies:
   framer-motion:
     specifier: ^11.0.5
     version: 11.0.5(react-dom@18.2.0)(react@18.2.0)
+  pocketbase:
+    specifier: ^0.21.1
+    version: 0.21.1
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -38,6 +41,9 @@ dependencies:
   swiper:
     specifier: ^11.0.6
     version: 11.0.6
+  typed-pocketbase:
+    specifier: ^0.1.0
+    version: 0.1.0(pocketbase@0.21.1)
   zustand:
     specifier: ^4.5.1
     version: 4.5.1(@types/react@18.2.57)(react@18.2.0)
@@ -109,9 +115,6 @@ devDependencies:
   husky:
     specifier: ^9.0.11
     version: 9.0.11
-  pocketbase:
-    specifier: ^0.21.1
-    version: 0.21.1
   prettier:
     specifier: 3.2.5
     version: 3.2.5
@@ -7177,6 +7180,11 @@ packages:
     hasBin: true
     dev: true
 
+  /mri@1.2.0:
+    resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
+    engines: {node: '>=4'}
+    dev: false
+
   /ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
     dev: true
@@ -7594,7 +7602,7 @@ packages:
 
   /pocketbase@0.21.1:
     resolution: {integrity: sha512-0PvCP4pKtxsV9kwldEGyibEvhwOcx9jSCrz3WN5CgPILJfM0z76f1op9WE8/8UgikDsMdRsc5iBLfKintrJS1g==}
-    dev: true
+    dev: false
 
   /polished@4.3.1:
     resolution: {integrity: sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==}
@@ -8255,6 +8263,13 @@ packages:
       queue-microtask: 1.2.3
     dev: true
 
+  /sade@1.8.1:
+    resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
+    engines: {node: '>=6'}
+    dependencies:
+      mri: 1.2.0
+    dev: false
+
   /safe-array-concat@1.1.0:
     resolution: {integrity: sha512-ZdQ0Jeb9Ofti4hbt5lX3T2JcAamT9hfzYU1MNB+z/jaEbB6wfFfPIR/zEORmZqobkCCJhSjodobH6WHNmJ97dg==}
     engines: {node: '>=0.4'}
@@ -8910,6 +8925,16 @@ packages:
       is-typed-array: 1.1.13
       possible-typed-array-names: 1.0.0
     dev: true
+
+  /typed-pocketbase@0.1.0(pocketbase@0.21.1):
+    resolution: {integrity: sha512-bNXguPdRHXQ4p2sS38zGIlDhih7QNWilP21Igka6TwWwkQvBYo253MIIooRGX3znBJ0BxzwVNBz1o3X9V63A+A==}
+    hasBin: true
+    peerDependencies:
+      pocketbase: ^0.21.0
+    dependencies:
+      pocketbase: 0.21.1
+      sade: 1.8.1
+    dev: false
 
   /typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
