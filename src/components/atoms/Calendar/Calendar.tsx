@@ -1,18 +1,15 @@
-import {
+import React, {
   Dispatch,
-  MutableRefObject,
   ReactNode,
   SetStateAction,
   forwardRef,
-  useEffect,
   useRef,
 } from 'react';
 import DatePicker, {
   CalendarContainer,
-  ReactDatePicker,
   ReactDatePickerCustomHeaderProps,
 } from 'react-datepicker';
-import { addMonths, getMonth, getYear, lightFormat } from 'date-fns';
+import { getMonth, getYear, lightFormat } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { getDayOfTheWeek } from '@/utils';
 
@@ -95,7 +92,7 @@ const StyledDatePickerContainerFooter = styled.div`
   }
 `;
 
-const CustomInput = forwardRef<any, CustomInputProps>(
+export const CustomInput = forwardRef<any, CustomInputProps>(
   ({ value, onClick }, ref) => {
     const date = value
       ?.split(' - ')
@@ -150,8 +147,9 @@ const DatePickerContainer = (
 interface CalenderProps {
   dateRange: (Date | null)[];
   minMaxDateRange: (Date | null)[];
-  setDateRange: Dispatch<SetStateAction<(Date | null)[]>>;
+  setDateRange: (date: (Date | null)[]) => void;
   isModal?: boolean;
+  customInput?: ReactNode;
 }
 
 const Calendar = ({
@@ -159,6 +157,7 @@ const Calendar = ({
   dateRange,
   setDateRange,
   isModal = false,
+  customInput = <CustomInput />,
 }: CalenderProps) => {
   const [minDate, maxDate] = minMaxDateRange;
   const [startDate, endDate] = dateRange;
@@ -197,7 +196,7 @@ const Calendar = ({
       minDate={minDate}
       maxDate={maxDate}
       onChange={(date) => setDateRange(date)}
-      customInput={<CustomInput />}
+      customInput={customInput}
       inline={!isModal}
       withPortal={isModal}
       calendarContainer={DatePickerContainer(

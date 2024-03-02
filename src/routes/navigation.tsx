@@ -1,6 +1,5 @@
 import Header from '@/components/molecules/Header/Header';
 import OutletLayout from '@/components/layouts/OutletLayout';
-import Main from '@/pages/Main';
 import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
 import MyPage from '@/components/organisms/MyPage/MyPage';
 import Settings from '@/components/organisms/Settings/Settings';
@@ -24,16 +23,24 @@ export const navigationItems = [
   },
   {
     path: '/main',
-    element: (
-      <OutletLayout>
-        <Header type="main" title="테스트테스트" />
-        <Main />
-      </OutletLayout>
-    ),
+    lazy: async () => {
+      const { Component } = await import('@/pages/Main/Main');
+      return {
+        element: (
+          <OutletLayout>
+            <Component />
+          </OutletLayout>
+        ),
+      };
+    },
   },
   {
     path: '/place_detail/:id',
     element: '',
+  },
+  {
+    path: '/place_list',
+    lazy: async () => import('@/pages/PlaceList/PlaceList'),
   },
   {
     path: '/reservation/:id',

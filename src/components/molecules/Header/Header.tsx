@@ -2,12 +2,16 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import LogoInline from '@/components/atoms/Logo/LogoInline';
 import HeartButton from '@/components/atoms/HeartButton/HeartButton';
+import Calendar from '@/components/atoms/Calendar/Calendar';
+import React from 'react';
 import SearchInput from '../SearchInput/SearchInput';
 
 // type = 'step' | 'main' | 'logo'  | 'place' | 'popup' | 'back'
 interface HeaderProps {
   type: 'step' | 'main' | 'logo' | 'place' | 'popup' | 'back';
   title?: string;
+  setDateRange?: (date: (Date | null)[]) => void;
+  dateRange?: (Date | null)[];
 }
 interface StyledHeaderProps {
   $type: 'step' | 'main' | 'logo' | 'place' | 'popup' | 'back';
@@ -55,7 +59,12 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   }
 `;
 
-function Header({ type = 'logo', title = '' }: HeaderProps) {
+function Header({
+  type = 'logo',
+  title = '',
+  dateRange,
+  setDateRange,
+}: HeaderProps) {
   const ariaLabel =
     type === 'step' || type === 'logo' || type === 'place' || type === 'back'
       ? '뒤로가기'
@@ -81,7 +90,15 @@ function Header({ type = 'logo', title = '' }: HeaderProps) {
       right: <span className="text-step">1/3</span>,
     },
     main: {
-      center: <SearchInput />,
+      center: dateRange && setDateRange && (
+        <Calendar
+          dateRange={dateRange}
+          minMaxDateRange={[null, null]}
+          setDateRange={setDateRange}
+          customInput={<SearchInput address="마포구" />}
+          isModal
+        />
+      ),
       right: (
         <h1>
           <LogoInline inlineSize={67} />
