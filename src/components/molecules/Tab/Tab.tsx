@@ -1,14 +1,17 @@
+import { MouseEventHandler } from 'react';
 import styled from 'styled-components';
 
 const StyledTabBox = styled.div`
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
-  padding-inline: 70px;
+  padding-inline: 10px;
+  padding-block: 15px;
   gap: 30px;
 
   & input {
     appearance: none;
+    margin: 0;
   }
 `;
 
@@ -48,38 +51,43 @@ interface TabBoxProps {
   mode: 'front' | 'after';
   front: '진행 예약' | '스토리';
   after: '지난 예약' | '내가 쓴 글';
-  onModeChange: (mode: 'front' | 'after') => void;
+  onClick?: MouseEventHandler<HTMLLabelElement>;
+  [key: string]: any;
 }
 
-const Tab = ({ mode, front, after, onModeChange }: TabBoxProps) => {
+const Tab = ({ mode, front, after, onClick, ...restProps }: TabBoxProps) => {
   return (
-    <StyledTabBox>
-      <StyledPresentTabLabel
-        $mode={mode}
-        htmlFor="presentBook"
-        onClick={() => onModeChange('front')}
-      >
-        {front}
-      </StyledPresentTabLabel>
-      <input
-        type="radio"
-        name="books"
-        id="presentBook"
-        checked={mode === 'front'}
-      />
-      <StyledPreviousTabLabel
-        $mode={mode}
-        htmlFor="previousBook"
-        onClick={() => onModeChange('after')}
-      >
-        {after}
-      </StyledPreviousTabLabel>
-      <input
-        type="radio"
-        name="books"
-        id="previousBook"
-        checked={mode === 'after'}
-      />
+    <StyledTabBox {...restProps}>
+      <div>
+        <StyledPresentTabLabel
+          $mode={mode}
+          htmlFor="presentBook"
+          onClick={onClick}
+        >
+          {front}
+        </StyledPresentTabLabel>
+        <input
+          type="radio"
+          name="books"
+          id="presentBook"
+          checked={mode === 'front'}
+        />
+      </div>
+      <div>
+        <StyledPreviousTabLabel
+          $mode={mode}
+          htmlFor="previousBook"
+          onClick={onClick}
+        >
+          {after}
+        </StyledPreviousTabLabel>
+        <input
+          type="radio"
+          name="books"
+          id="previousBook"
+          checked={mode === 'after'}
+        />
+      </div>
     </StyledTabBox>
   );
 };
