@@ -12,5 +12,6 @@ export const 기본표시 = {
     recentMessage: '채팅 메세지를 입력해주세요',
     createdDate: new Date().getTime(),
     chatCount: 5,
+    src: '/images/starDog.svg',
   },
 };

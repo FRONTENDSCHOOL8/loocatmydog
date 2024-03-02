@@ -9,5 +9,6 @@ export default {
 export const 기본표시 = {
   args: {
     fill: true,
+    count: 1,
   },
 };
