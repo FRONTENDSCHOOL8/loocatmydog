@@ -4,6 +4,9 @@ import Main from '@/pages/Main';
 import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
 import MyPage from '@/components/organisms/MyPage/MyPage';
 import Settings from '@/components/organisms/Settings/Settings';
+import AddPet from '@/components/organisms/AddPet/AddPet';
+import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
+import HeartList from '@/components/organisms/HeartList/HeartList';
 
 export const navigationItems = [
   {
@@ -62,15 +65,30 @@ export const navigationItems = [
   },
   {
     path: '/add_mypet_profile',
-    element: '',
+    element: (
+      <OutletLayout>
+        <Header type="main" title="테스트테스트" />
+        <AddPet />
+      </OutletLayout>
+    ),
   },
   {
     path: '/edit_my_profile',
-    element: '',
+    element: (
+      <OutletLayout>
+        <Header type="main" title="테스트테스트" />
+        <ModifyProfile />
+      </OutletLayout>
+    ),
   },
   {
     path: '/bookmark',
-    element: '',
+    element: (
+      <OutletLayout>
+        <Header type="main" title="테스트테스트" />
+        <HeartList />
+      </OutletLayout>
+    ),
   },
   {
     path: '/settings',
