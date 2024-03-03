@@ -3,6 +3,10 @@
   height: 100dvh;
 }
 
+div:has(> .react-datepicker__input-container) {
+  inline-size: 100%;
+}
+
 .react-datepicker {
   inline-size: 100%;
   min-inline-size: 280px;

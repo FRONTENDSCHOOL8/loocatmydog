@@ -2,6 +2,7 @@ import UserProfile from '@/components/molecules/UserProfile/UserProfile';
 import styled from 'styled-components';
 
 const StyledModifyProfileBox = styled.div`
+  padding-block-start: 23px;
   position: relative;
 
   & .camera {
@@ -42,40 +43,46 @@ const StyledEmailBox = styled.div`
   }
 `;
 
+const StyledProfileBox = styled.div`
+  padding-block-start: 36px;
+`;
+
 const ModifyProfile = () => {
   //UserProfile에 이름이랑 등록한 이미지 받아오기
   return (
     <StyledModifyProfileBox>
       <UserProfile name={'홍길동'} src={'/images/profileNone.svg'} />
-      <button type="button">
-        <img
-          className="camera"
-          src="/images/camera.svg"
-          alt="프로필 사진 변경"
-        />
-      </button>
-      <StyledEmailBox>
-        <span>이메일 아이디</span>
-        <p>test123456@dev.or</p>
-      </StyledEmailBox>
-      <StyledEmailBox>
-        <span>휴대전화 번호</span>
-        <div>
-          <p>010-1234-5678</p>
-          <button className="orangeButton" type="button">
-            변경
-          </button>
-        </div>
-      </StyledEmailBox>
-      <StyledEmailBox>
-        <span>내 주소</span>
-        <div>
-          <p>서울 마포구 사랑동 행복로 1234</p>
-          <button className="orangeButton" type="button">
-            변경
-          </button>
-        </div>
-      </StyledEmailBox>
+      <StyledProfileBox>
+        <button type="button">
+          <img
+            className="camera"
+            src="/images/camera.svg"
+            alt="프로필 사진 변경"
+          />
+        </button>
+        <StyledEmailBox>
+          <span>이메일 아이디</span>
+          <p>test123456@dev.or</p>
+        </StyledEmailBox>
+        <StyledEmailBox>
+          <span>휴대전화 번호</span>
+          <div>
+            <p>010-1234-5678</p>
+            <button className="orangeButton" type="button">
+              변경
+            </button>
+          </div>
+        </StyledEmailBox>
+        <StyledEmailBox>
+          <span>내 주소</span>
+          <div>
+            <p>서울 마포구 사랑동 행복로 1234</p>
+            <button className="orangeButton" type="button">
+              변경
+            </button>
+          </div>
+        </StyledEmailBox>
+      </StyledProfileBox>
     </StyledModifyProfileBox>
   );
 };

@@ -1,9 +1,10 @@
+import { StoryObj } from '@storybook/react';
 import { BrowserRouter } from 'react-router-dom';
-import Tab from './Tab';
+import SideMenu from './SideMenu';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: Tab,
+  component: SideMenu,
   decorators: [
     (Story: any) => (
       <BrowserRouter>
@@ -15,11 +16,8 @@ export default {
   ],
 };
 
-/**@type{import('@storybook/react').StoryObj} */
-export const 기본표시 = {
-  args: {
-    mode: 'front',
-    front: '진행 예약',
-    after: '지난 예약',
-  },
+type Story = StoryObj<typeof SideMenu>;
+
+export const 기본표시: Story = {
+  args: {},
 };

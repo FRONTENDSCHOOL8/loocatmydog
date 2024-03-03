@@ -1,24 +1,22 @@
-import {
+import React, {
   Dispatch,
-  MutableRefObject,
   ReactNode,
   SetStateAction,
   forwardRef,
-  useEffect,
   useRef,
 } from 'react';
 import DatePicker, {
   CalendarContainer,
-  ReactDatePicker,
   ReactDatePickerCustomHeaderProps,
 } from 'react-datepicker';
-import { addMonths, getMonth, getYear, lightFormat } from 'date-fns';
+import { getMonth, getYear, lightFormat } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { getDayOfTheWeek } from '@/utils';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import '@/styles/customDatePicker.css';
 import styled from 'styled-components';
+import useDateRangeStore from '@/store/useDateRange';
 
 interface CustomInputProps {
   value?: string;
@@ -95,7 +93,7 @@ const StyledDatePickerContainerFooter = styled.div`
   }
 `;
 
-const CustomInput = forwardRef<any, CustomInputProps>(
+export const CustomInput = forwardRef<any, CustomInputProps>(
   ({ value, onClick }, ref) => {
     const date = value
       ?.split(' - ')
@@ -148,23 +146,24 @@ const DatePickerContainer = (
 };
 
 interface CalenderProps {
-  dateRange: (Date | null)[];
   minMaxDateRange: (Date | null)[];
-  setDateRange: Dispatch<SetStateAction<(Date | null)[]>>;
+
   isModal?: boolean;
+  customInput?: ReactNode;
 }
 
 const Calendar = ({
   minMaxDateRange,
-  dateRange,
-  setDateRange,
   isModal = false,
+  customInput = <CustomInput />,
 }: CalenderProps) => {
+  const { dateRange, setDateRange, resetDateRange } = useDateRangeStore();
   const [minDate, maxDate] = minMaxDateRange;
   const [startDate, endDate] = dateRange;
   const datePickerRef = useRef<any>(null);
   const handleCloseCalendar = () => {
     datePickerRef.current?.setOpen(false);
+    if (!startDate || !endDate) resetDateRange();
   };
 
   return (
@@ -196,8 +195,9 @@ const Calendar = ({
       endDate={endDate}
       minDate={minDate}
       maxDate={maxDate}
+      onClickOutside={() => resetDateRange()}
       onChange={(date) => setDateRange(date)}
-      customInput={<CustomInput />}
+      customInput={customInput}
       inline={!isModal}
       withPortal={isModal}
       calendarContainer={DatePickerContainer(

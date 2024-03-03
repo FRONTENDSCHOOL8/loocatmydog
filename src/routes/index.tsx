@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { RouteObject, createBrowserRouter } from 'react-router-dom';
 import { navigationItems } from './navigation';
 import RootLayout from '@/components/layouts/RootLayout';
 
@@ -6,7 +6,7 @@ import RootLayout from '@/components/layouts/RootLayout';
 //   basename: import.meta,
 // };
 
-const routes = [
+const routes: RouteObject[] = [
   {
     path: '/',
     element: <RootLayout />,

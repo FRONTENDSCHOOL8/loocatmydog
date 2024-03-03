@@ -1,13 +1,16 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import LogoInline from '@/components/atoms/Logo/LogoInline';
 import HeartButton from '@/components/atoms/HeartButton/HeartButton';
+import Calendar from '@/components/atoms/Calendar/Calendar';
+import React from 'react';
 import SearchInput from '../SearchInput/SearchInput';
 
 // type = 'step' | 'main' | 'logo'  | 'place' | 'popup' | 'back'
-interface HeaderProps {
+export interface HeaderProps {
   type: 'step' | 'main' | 'logo' | 'place' | 'popup' | 'back';
-  title?: string;
+  title?: string | null;
+  phase?: string;
 }
 interface StyledHeaderProps {
   $type: 'step' | 'main' | 'logo' | 'place' | 'popup' | 'back';
@@ -38,7 +41,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   }
 
   & .text-title {
-    ${(props) => props.theme.fontStyles.textSemiboldMd}
+    ${(props) => props.theme.fontStyles.headingMd}
     color: ${(props) => props.theme.colors.textBlack};
   }
   & .text-step {
@@ -55,7 +58,13 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   }
 `;
 
-function Header({ type = 'logo', title = '' }: HeaderProps) {
+function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
+  const navigate = useNavigate();
+  const handleClickLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (type === 'popup') return;
+    e.preventDefault();
+    navigate(-1);
+  };
   const ariaLabel =
     type === 'step' || type === 'logo' || type === 'place' || type === 'back'
       ? '뒤로가기'
@@ -72,16 +81,27 @@ function Header({ type = 'logo', title = '' }: HeaderProps) {
     );
   else
     leftSideContents = (
-      <Link to={'/'} className="left-side" aria-label={ariaLabel}></Link>
+      <Link
+        to={'/'}
+        onClick={handleClickLink}
+        className="left-side"
+        aria-label={ariaLabel}
+      ></Link>
     );
 
   const headerContentsObj = {
     step: {
       center: null,
-      right: <span className="text-step">1/3</span>,
+      right: <span className="text-step">{phase}</span>,
     },
     main: {
-      center: <SearchInput />,
+      center: (
+        <Calendar
+          minMaxDateRange={[null, null]}
+          customInput={<SearchInput address="마포구" />}
+          isModal
+        />
+      ),
       right: (
         <h1>
           <LogoInline inlineSize={67} />

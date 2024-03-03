@@ -8,7 +8,7 @@ interface ButtonPlusProps {
 const StyledButtonPlus = styled(Link).attrs({
   'aria-label': '글작성 페이지 이동',
 })`
-  display: inline-block;
+  display: block;
   background: url('/images/buttonPlus.svg') no-repeat 0 0 / contain;
   width: 45px;
   height: 45px;

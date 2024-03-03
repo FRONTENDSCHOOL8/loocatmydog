@@ -21,5 +21,6 @@ export const 기본표시: Story = {
   args: {
     type: 'main',
     title: '타이틀',
+    phase: '1/3',
   },
 };

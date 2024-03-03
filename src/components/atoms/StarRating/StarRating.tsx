@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 interface StarRatingProps {
   fill?: boolean;
-  count: number;
+  count?: number;
 }
 
 const StyledStarRating = styled.div`
