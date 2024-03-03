@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import styled from 'styled-components';
-import Header from '@/components/molecules/Header/Header';
-import useDateRangeStore from '@/store/useDateRange';
-
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { format } from 'date-fns';
+import useDateRangeStore from '@/store/useDateRange';
+import SideMenu from '@/components/organisms/SideMenu/SideMenu';
 
 const StyledMain = styled.div`
   flex: 1;
@@ -24,9 +23,12 @@ export function Component() {
   }, [dateRange, navigate, resetDateRange]);
 
   return (
-    <StyledMain style={{ background: 'yellow' }}>
-      <h2>메인 페이지</h2>
-    </StyledMain>
+    <>
+      <StyledMain style={{ background: 'yellow' }}>
+        <h2>메인 페이지</h2>
+        <SideMenu />
+      </StyledMain>
+    </>
   );
 }
 Component.displayName = 'Main';

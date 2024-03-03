@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import Header, { HeaderProps } from '../molecules/Header/Header';
 
 const StyledRootLayout = styled.div`
+  position: relative;
   min-inline-size: 280px;
   max-inline-size: 420px;
   block-size: 100dvh;
@@ -13,6 +14,7 @@ const StyledRootLayout = styled.div`
   background-color: skyblue;
   display: flex;
   flex-flow: column nowrap;
+  overflow: hidden;
 `;
 type HeaderConfig = { [key: string]: [HeaderProps['type'], string | null] };
 
@@ -34,6 +36,7 @@ const headerConfig: HeaderConfig = {
   'stories/post': ['popup', null],
   reserve_list: ['logo', null],
   chatroom_list: ['back', '채팅 목록'],
+  events: ['back', '이벤트 목록'],
 };
 
 function RootLayout() {
