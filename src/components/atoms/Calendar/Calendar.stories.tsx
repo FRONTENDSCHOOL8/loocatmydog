@@ -1,5 +1,6 @@
 import { StoryObj } from '@storybook/react';
 import Calendar from './Calendar';
+import SearchInput from '@/components/molecules/SearchInput/SearchInput';
 
 /**@type{import('@storybook/react').Meta} */
 export default {

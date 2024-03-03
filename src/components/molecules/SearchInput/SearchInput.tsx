@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 
 const StyledSearchInputContainer = styled.div`
@@ -26,26 +27,41 @@ const StyledSearchInputContainer = styled.div`
     left: 30px;
   }
 `;
-const StyledSearchInput = styled.input.attrs({ type: 'search' })`
-  inline-size: 71px;
+const StyledSearchInput = styled.span`
+  inline-size: 50%;
   border: none;
   outline: none;
   position: absolute;
   left: 70px;
-  ${(props) => props.theme.fontStyles.textRegularSm};
+  ${(props) => props.theme.fontStyles.textSemiboldSm};
   &::placeholder {
     ${(props) => props.theme.fontStyles.textRegularSm};
     color: ${(props) => props.theme.colors.textDarkGray};
   }
 `;
 
-const SearchInput = () => {
-  return (
-    <StyledSearchInputContainer>
-      <span className="address">마포구</span>
-      <StyledSearchInput placeholder="날짜 선택" />
-    </StyledSearchInputContainer>
-  );
-};
+interface SearchInputProps {
+  address: string;
+  onClick?: any;
+  value?: string;
+}
+
+const SearchInput = forwardRef<any, SearchInputProps>(
+  ({ address, onClick, value = '' }, ref) => {
+    const date = value
+      ?.split(' - ')
+      .map((date) => `${date}`)
+      .join(' ~ ');
+    const dateText = date === '' ? '날짜선택' : date;
+    return (
+      <StyledSearchInputContainer onClick={onClick} ref={ref}>
+        <span className="address">{address}</span>
+        <StyledSearchInput>{dateText}</StyledSearchInput>
+      </StyledSearchInputContainer>
+    );
+  }
+);
+
+SearchInput.displayName = 'SearchInput';
 
 export default SearchInput;
