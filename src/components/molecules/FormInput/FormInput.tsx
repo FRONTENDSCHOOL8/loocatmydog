@@ -39,6 +39,7 @@ interface FormInputProps {
   mode: 'register' | 'place';
   type: string;
   name: string;
+  value?: string;
   children?: ReactNode;
   hiddenLabel?: boolean;
   placeholder?: string;
@@ -53,6 +54,7 @@ const FormInput = ({
   type = 'text',
   name,
   placeholder = '실명 입력',
+  value,
   ...restProps
 }: FormInputProps) => {
   const FormId = useId();
@@ -70,7 +72,13 @@ const FormInput = ({
   return (
     <Component $mode={mode} {...restProps}>
       {labelElement}
-      <input type={type} id={FormId} name={name} placeholder={placeholder} />
+      <input
+        type={type}
+        id={FormId}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+      />
     </Component>
   );
 };
