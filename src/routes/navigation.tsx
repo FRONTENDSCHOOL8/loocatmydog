@@ -1,15 +1,17 @@
 import MyPage from '@/components/organisms/MyPage/MyPage';
+import Splash from '@/components/organisms/Splash/Splash';
 import Settings from '@/components/organisms/Settings/Settings';
 import AddPet from '@/components/organisms/AddPet/AddPet';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import HeartList from '@/components/organisms/HeartList/HeartList';
 import { RouteObject } from 'react-router-dom';
+import Landing from '@/pages/Landing/Landing';
 
 export const navigationItems: RouteObject[] = [
   // 지우님
   {
     path: '/',
-    element: '',
+    element: <Landing />,
     index: true,
   },
   {
