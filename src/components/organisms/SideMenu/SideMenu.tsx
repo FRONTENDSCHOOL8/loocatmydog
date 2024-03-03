@@ -2,6 +2,15 @@ import UserProfile from '@/components/molecules/UserProfile/UserProfile';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+const StyledDimmed = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  background-color: rgba(0, 0, 0, 0.35);
+`;
+
 const StyledSideMenuContainer = styled.div`
   position: absolute;
   top: 0;
@@ -100,37 +109,41 @@ const profileMockData = {
 
 const SideMenu = () => {
   return (
-    <StyledSideMenuContainer>
-      <div className="header">
-        <button type="button" className="close-button"></button>
-      </div>
-      <StyledSideMenuInnerContainer $gap={5}>
-        <UserProfile
-          style={{ padding: 0 }}
-          name={profileMockData.name}
-          src={profileMockData.src}
-        />
-        <StyledLinkButton to={'/add_place'}>플레이스 등록</StyledLinkButton>
-      </StyledSideMenuInnerContainer>
-      <StyledSideMenuInnerContainer>
-        <StyledSideMenuNavigation>
-          <ul className="navigation-list">
-            <StyledSideMenuNavigationItem $icon="myplace">
-              <Link to={'/place_list?filterType=mine'}>나의 플레이스 목록</Link>
-            </StyledSideMenuNavigationItem>
-            <StyledSideMenuNavigationItem $icon="story">
-              <Link to={'/stories'}>봐주개냥 스토리</Link>
-            </StyledSideMenuNavigationItem>
-            <StyledSideMenuNavigationItem $icon="heart">
-              <Link to={'/bookmark'}>찜 목록</Link>
-            </StyledSideMenuNavigationItem>
-            <StyledSideMenuNavigationItem $icon="events">
-              <Link to={'/events'}>이벤트</Link>
-            </StyledSideMenuNavigationItem>
-          </ul>
-        </StyledSideMenuNavigation>
-      </StyledSideMenuInnerContainer>
-    </StyledSideMenuContainer>
+    <StyledDimmed>
+      <StyledSideMenuContainer>
+        <div className="header">
+          <button type="button" className="close-button"></button>
+        </div>
+        <StyledSideMenuInnerContainer $gap={5}>
+          <UserProfile
+            style={{ padding: 0 }}
+            name={profileMockData.name}
+            src={profileMockData.src}
+          />
+          <StyledLinkButton to={'/add_place'}>플레이스 등록</StyledLinkButton>
+        </StyledSideMenuInnerContainer>
+        <StyledSideMenuInnerContainer>
+          <StyledSideMenuNavigation>
+            <ul className="navigation-list">
+              <StyledSideMenuNavigationItem $icon="myplace">
+                <Link to={'/place_list?filterType=mine'}>
+                  나의 플레이스 목록
+                </Link>
+              </StyledSideMenuNavigationItem>
+              <StyledSideMenuNavigationItem $icon="story">
+                <Link to={'/stories'}>봐주개냥 스토리</Link>
+              </StyledSideMenuNavigationItem>
+              <StyledSideMenuNavigationItem $icon="heart">
+                <Link to={'/bookmark'}>찜 목록</Link>
+              </StyledSideMenuNavigationItem>
+              <StyledSideMenuNavigationItem $icon="events">
+                <Link to={'/events'}>이벤트</Link>
+              </StyledSideMenuNavigationItem>
+            </ul>
+          </StyledSideMenuNavigation>
+        </StyledSideMenuInnerContainer>
+      </StyledSideMenuContainer>
+    </StyledDimmed>
   );
 };
 
