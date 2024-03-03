@@ -4,8 +4,13 @@ import AddPet from '@/components/organisms/AddPet/AddPet';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import HeartList from '@/components/organisms/HeartList/HeartList';
 import { RouteObject } from 'react-router-dom';
+import { HeaderProps } from '@/components/molecules/Header/Header';
 
-export const navigationItems: RouteObject[] = [
+type NavigationRouteObject = RouteObject & {
+  headerType?: [HeaderProps['type'], HeaderProps['title']];
+};
+
+export const navigationItems: NavigationRouteObject[] = [
   // 지우님
   {
     path: '/',
@@ -15,15 +20,18 @@ export const navigationItems: RouteObject[] = [
   {
     path: '/signin',
     element: '',
+    headerType: ['back', null],
   },
   {
     path: '/signup',
     element: '',
+    headerType: ['step', null],
   },
   // 종연님
   {
     path: '/main',
     lazy: () => import('@/pages/Main/Main'),
+    headerType: ['main', null],
   },
   {
     // query parameter 종류
@@ -32,16 +40,19 @@ export const navigationItems: RouteObject[] = [
     // sortType = distance | popular | price
     path: '/place_list',
     lazy: async () => import('@/pages/PlaceList/PlaceList'),
+    headerType: ['main', null],
   },
 
   // 경화님
   {
     path: '/add_place',
     element: '',
+    headerType: ['back', '플레이스 등록'],
   },
   {
     path: '/place_detail/:id',
     element: '',
+    headerType: ['place', null],
   },
   {
     path: '/reservation_list/:id',
@@ -50,24 +61,29 @@ export const navigationItems: RouteObject[] = [
   {
     path: '/reservation_done',
     element: '',
+    headerType: ['popup', null],
   },
 
   // 종명님
   {
     path: '/stories',
     element: '',
+    headerType: ['logo', null],
   },
   {
     path: '/stories/post',
     element: '',
+    headerType: ['popup', null],
   },
   {
     path: '/reserve_list',
     element: <></>,
+    headerType: ['logo', null],
   },
   {
     path: '/chat_list',
     element: '',
+    headerType: ['back', '채팅 목록'],
   },
   {
     path: '/chat_room',
@@ -82,18 +98,22 @@ export const navigationItems: RouteObject[] = [
         <MyPage />
       </>
     ),
+    headerType: ['popup', '마이 페이지'],
   },
   {
     path: '/add_mypet',
     element: <AddPet />,
+    headerType: ['back', '반려동물 추가'],
   },
   {
     path: '/edit_my_profile',
     element: <ModifyProfile />,
+    headerType: ['back', '프로필 변경'],
   },
   {
     path: '/bookmark',
     element: <HeartList />,
+    headerType: ['logo', null],
   },
   {
     path: '/settings',
@@ -102,12 +122,14 @@ export const navigationItems: RouteObject[] = [
         <Settings />
       </>
     ),
+    headerType: ['logo', null],
   },
 
   // 미할당
   {
     path: '/events',
     element: '',
+    headerType: ['back', '이벤트 목록'],
   },
   {
     path: '/change_phone',
