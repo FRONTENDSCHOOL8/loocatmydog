@@ -1,4 +1,4 @@
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import ButtonPlus from './ButtonPlus';
 
 /**@type{import('@storybook/react').Meta} */
@@ -6,12 +6,14 @@ export default {
   component: ButtonPlus,
   decorators: [
     (Story: any) => {
-      <BrowserRouter>
+      <MemoryRouter>
         <Story />
-      </BrowserRouter>;
+      </MemoryRouter>;
     },
   ],
 };
 
 /**@type{import('@storybook/react').StoryObj} */
-export const 기본표시 = {};
+export const 기본표시 = {
+  path: '/',
+};
