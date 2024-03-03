@@ -69,12 +69,13 @@ const AddPet = () => {
     }
   };
 
+  const handlePetProfile = () => {};
+
   return (
-    <form action="">
+    <form onSubmit={handlePetProfile}>
       <BigPhoto
         type={type}
         value="사진"
-        // changeImg={changeImg === '사진'}
         onChange={handleChangeImg}
         imgSrc={changeImg}
       />
@@ -155,7 +156,7 @@ const AddPet = () => {
             기재한 경우, 약관에 따라 예약이 거부될 수 있습니다
           </p>
         </StyledPromiseBox>
-        <Button size={'100%'} mode="normal">
+        <Button size={'100%'} mode="normal" type="button">
           {'저장하기'}
         </Button>
       </StyledAddPetBox>

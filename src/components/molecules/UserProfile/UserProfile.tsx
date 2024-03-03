@@ -36,12 +36,12 @@ const UserProfile = ({
   [key: string]: any;
 }) => {
   return (
-    <StyledUserProfileBox {...restProps}>
+    <StyledUserProfileBox>
       <StyledUserProfileSpanBox>
         <span className="userName">{name} 님</span>
         <span className="welcome">환영합니다!</span>
       </StyledUserProfileSpanBox>
-      <ProfileImage blockSize={43} inlineSize={43} src={src} />
+      <ProfileImage blockSize={43} inlineSize={43} src={src} {...restProps} />
     </StyledUserProfileBox>
   );
 };
