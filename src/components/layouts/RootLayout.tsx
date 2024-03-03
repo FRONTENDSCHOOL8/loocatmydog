@@ -47,6 +47,16 @@ function RootLayout() {
         title={headerConfig[currentPathname][1]}
       />
     );
+
+  let isShownGlobalNavBar = true;
+  if (
+    !currentPathname ||
+    currentPathname === 'signin' ||
+    currentPathname === 'signup'
+  ) {
+    isShownGlobalNavBar = false;
+  }
+
   return (
     <StyledRootLayout>
       {headerContents}
@@ -55,7 +65,7 @@ function RootLayout() {
           <Outlet />
         </Suspense>
       </OutletLayout>
-      <GlobalNavBar />
+      <GlobalNavBar isShown={isShownGlobalNavBar} />
     </StyledRootLayout>
   );
 }
