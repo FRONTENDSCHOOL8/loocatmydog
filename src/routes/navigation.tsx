@@ -1,10 +1,12 @@
 import MyPage from '@/components/organisms/MyPage/MyPage';
+import Splash from '@/components/organisms/Splash/Splash';
 import Settings from '@/components/organisms/Settings/Settings';
 import AddPet from '@/components/organisms/AddPet/AddPet';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import HeartList from '@/components/organisms/HeartList/HeartList';
 import { RouteObject } from 'react-router-dom';
 import { HeaderProps } from '@/components/molecules/Header/Header';
+import Landing from '@/pages/Landing/Landing';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -14,7 +16,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 지우님
   {
     path: '/',
-    element: '',
+    element: <Landing />,
     index: true,
   },
   {

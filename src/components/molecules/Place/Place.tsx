@@ -95,7 +95,9 @@ const Place = ({
         <HeartButton fill={heartFill} onClick={onChangeHeartButton} />
       </div>
       <div className="reviewWrapper">
-        {reviewNumber === 0 ? undefined : <StarRating fill={starFill} />}
+        {reviewNumber === 0 ? undefined : (
+          <StarRating fill={starFill} count={1} />
+        )}
         {reviewNumber === 0 ? undefined : <span>{rate.toFixed(1)}</span>}
         <span>
           {' '}
