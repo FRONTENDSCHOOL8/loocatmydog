@@ -10,6 +10,7 @@ import SearchInput from '../SearchInput/SearchInput';
 export interface HeaderProps {
   type: 'step' | 'main' | 'logo' | 'place' | 'popup' | 'back';
   title?: string | null;
+  phase?: string;
 }
 interface StyledHeaderProps {
   $type: 'step' | 'main' | 'logo' | 'place' | 'popup' | 'back';
@@ -57,7 +58,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   }
 `;
 
-function Header({ type = 'logo', title = '' }: HeaderProps) {
+function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
   const navigate = useNavigate();
   const handleClickLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (type === 'popup') return;
@@ -91,7 +92,7 @@ function Header({ type = 'logo', title = '' }: HeaderProps) {
   const headerContentsObj = {
     step: {
       center: null,
-      right: <span className="text-step">1/3</span>,
+      right: <span className="text-step">{phase}</span>,
     },
     main: {
       center: (

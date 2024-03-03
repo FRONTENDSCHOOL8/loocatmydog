@@ -1,11 +1,14 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import GlobalNavBar from '@/components/molecules/GlobalNavBar/GlobalNavBar';
-import styled from 'styled-components';
-import OutletLayout from './OutletLayout';
 import { Suspense } from 'react';
-import Header, { HeaderProps } from '../molecules/Header/Header';
+import { Outlet, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
+import GlobalNavBar from '@/components/molecules/GlobalNavBar/GlobalNavBar';
+import OutletLayout from './OutletLayout';
+import Header from '../molecules/Header/Header';
+import { navigationItems } from '@/routes/navigation';
 
 const StyledRootLayout = styled.div`
+  position: relative;
   min-inline-size: 280px;
   max-inline-size: 420px;
   block-size: 100dvh;
@@ -13,47 +16,22 @@ const StyledRootLayout = styled.div`
   background-color: skyblue;
   display: flex;
   flex-flow: column nowrap;
+  overflow: hidden;
 `;
-type HeaderConfig = { [key: string]: [HeaderProps['type'], string | null] };
-
-const headerConfig: HeaderConfig = {
-  signin: ['back', null],
-  signup: ['step', null],
-  main: ['main', null],
-  place_list: ['main', null],
-  mypage: ['popup', '마이 페이지'],
-  add_mypet: ['back', '반려동물 추가'],
-  edit_my_profile: ['back', '프로필 변경'],
-  bookmark: ['logo', null],
-  settings: ['logo', null],
-  myplace_list: ['back', '나의 플레이스'],
-  add_place: ['back', '플레이스 등록'],
-  place_detail: ['place', null],
-  reservation_done: ['popup', null],
-  stories: ['logo', null],
-  'stories/post': ['popup', null],
-  reserve_list: ['logo', null],
-  chatroom_list: ['back', '채팅 목록'],
-};
 
 function RootLayout() {
   const { pathname } = useLocation();
-  const currentPathname = pathname.slice(1);
   let headerContents = null;
-  if (headerConfig[currentPathname])
-    headerContents = (
-      <Header
-        type={headerConfig[currentPathname][0]}
-        title={headerConfig[currentPathname][1]}
-      />
-    );
+  const currentRouteObject = navigationItems.find(
+    ({ path }) => pathname === path
+  );
+  if (currentRouteObject && currentRouteObject?.headerType) {
+    const [type, title] = currentRouteObject.headerType;
+    headerContents = <Header type={type} title={title} />;
+  }
 
   let isShownGlobalNavBar = true;
-  if (
-    !currentPathname ||
-    currentPathname === 'signin' ||
-    currentPathname === 'signup'
-  ) {
+  if (pathname === '/signin' || pathname === '/signup') {
     isShownGlobalNavBar = false;
   }
 
