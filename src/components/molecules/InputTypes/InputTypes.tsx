@@ -26,7 +26,7 @@ const StyledInputWrapper = styled.div`
 const InputTypes = ({
   check = false,
   name = '이름',
-  list = ['댕댕이'],
+  list = ['여', '남'],
   unit,
 }: InputTypesProps) => {
   const checkBox = check ? (
