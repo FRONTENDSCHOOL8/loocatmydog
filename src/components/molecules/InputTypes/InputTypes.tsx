@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 interface InputTypesProps {
   check?: boolean;
   name: string;
-  placeholder: string;
   unit?: string;
   list: Array<string>;
 }
@@ -20,7 +19,7 @@ const StyledInputWrapper = styled.div`
   ${(props) => props.theme.fontStyles.textRegularMd};
   color: ${(props) => props.theme.colors.textBlack};
   & span {
-    min-inline-size: 25px;
+    min-inline-size: 40px;
   }
 `;
 
