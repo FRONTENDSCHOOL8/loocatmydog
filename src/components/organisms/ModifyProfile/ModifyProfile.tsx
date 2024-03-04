@@ -2,13 +2,13 @@ import UserProfile from '@/components/molecules/UserProfile/UserProfile';
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
 
-import { ChangeEvent, SetStateAction, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { TypedPocketBase } from 'typed-pocketbase';
 
 // 명령어로 자동 생성된 타입 정의 파일에서 Schema를 가져옵니다.
-import { Schema } from '@/@types/test';
+import { Schema, UsersResponse } from '@/@types/test';
 
 // 사용할 PocketBase 주소를 지정합니다.
 const db = new TypedPocketBase<Schema>(import.meta.env.VITE_PB_API_URL);
@@ -55,6 +55,13 @@ const StyledEmailBox = styled.div`
 
     & input {
       border: none;
+      inline-size: 80%;
+    }
+    & input[type='text']:disabled {
+      opacity: 1;
+      -webkit-text-fill-color: currentcolor;
+      color: currentColor;
+      background-color: white;
     }
   }
 `;
@@ -102,29 +109,50 @@ const StyledAddressBox = styled.div`
 `;
 
 const ModifyProfile = () => {
+  //이미지 바꾸는 함수
+  const [changeImg, setChangeImg] = useState<string>('/images/profileNone.svg');
+  const [record, setRecord] = useState<UsersResponse | {}>({});
+
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
+  const [phone, setPhone] = useState<string | number>('');
+  const [address, setAddress] = useState<string | number>('');
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [roadAddress, setRoadAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+
+  const [isDetailOpen, setIsDetailOpen] = useState(false); // 두 번째 모달의 상태를 관리하는 상태 변수
+
   const handleChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
     let file;
     if (e.target.files && e.target.files[0]) {
       file = e.target.files[0];
     }
-    const fileURL = URL.createObjectURL(file as Blob);
-    if (fileURL) {
-      const newImg = fileURL;
-      setChangeImg(newImg);
-      setRecord((prevRecord) => ({ ...prevRecord, avatar: newImg }));
+    if (file) {
+      const fileURL = URL.createObjectURL(file as Blob);
+      setChangeImg(fileURL);
+      setRecord((prevRecord) => ({ ...prevRecord, avatar: changeImg }));
       console.log('record', record);
+    } else {
+      setChangeImg('/images/profileNone.svg');
     }
   };
-  const [changeImg, setChangeImg] = useState('/images/profileNone.svg');
 
+  //데이터 불러오는 훅
   useEffect(() => {
     const login = async () => {
       try {
-        const record: SetStateAction<RecordType> = await db
+        const record: UsersResponse = await db
           .collection('users')
           .getOne('p85jypwlgke40oq');
         // 로그인 후 사용자 정보 가져오기
         setRecord(record);
+        setPhone(record?.phoneNumber);
+        setAddress(record?.address);
+        setChangeImg(record?.avatar);
+        console.log(typeof record.avatar);
       } catch (error) {
         console.error('Error logging in:', error);
       }
@@ -133,26 +161,11 @@ const ModifyProfile = () => {
     login();
   }, []);
 
-  interface RecordType {
-    [key: string]: string | number;
-  }
-
-  const [record, setRecord] = useState<RecordType>({});
-
-  const [isEditingPhone, setIsEditingPhone] = useState(false);
-  const [isEditingAddress, setIsEditingAddress] = useState(false);
-  const [phone, setPhone] = useState(record.phoneNumber);
-  const [address, setAddress] = useState(record.address);
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [roadAddress, setRoadAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState(''); // 추가
-
+  //이중 모달 두번째 모달 닫는 함수
   const completeHandler = (data: any) => {
     setRoadAddress(data.roadAddress);
     setIsEditingAddress(!isEditingAddress);
-    setIsOpen(false); //추가
+    setIsOpen(false);
   };
 
   // Modal 스타일
@@ -180,7 +193,7 @@ const ModifyProfile = () => {
     setDetailAddress(e.target.value);
   };
 
-  // 추가
+  // 상세주소 입력까지 마치면 새 주소 저장해주는 함수
   const clickHandler = () => {
     if (detailAddress === '') {
       alert('상세주소를 입력해주세요.');
@@ -188,36 +201,53 @@ const ModifyProfile = () => {
       console.log('record', record);
       const newAddress = `${roadAddress} ${detailAddress}`;
       setAddress(newAddress);
-      setRecord((prevRecord) => ({ ...prevRecord, address: newAddress }));
+
       setIsDetailOpen(!isDetailOpen);
     }
   };
 
+  //내 주소 부분 변경버튼 저장버튼으로 바꿔주는 함수
   const handleSearchAddress = () => {
     setIsEditingAddress(!isEditingAddress);
+    setIsDetailOpen(!isDetailOpen);
   };
-
+  //전화번호 부분 변경버튼 저장버튼으로 바꿔주는 함수
   const handlePhoneNumber = () => {
-    setIsEditingPhone(!isEditingPhone);
+    const isValid = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/.test(
+      String(phone)
+    );
+    if (!isEditingPhone) {
+      setIsEditingPhone(!isEditingPhone);
+      return;
+    }
+
+    if (isValid) {
+      setRecord((prevRecord) => ({ ...prevRecord, phoneNumber: phone }));
+      setIsEditingPhone(!isEditingPhone);
+      return;
+    } else return alert('알맞은 휴대전화번호를 입력해주세요');
   };
 
+  //새 전화번호 입력시 번호 바꿔주는 함수
   const handelChangePhone = (e: ChangeEvent<HTMLInputElement>) => {
     const newPhone = e.target.value;
     setPhone(newPhone);
-    setRecord((prevRecord) => ({ ...prevRecord, phoneNumber: newPhone }));
-    setIsEditingPhone(!isEditingPhone);
   };
 
-  const [isDetailOpen, setIsDetailOpen] = useState(false); // 두 번째 모달의 상태를 관리하는 상태 변수
-
-  // 두 번째 모달을 토글하는 함수
-  const toggleDetail = () => {
-    setIsDetailOpen(!isDetailOpen);
+  const handelChangeAddress = () => {
+    if (!isEditingAddress) {
+      setIsEditingAddress(!isEditingAddress);
+      return;
+    }
+    if (address) {
+      setRecord((prevRecord) => ({ ...prevRecord, address: address }));
+      setIsEditingAddress(!isEditingAddress);
+    } else return alert('상세주소까지 알맞은 주소를 입력해주세요');
   };
 
   return (
     <StyledModifyProfileBox>
-      <UserProfile name={record.name} src={changeImg} />
+      <UserProfile name={(record as UsersResponse).name} src={changeImg} />
       <StyledProfileBox>
         <label htmlFor="modifyCamera">
           <img
@@ -234,22 +264,19 @@ const ModifyProfile = () => {
         />
         <StyledEmailBox>
           <span>이메일 아이디</span>
-          <p>{record.email}</p>
+          <p>{(record as UsersResponse).email}</p>
         </StyledEmailBox>
         <StyledEmailBox>
           <span>휴대전화 번호</span>
           <div>
-            {isEditingPhone ? (
-              <input
-                id="name"
-                type="text"
-                value={phone}
-                onChange={handelChangePhone}
-                required
-              />
-            ) : (
-              <p>{record.phoneNumber}</p>
-            )}
+            <input
+              id="name"
+              type="text"
+              value={phone}
+              onChange={handelChangePhone}
+              required
+              disabled={!isEditingPhone}
+            />
             <button
               className="orangeButton"
               type="button"
@@ -262,20 +289,13 @@ const ModifyProfile = () => {
         <StyledEmailBox>
           <span>내 주소</span>
           <div>
-            {isEditingAddress ? (
-              <>
-                <button onClick={toggleDetail}>주소검색</button>
-                <input
-                  type="text"
-                  value={address}
-                  style={{ width: 250 }}
-                  readOnly
-                  placeholder="검색된 주소"
-                />
-              </>
-            ) : (
-              <p>{record.address}</p>
-            )}
+            <input
+              type="text"
+              value={address}
+              onChange={handelChangeAddress}
+              required
+              disabled={!isEditingAddress}
+            />
             <button
               className="orangeButton"
               type="button"

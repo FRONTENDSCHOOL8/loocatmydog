@@ -37,21 +37,7 @@ const StyledGenderBox = styled.div`
 `;
 
 const AddPet = () => {
-  const [gender, setGender] = useState('');
-  const handleGender = (e: ChangeEvent) => {
-    setGender((e.target as HTMLButtonElement).value);
-  };
-
-  const [agree, setAgree] = useState('');
-  const handleAgree = (e: ChangeEvent) => {
-    if (agree) {
-      setAgree('');
-    }
-
-    if (!agree) {
-      setAgree((e.target as HTMLButtonElement).value);
-    }
-  };
+  const [isChecked, setIsChecked] = useState(false);
 
   const [type, setType] = useState<'default' | 'link' | 'picture'>('default');
   const [changeImg, setChangeImg] = useState('');
@@ -82,54 +68,20 @@ const AddPet = () => {
       <StyledAddPetBox>
         <span>기본 정보</span>
         <StyledInputTypesBox>
-          <InputTypes
-            name={'이름'}
-            placeholder={'예) 댕댕이'}
-            list={['예) 댕댕이']}
-            unit={''}
-          />
+          <InputTypes name={'이름'} list={['예) 댕댕이']} unit={''} />
           <StyledGenderBox>
-            <span>성별</span>
-            <CheckBox
-              isChecked={gender === '남'}
-              onChange={handleGender}
-              type="radio"
-              name="gender"
-              value="남"
-            >
-              남
-            </CheckBox>
-            <CheckBox
-              isChecked={gender === '여'}
-              onChange={handleGender}
-              type="radio"
-              name="gender"
-              value="여"
-            >
-              여
-            </CheckBox>
+            <InputTypes
+              name={'성별'}
+              check={true}
+              list={['남', '여']}
+              unit={''}
+            ></InputTypes>
           </StyledGenderBox>
-          <InputTypes
-            name={'품종'}
-            placeholder={'예) 말티즈'}
-            list={['예) 말티즈']}
-            unit={''}
-          />
-          <InputTypes
-            name={'생일'}
-            placeholder={''}
-            list={['년도', '월']}
-            unit={''}
-          />
-          <InputTypes
-            name={'몸무게'}
-            placeholder={'예) 2.8'}
-            list={['예) 2.8']}
-            unit={'kg'}
-          />
+          <InputTypes name={'품종'} list={['예) 말티즈']} unit={''} />
+          <InputTypes name={'생일'} list={['년도', '월']} unit={''} />
+          <InputTypes name={'몸무게'} list={['예) 2.8']} unit={'kg'} />
           <InputTypes
             name={'중성화'}
-            placeholder={'예) OO병원 또는 없음'}
             list={['예) OO병원 또는 없음']}
             unit={''}
           />
@@ -142,11 +94,10 @@ const AddPet = () => {
 
         <StyledPromiseBox>
           <CheckBox
-            isChecked={agree === 'yes'}
-            onChange={handleAgree}
+            isChecked={isChecked}
+            onChange={() => setIsChecked(!isChecked)}
             type="checkbox"
             name="agree"
-            value="yes"
           >
             아래 내용을 확인하였습니다
           </CheckBox>
