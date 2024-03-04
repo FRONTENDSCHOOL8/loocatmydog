@@ -2,6 +2,7 @@ import Payment from '@/components/molecules/Payment/Payment';
 import ProfileCard from '@/components/molecules/ProfileCard/ProfileCard';
 import ProfileListLink from '@/components/molecules/ProfileListLink/ProfileListLink';
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledMyPage = styled.div`
@@ -40,6 +41,12 @@ const PaymentPlusBox = styled.div`
 `;
 
 const MyPage = () => {
+  const navigate = useNavigate();
+
+  const handleProfileCardClick = () => {
+    navigate('/add_mypet');
+  };
+
   return (
     <StyledMyPage>
       <UserProfile
@@ -49,7 +56,12 @@ const MyPage = () => {
       />
       <ProfileCardSection>
         <span className="petSpan">반려동물</span>
-        <ProfileCard isChecked={false} profile={false} name={'현재 없음'}>
+        <ProfileCard
+          // onClick={handleProfileCardClick}
+          isChecked={false}
+          profile={false}
+          name={'현재 없음'}
+        >
           {'반려동물을 등록해주세요'}
         </ProfileCard>
       </ProfileCardSection>

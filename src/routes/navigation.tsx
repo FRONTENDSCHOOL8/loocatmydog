@@ -1,16 +1,16 @@
-import MyPage from '@/components/organisms/MyPage/MyPage';
-import Splash from '@/components/organisms/Splash/Splash';
-import Settings from '@/components/organisms/Settings/Settings';
-import AddPet from '@/components/organisms/AddPet/AddPet';
-import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
-import HeartList from '@/components/organisms/HeartList/HeartList';
-import { RouteObject } from 'react-router-dom';
 import { HeaderProps } from '@/components/molecules/Header/Header';
-import Landing from '@/pages/Landing/Landing';
+import AddPet from '@/components/organisms/AddPet/AddPet';
+import HeartList from '@/components/organisms/HeartList/HeartList';
+import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
+import MyPage from '@/components/organisms/MyPage/MyPage';
+import Settings from '@/components/organisms/Settings/Settings';
 import StoryWrite, {
   storyFormAction,
 } from '@/components/organisms/Stories/StoryWrite';
 import Stories from '@/components/organisms/Stories/Stories';
+import Landing from '@/pages/Landing/Landing';
+import SignUp from '@/pages/SignUp/SignUp';
+import { RouteObject } from 'react-router-dom';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -30,7 +30,7 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/signup',
-    element: '',
+    element: <SignUp />,
     headerType: ['step', null],
   },
   // 종연님
