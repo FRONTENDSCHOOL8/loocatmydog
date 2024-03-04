@@ -1,26 +1,29 @@
-import styled from 'styled-components';
+import styled, { RuleSet } from 'styled-components';
 import { register } from 'swiper/element/bundle';
 import HeartButton from '@/components/atoms/HeartButton/HeartButton';
-import { ReactElement } from 'react';
+import React from 'react';
 
+interface SwiperParams {
+  [key: string]: string | number | boolean;
+}
 interface ContentSwiperContainerProps {
-  contents: ReactElement[];
-  perView?: number;
-  slideGap?: number;
-}
-interface swiperParams {
-  slidesPerView: number;
-  direction: 'horizontal' | 'vertical';
-  spaceBetween: number;
+  contents: React.JSX.Element[];
+  swiperParams: SwiperParams;
+  styles?: RuleSet<object>;
 }
 
-const StyledContentSwiperContainer = styled.div`
+interface StyledContentSwiperContainerProps {
+  $styles?: ContentSwiperContainerProps['styles'];
+}
+
+const StyledContentSwiperContainer = styled.div<StyledContentSwiperContainerProps>`
+  inline-size: 100%;
+
   .swiper-container {
     inline-size: 100%;
-    block-size: 160px;
   }
 
-  & div {
+  .swiper-slide {
     inline-size: 100%;
   }
 `;
@@ -33,23 +36,21 @@ const componentContents = [
   <HeartButton key={2} fill={true} />,
 ];
 
+const defaultSwiperParams: SwiperParams = {
+  direction: 'horizontal',
+};
+
 const ContentSwiperContainer = ({
   contents = componentContents,
-  perView = 3,
-  slideGap = 10,
+  swiperParams = defaultSwiperParams,
+  styles,
 }: ContentSwiperContainerProps) => {
-  const swiperParams: swiperParams = {
-    direction: 'horizontal',
-    slidesPerView: perView,
-    spaceBetween: 10,
-  };
-
   return (
-    <StyledContentSwiperContainer>
+    <StyledContentSwiperContainer $styles={styles}>
       <swiper-container className="swiper-container" {...swiperParams}>
         {contents.map((content, index) => (
           <swiper-slide className="swiper-slide" key={index}>
-            <div>{content}</div>
+            {content}
           </swiper-slide>
         ))}
       </swiper-container>

@@ -10,6 +10,7 @@ import Landing from '@/pages/Landing/Landing';
 import StoryWrite, {
   storyFormAction,
 } from '@/components/organisms/Stories/StoryWrite';
+import Stories from '@/components/organisms/Stories/Stories';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -72,7 +73,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 종명님
   {
     path: '/stories',
-    element: '',
+    element: <Stories />,
     headerType: ['logo', null],
   },
   {

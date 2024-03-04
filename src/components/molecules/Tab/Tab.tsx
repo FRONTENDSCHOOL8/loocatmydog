@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const StyledTabBox = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
   padding-inline: 10px;
   padding-block: 15px;
@@ -70,7 +71,7 @@ const Tab = ({ mode, front, after, onClick, ...restProps }: TabBoxProps) => {
           type="radio"
           name="books"
           id="presentBook"
-          checked={mode === 'front'}
+          defaultChecked={mode === 'front'}
         />
       </div>
       <div>
@@ -85,7 +86,7 @@ const Tab = ({ mode, front, after, onClick, ...restProps }: TabBoxProps) => {
           type="radio"
           name="books"
           id="previousBook"
-          checked={mode === 'after'}
+          defaultChecked={mode === 'after'}
         />
       </div>
     </StyledTabBox>
