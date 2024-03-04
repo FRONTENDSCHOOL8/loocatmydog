@@ -5,7 +5,7 @@ const StyledSettingsBox = styled.div`
   & .settings {
     display: block;
     margin-block-start: 40px;
-    margin-block-end: 10px;
+    margin-block-end: 5px;
     padding: 10px 20px;
     ${(props) => props.theme.fontStyles.headingMd}
   }
