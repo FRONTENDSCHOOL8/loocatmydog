@@ -7,6 +7,7 @@ import Settings from '@/components/organisms/Settings/Settings';
 import StoryWrite, {
   storyFormAction,
 } from '@/components/organisms/Stories/StoryWrite';
+import Stories from '@/components/organisms/Stories/Stories';
 import Landing from '@/pages/Landing/Landing';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
@@ -72,7 +73,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 종명님
   {
     path: '/stories',
-    element: '',
+    element: <Stories />,
     headerType: ['logo', null],
   },
   {
