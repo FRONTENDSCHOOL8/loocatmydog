@@ -5,6 +5,7 @@ import HeartButton from '@/components/atoms/HeartButton/HeartButton';
 import Calendar from '@/components/atoms/Calendar/Calendar';
 import React from 'react';
 import SearchInput from '../SearchInput/SearchInput';
+import useModalControlStore from '@/store/useModalControl';
 
 // type = 'step' | 'main' | 'logo'  | 'place' | 'popup' | 'back'
 export interface HeaderProps {
@@ -43,6 +44,10 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   & .text-title {
     ${(props) => props.theme.fontStyles.headingMd}
     color: ${(props) => props.theme.colors.textBlack};
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
   }
   & .text-step {
     ${(props) => props.theme.fontStyles.textSemiboldSm}
@@ -55,10 +60,13 @@ const StyledHeader = styled.header<StyledHeaderProps>`
     display: flex;
     justify-content: center;
     align-items: center;
+    inline-size: 100%;
+    block-size: 100%;
   }
 `;
 
 function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
+  const { setModal } = useModalControlStore();
   const navigate = useNavigate();
   const handleClickLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (type === 'popup') return;
@@ -76,13 +84,14 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
       <button
         type="button"
         className="left-side"
-        aria-label="사이드 메뉴"
+        aria-label="사이드메뉴 열기"
+        onClick={() => setModal(true)}
       ></button>
     );
   else
     leftSideContents = (
       <Link
-        to={'/'}
+        to={'/main'}
         onClick={handleClickLink}
         className="left-side"
         aria-label={ariaLabel}
@@ -96,11 +105,7 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
     },
     main: {
       center: (
-        <Calendar
-          minMaxDateRange={[null, null]}
-          customInput={<SearchInput address="마포구" />}
-          isModal
-        />
+        <Calendar customInput={<SearchInput address="마포구" />} isModal />
       ),
       right: (
         <h1>
@@ -110,7 +115,7 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
     },
     logo: {
       center: (
-        <h1>
+        <h1 className="text-title">
           <LogoInline inlineSize={67} />
         </h1>
       ),

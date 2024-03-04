@@ -1,4 +1,6 @@
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
+import useModalControlStore from '@/store/useModalControl';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,6 +11,7 @@ const StyledDimmed = styled.div`
   inline-size: 100%;
   block-size: 100%;
   background-color: rgba(0, 0, 0, 0.35);
+  z-index: 9999;
 `;
 
 const StyledSideMenuContainer = styled.div`
@@ -18,6 +21,7 @@ const StyledSideMenuContainer = styled.div`
   inline-size: 72.5%;
   block-size: 100dvh;
   background-color: ${(props) => props.theme.colors.white};
+  z-index: 9999;
 
   &::before {
     content: '';
@@ -108,11 +112,22 @@ const profileMockData = {
 };
 
 const SideMenu = () => {
+  const { setModal } = useModalControlStore();
+  const handleCloseModal = (
+    e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
+  ) => {
+    if (e.target === e.currentTarget) setModal(false);
+  };
   return (
-    <StyledDimmed>
+    <StyledDimmed onClick={handleCloseModal}>
       <StyledSideMenuContainer>
         <div className="header">
-          <button type="button" className="close-button"></button>
+          <button
+            type="button"
+            className="close-button"
+            aria-label="사이드메뉴 닫기"
+            onClick={handleCloseModal}
+          ></button>
         </div>
         <StyledSideMenuInnerContainer $gap={5}>
           <UserProfile
