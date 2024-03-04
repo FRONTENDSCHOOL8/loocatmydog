@@ -1,6 +1,5 @@
-import Header from '@/components/molecules/Header/Header';
-import StoryCard from '@/components/molecules/StoryCard/StoryCard';
 import Tab from '@/components/molecules/Tab/Tab';
+import { useEffect, useState } from 'react';
 
 /* 
   storycard
@@ -12,59 +11,49 @@ import Tab from '@/components/molecules/Tab/Tab';
     - userId = 작성자 id
     - starCount? = 별 개수 [데이터]
     - createDate = 생성 날짜 [데이터]
+      - "created": "2022-01-01 01:00:00.123Z",
+      - new Date(created).getTime();
     - text = 내용 [데이터]
 */
-
-const dummyData = {
-  names: '',
-  version: '',
-  author: '',
-  items: [
-    {
-      id: 'asd-12312412',
-      writer: 'qwe-123142',
-      type: 'story',
-      content: '안녕하세요',
-      productId: 'qwezx-asdaqwe',
-      rate: 3,
-      image: '/images/story_sample1.jpg',
-      created: '2024-01-04 13:32:35.990Z',
-      updated: '2024-01-04 13:45:38.296Z',
-    },
-  ],
+const readStory = async (mode: 'front' | 'after') => {
+  const option = {};
+  try {
+    // if(mode === "after"){
+    //   option.filter = `userId = ${userId}`
+    // }
+    // const record = await db.collection('boards').getFullList({
+    //   filter: `type = "stories"`,
+    // });
+    // console.log(record);
+    // record.map((data, index)=>{
+    // })
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const Stories = () => {
-  const datas = dummyData.items;
-  const storyCardList = datas.map(
-    (
-      {
-        id,
-        writer: userId,
-        type,
-        content: text,
-        productId,
-        rate,
-        image,
-        created,
-      },
-      index
-    ) => {
-      console.log(id, userId, type);
+  const [modeState, setModeState] = useState<'front' | 'after'>('front');
+
+  const handleMode = () => {
+    if (modeState === 'front') {
+      setModeState('after');
+    } else {
+      setModeState('front');
     }
-  );
+  };
+
+  useEffect(() => {
+    readStory(modeState);
+  }, [modeState]);
 
   return (
     <>
-      <Header type={'logo'} />
       <Tab
-        mode={'front'}
+        mode={modeState}
         front={'진행 예약'}
         after={'지난 예약'}
-        onModeChange={(mode) => {
-          if (mode === 'front') mode = 'after';
-          else if (mode === 'after') mode = 'front';
-        }}
+        onClick={handleMode}
       />
       {/* <StoryCard /> */}
     </>

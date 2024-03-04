@@ -26,6 +26,8 @@ const StyledImageSwiperContainer = styled.div`
   .swiper-container {
     inline-size: 100%;
     block-size: 160px;
+
+    // aspect-ratio = 2:1;
   }
 
   & div {

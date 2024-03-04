@@ -1,9 +1,9 @@
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import styled from 'styled-components';
-import { Form, redirect } from 'react-router-dom';
+import { Form, redirect, useLocation } from 'react-router-dom';
 import Photo from '@/components/atoms/Photo/Photo';
 import { ChangeEvent, MouseEvent, useState } from 'react';
-import db from './pocketbase';
+import pb from '@/api/pocketbase';
 import getFirstPathName from '@/utils/getFirstPathName';
 
 const StyledStoryWrite = styled.div`
@@ -62,23 +62,24 @@ const StyledStoryWrite = styled.div`
   photos
   created
 */
+const imageFiles: File[] = [];
 
 const StoryWrite = () => {
   const [imageURLs, setImageURLs] = useState<string[]>([]);
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   const handleImageInput = (e: ChangeEvent<HTMLInputElement>) => {
     let file;
 
     if (e.target.files && e.target.files[0]) {
       file = e.target.files[0];
+      imageFiles.push(file);
     }
 
     if (imageURLs.length === 4) {
       alert('이미지 등록은 4개까지만 가능합니다');
       return;
     }
-    console.log(file);
+
     const fileURL = URL.createObjectURL(file as Blob);
     if (fileURL) {
       setImageURLs([...imageURLs, fileURL]);
@@ -88,7 +89,12 @@ const StoryWrite = () => {
 
   const handleImageDelete = (e: MouseEvent<HTMLButtonElement>) => {
     const currentSource = e.currentTarget.dataset.src;
-    setImageURLs(imageURLs.filter((url) => url !== currentSource));
+    setImageURLs(
+      imageURLs.filter((url, index) => {
+        imageFiles.splice(index, 1);
+        return url !== currentSource;
+      })
+    );
   };
 
   return (
@@ -106,12 +112,12 @@ const StoryWrite = () => {
             placeholder="공유하고 싶은 이야기가 있나요?"
             required
           />
-          {imageURLs.map((url, index) => (
+          {imageFiles.map((url, index) => (
             <input
               key={index}
               type="hidden"
               name={`photo_${index}`}
-              value={url}
+              value={''}
             />
           ))}
         </Form>
@@ -136,7 +142,7 @@ export default StoryWrite;
 
 export async function storyFormAction({ request }: { request: any }) {
   const type = getFirstPathName();
-  console.log(type);
+
   const formData = await request.formData();
   const photoUrls = [];
 
@@ -149,7 +155,7 @@ export async function storyFormAction({ request }: { request: any }) {
   const eventData = {
     writer: null,
     content: formData.get('textArea'),
-    image: ['가스파르.png'],
+    image: imageFiles,
     type: type,
     productId: null,
     rate: null,
@@ -157,11 +163,13 @@ export async function storyFormAction({ request }: { request: any }) {
 
   console.log(eventData);
 
-  // try {
-  //   await db.collection('boards').create(eventData);
-  // } catch (error) {
-  //   console.log('Error while writing : ', error);
-  // }
+  try {
+    await pb.collection('boards').create(eventData);
+    imageFiles.splice(0, imageFiles.length);
+    alert('스토리 작성이 완료됐습니다.');
+  } catch (error) {
+    console.log('Error while writing : ', error);
+  }
 
-  return redirect('/stories/post');
+  return redirect('/stories/');
 }
