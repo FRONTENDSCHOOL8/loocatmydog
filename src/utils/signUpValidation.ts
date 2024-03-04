@@ -45,6 +45,5 @@ export function isGenderNo(value: string) {
 // 휴대폰 번호 검사
 export function isPhone(value: string) {
   const reg = /^(01[016789]{1})[0-9]{3,4}[0-9]{4}$/;
-  console.log(reg.test(value));
   return reg.test(value);
 }

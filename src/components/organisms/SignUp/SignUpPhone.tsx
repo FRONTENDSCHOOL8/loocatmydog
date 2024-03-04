@@ -1,7 +1,7 @@
 import Button from '@/components/atoms/Button/Button';
 import styled from 'styled-components';
 import FormInput from '../../molecules/FormInput/FormInput';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useInput } from '@/hooks/useInput';
 import {
   isBirthday,
@@ -10,6 +10,7 @@ import {
   isPhone,
 } from '@/utils/signUpValidation';
 import { getRandomNumber } from '@/utils';
+import SignUpHeader from './SignUpHeader';
 
 const StyledSignUpPhone = styled.div`
   padding-inline: 20px;
@@ -89,8 +90,19 @@ const StyledSignUpPhone = styled.div`
     }
   }
 `;
+interface SignUpPhoneData {
+  name: string;
+  birthday: string;
+  genderNo: string;
+  phone: string;
+}
+interface SignUpPhoneProps extends SignUpPhoneData {
+  updateFields: (fields: Partial<SignUpPhoneData>) => void;
+  back: () => void;
+  next: () => void;
+}
 
-const SignUpPhone = () => {
+const SignUpPhone = ({ back, next, updateFields }: SignUpPhoneProps) => {
   // '다음으로' 버튼 활성 여부 state
   const [isActive, setIsActive] = useState(false);
 
@@ -129,6 +141,10 @@ const SignUpPhone = () => {
   // 인증번호 state
   const [certificationNumber, setCertificationNumber] = useState('');
 
+  // 사용자가 입력한 인증번호 state
+  const [enteredCertificationNumber, setEnteredCertificationNumber] =
+    useState('');
+
   // '다음으로' 버튼 활성화를 위한 useEffect
   useEffect(() => {
     if (
@@ -162,128 +178,148 @@ const SignUpPhone = () => {
     setCertificationNumber(randomNumber);
   };
 
+  const handleEnteredCertificationNumber = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEnteredCertificationNumber(e.target.value);
+  };
+
+  const handleClickNext = () => {
+    if (certificationNumber === enteredCertificationNumber) {
+      next();
+      updateFields({
+        name: nameValue,
+        birthday: birthdayValue,
+        genderNo: genderNoValue,
+        phone: phoneValue,
+      });
+    }
+  };
+
   return (
-    <StyledSignUpPhone>
-      <div className="div-phase">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div className="pWrapper">
-        <p className="p-signUp">본인인증이 필요해요.</p>
-      </div>
-      <div className="inputWrapper">
-        <div className="inputPositionWrapper">
-          <FormInput
-            mode={'register'}
-            type={'text'}
-            name={'name'}
-            placeholder="실명 입력"
-            value={nameValue}
-            onChange={handleNameChange}
-            onBlur={handleNameBlur}
-          >
-            이름
-          </FormInput>
-          {nameHasError && (
-            <span className="span-error">
-              2~10자리 한글 조합으로 입력해주세요.
-            </span>
-          )}
+    <>
+      <SignUpHeader type={'step'} phase="2/3" back={back} />
+      <StyledSignUpPhone>
+        <div className="div-phase">
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
-        <div className="inputIdentityNumberWrapper inputPositionWrapper">
-          <div className="inputIdentityFirstNumberWrapper">
+        <div className="pWrapper">
+          <p className="p-signUp">본인인증이 필요해요.</p>
+        </div>
+        <div className="inputWrapper">
+          <div className="inputPositionWrapper">
             <FormInput
               mode={'register'}
-              type={'number'}
-              name={'birthday'}
-              placeholder="생년월일"
-              value={birthdayValue}
-              onChange={handleBirthdayChange}
-              onBlur={handleBirthdayBlur}
+              type={'text'}
+              name={'name'}
+              placeholder="실명 입력"
+              value={nameValue}
+              onChange={handleNameChange}
+              onBlur={handleNameBlur}
             >
-              생년월일
+              이름
             </FormInput>
-            {birthdayHasError && (
-              <span className="span-error">6자리 생년월일을 입력해주세요.</span>
-            )}
-            {genderNoHasError && (
+            {nameHasError && (
               <span className="span-error">
-                1~4 사이의 한 자리수를 입력해주세요.
+                2~10자리 한글 조합으로 입력해주세요.
               </span>
             )}
           </div>
-          <div className="inputIdentityLastNumberWrapper">
-            <span>-</span>
-            <input
-              type="number"
-              name="genderNo"
-              value={genderNoValue}
-              onChange={handleGenderNoChange}
-              onBlur={handleGenderNoBlur}
-            />
-            <span className="span-star">******</span>
+          <div className="inputIdentityNumberWrapper inputPositionWrapper">
+            <div className="inputIdentityFirstNumberWrapper">
+              <FormInput
+                mode={'register'}
+                type={'number'}
+                name={'birthday'}
+                placeholder="생년월일"
+                value={birthdayValue}
+                onChange={handleBirthdayChange}
+                onBlur={handleBirthdayBlur}
+              >
+                생년월일
+              </FormInput>
+              {birthdayHasError && (
+                <span className="span-error">
+                  6자리 생년월일을 입력해주세요.
+                </span>
+              )}
+              {genderNoHasError && (
+                <span className="span-error">
+                  1~4 사이의 한 자리수를 입력해주세요.
+                </span>
+              )}
+            </div>
+            <div className="inputIdentityLastNumberWrapper">
+              <span>-</span>
+              <input
+                type="number"
+                name="genderNo"
+                value={genderNoValue}
+                onChange={handleGenderNoChange}
+                onBlur={handleGenderNoBlur}
+              />
+              <span className="span-star">******</span>
+            </div>
+          </div>
+
+          <div className="inputPositionWrapper">
+            <FormInput
+              mode={'register'}
+              type={'number'}
+              name={'phone'}
+              placeholder="휴대폰 번호 입력"
+              value={phoneValue}
+              onChange={handlePhoneChange}
+              onBlur={handlePhoneBlur}
+            >
+              휴대폰 정보
+            </FormInput>
+
+            {phoneHasError && (
+              <span className="span-error">휴대폰 번호를 확인해주세요.</span>
+            )}
+          </div>
+          <div className="inputPositionWrapper">
+            <FormInput
+              mode={'register'}
+              type={'number'}
+              name={'phone'}
+              placeholder="인증번호 입력"
+              onChange={handleEnteredCertificationNumber}
+            >
+              인증번호 입력
+            </FormInput>
+            {certificationNumber && (
+              <span className="span-error">
+                인증 번호는 {certificationNumber} 입니다.
+              </span>
+            )}
           </div>
         </div>
 
-        <div className="inputPositionWrapper">
-          <FormInput
-            mode={'register'}
-            type={'number'}
-            name={'phone'}
-            placeholder="휴대폰 번호 입력"
-            value={phoneValue}
-            onChange={handlePhoneChange}
-            onBlur={handlePhoneBlur}
+        {!isActive && (
+          <Button size={'100%'} mode={'disabled'}>
+            인증번호 요청
+          </Button>
+        )}
+        {isActive && !certificationNumber && (
+          <Button
+            size={'100%'}
+            mode={'normal'}
+            onClick={handleClickCertificationButton}
           >
-            휴대폰 정보
-          </FormInput>
-
-          {phoneHasError && (
-            <span className="span-error">휴대폰 번호를 확인해주세요.</span>
-          )}
-        </div>
-        <div className="inputPositionWrapper">
-          <FormInput
-            mode={'register'}
-            type={'number'}
-            name={'phone'}
-            placeholder="인증번호 입력"
-          >
+            인증번호 요청
+          </Button>
+        )}
+        {isActive && certificationNumber && (
+          <Button size={'100%'} mode={'normal'} onClick={handleClickNext}>
             인증번호 입력
-          </FormInput>
-          {certificationNumber && (
-            <span className="span-error">
-              인증 번호는 {certificationNumber} 입니다.
-            </span>
-          )}
-        </div>
-      </div>
-
-      {!isActive && (
-        <Button size={'100%'} mode={'disabled'}>
-          인증번호 요청
-        </Button>
-      )}
-      {isActive && !certificationNumber && (
-        <Button
-          size={'100%'}
-          mode={'normal'}
-          onClick={handleClickCertificationButton}
-        >
-          인증번호 요청
-        </Button>
-      )}
-      {isActive && certificationNumber && (
-        <Button
-          size={'100%'}
-          mode={'normal'}
-          onClick={handleClickCertificationButton}
-        >
-          인증번호 입력
-        </Button>
-      )}
-    </StyledSignUpPhone>
+          </Button>
+        )}
+      </StyledSignUpPhone>
+    </>
   );
 };
 
