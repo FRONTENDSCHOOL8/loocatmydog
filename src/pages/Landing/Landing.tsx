@@ -1,5 +1,6 @@
 import Button from '@/components/atoms/Button/Button';
 import LogoInline from '@/components/atoms/Logo/LogoInline';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledLanding = styled.div`
@@ -46,6 +47,10 @@ const StyledLanding = styled.div`
     column-gap: 5px;
     padding-inline: 20px;
     padding-block-start: 10px;
+
+    & a {
+      flex-grow: 1;
+    }
   }
 `;
 
@@ -66,12 +71,16 @@ const Landing = () => {
         </div>
       </div>
       <div className="buttonRowWrapper">
-        <Button size={'100%'} mode={'gray'}>
-          이메일 가입
-        </Button>
-        <Button size={'100%'} mode={'gray'}>
-          로그인
-        </Button>
+        <Link to={'/signup'}>
+          <Button size={'100%'} mode={'gray'}>
+            이메일 가입
+          </Button>
+        </Link>
+        <Link to={'/signin'}>
+          <Button size={'100%'} mode={'gray'}>
+            로그인
+          </Button>
+        </Link>
       </div>
     </StyledLanding>
   );
