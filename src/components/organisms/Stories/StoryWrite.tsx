@@ -3,36 +3,34 @@ import styled from 'styled-components';
 import { Form, redirect } from 'react-router-dom';
 import Photo from '@/components/atoms/Photo/Photo';
 import { ChangeEvent, MouseEvent, useState } from 'react';
+import db from './pocketbase';
+import getFirstPathName from '@/utils/getFirstPathName';
 
 const StyledStoryWrite = styled.div`
   inline-size: 100%;
   block-size: 75%;
 
-  .button-wrapper {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    padding: 18px 20px;
-
-    .write-submit {
-      inline-size: 60px;
-      block-size: 26px;
-      border-radius: 13px;
-      background-color: ${(props) => props.theme.colors.primary};
-      padding: 4px 6px;
-      ${(props) => props.theme.fontStyles.textSemiboldMd}
-    }
+  .write-submit {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    inline-size: 60px;
+    block-size: 26px;
+    border-radius: 13px;
+    background-color: ${(props) => props.theme.colors.primary};
+    padding: 4px 6px;
+    ${(props) => props.theme.fontStyles.textSemiboldMd}
   }
 
   .textArea-wrapper {
     display: flex;
     inline-size: 100%;
     block-size: 100%;
-    padding: 10px 20px;
+    padding: 10px 12px;
     gap: 10px;
 
     & Form {
-      inline-size: 85%;
+      inline-size: 87.25%;
       padding: 10px 0px;
     }
 
@@ -67,6 +65,7 @@ const StyledStoryWrite = styled.div`
 
 const StoryWrite = () => {
   const [imageURLs, setImageURLs] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   const handleImageInput = (e: ChangeEvent<HTMLInputElement>) => {
     let file;
@@ -79,7 +78,7 @@ const StoryWrite = () => {
       alert('이미지 등록은 4개까지만 가능합니다');
       return;
     }
-
+    console.log(file);
     const fileURL = URL.createObjectURL(file as Blob);
     if (fileURL) {
       setImageURLs([...imageURLs, fileURL]);
@@ -94,14 +93,9 @@ const StoryWrite = () => {
 
   return (
     <StyledStoryWrite>
-      <div className="button-wrapper">
-        <button>
-          <img src="/images/bigXIcon.svg" alt="닫기" />
-        </button>
-        <button className="write-submit" type="submit" form="storyForm">
-          게시하기
-        </button>
-      </div>
+      <button className="write-submit" type="submit" form="storyForm">
+        게시하기
+      </button>
       <div className="textArea-wrapper">
         <ProfileImage />
         <Form id="storyForm" method="post">
@@ -141,6 +135,8 @@ const StoryWrite = () => {
 export default StoryWrite;
 
 export async function storyFormAction({ request }: { request: any }) {
+  const type = getFirstPathName();
+  console.log(type);
   const formData = await request.formData();
   const photoUrls = [];
 
@@ -151,10 +147,21 @@ export async function storyFormAction({ request }: { request: any }) {
   }
 
   const eventData = {
+    writer: null,
     content: formData.get('textArea'),
-    photos: photoUrls,
+    image: ['가스파르.png'],
+    type: type,
+    productId: null,
+    rate: null,
   };
+
   console.log(eventData);
+
+  // try {
+  //   await db.collection('boards').create(eventData);
+  // } catch (error) {
+  //   console.log('Error while writing : ', error);
+  // }
 
   return redirect('/stories/post');
 }

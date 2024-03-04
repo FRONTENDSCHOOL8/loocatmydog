@@ -44,7 +44,7 @@ register();
 
 const ImageSwiperContainer = ({
   imageUrls = TestImageUrls,
-  link = '/',
+  link = '/events',
   type = 'picture',
   onChange,
   ...restProps
