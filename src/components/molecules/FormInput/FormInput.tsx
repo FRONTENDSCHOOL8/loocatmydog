@@ -1,5 +1,11 @@
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
-import { ChangeEventHandler, ElementType, ReactNode, useId } from 'react';
+import {
+  ChangeEventHandler,
+  ElementType,
+  FocusEventHandler,
+  ReactNode,
+  useId,
+} from 'react';
 import styled from 'styled-components';
 
 interface FormInputLabelProps {
@@ -44,6 +50,7 @@ interface FormInputProps {
   hiddenLabel?: boolean;
   placeholder?: string;
   onChange?: ChangeEventHandler;
+  onBlur?: FocusEventHandler;
   [key: string]: any;
 }
 
@@ -57,6 +64,7 @@ const FormInput = ({
   placeholder = '실명 입력',
   value,
   onChange,
+  onBlur,
   ...restProps
 }: FormInputProps) => {
   const FormId = useId();
@@ -81,6 +89,7 @@ const FormInput = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
       />
     </Component>
   );
