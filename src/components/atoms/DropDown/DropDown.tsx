@@ -120,7 +120,7 @@ const DropDown = ({
             <li
               key={menu}
               onClick={handleValue}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
               tabIndex={0}
             >
               {menu}
