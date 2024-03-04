@@ -60,7 +60,7 @@ const StyledEmailBox = styled.div`
 `;
 
 const StyledProfileBox = styled.div`
-  padding-block-start: 36px;
+  padding-block-start: 30px;
 
   & label {
     cursor: pointer;
@@ -73,6 +73,32 @@ const StyledProfileBox = styled.div`
 const StyledAddressBox = styled.div`
   display: flex;
   flex-flow: column;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  margin: 50% auto;
+
+  & div {
+    inline-size: 70%;
+    padding-block-end: 10px;
+    border-bottom: 1px solid ${(props) => props.theme.colors.gray300};
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+
+    & input {
+      border: none;
+      inline-size: 70%;
+    }
+    & button {
+      padding-inline-start: 10px;
+      padding: 10px 15px;
+      ${(props) => props.theme.fontStyles.textSemiboldMd};
+      color: ${(props) => props.theme.colors.orange};
+      border: 1px solid ${(props) => props.theme.colors.orange};
+      border-radius: 4px;
+    }
+  }
 `;
 
 const ModifyProfile = () => {
@@ -83,7 +109,10 @@ const ModifyProfile = () => {
     }
     const fileURL = URL.createObjectURL(file as Blob);
     if (fileURL) {
-      setChangeImg(fileURL);
+      const newImg = fileURL;
+      setChangeImg(newImg);
+      setRecord((prevRecord) => ({ ...prevRecord, avatar: newImg }));
+      console.log('record', record);
     }
   };
   const [changeImg, setChangeImg] = useState('/images/profileNone.svg');
@@ -96,7 +125,6 @@ const ModifyProfile = () => {
           .getOne('p85jypwlgke40oq');
         // 로그인 후 사용자 정보 가져오기
         setRecord(record);
-        console.log('record', record);
       } catch (error) {
         console.error('Error logging in:', error);
       }
@@ -157,7 +185,11 @@ const ModifyProfile = () => {
     if (detailAddress === '') {
       alert('상세주소를 입력해주세요.');
     } else {
-      setAddress(roadAddress, detailAddress);
+      console.log('record', record);
+      const newAddress = `${roadAddress} ${detailAddress}`;
+      setAddress(newAddress);
+      setRecord((prevRecord) => ({ ...prevRecord, address: newAddress }));
+      setIsDetailOpen(!isDetailOpen);
     }
   };
 
@@ -165,9 +197,27 @@ const ModifyProfile = () => {
     setIsEditingAddress(!isEditingAddress);
   };
 
+  const handlePhoneNumber = () => {
+    setIsEditingPhone(!isEditingPhone);
+  };
+
+  const handelChangePhone = (e: ChangeEvent<HTMLInputElement>) => {
+    const newPhone = e.target.value;
+    setPhone(newPhone);
+    setRecord((prevRecord) => ({ ...prevRecord, phoneNumber: newPhone }));
+    setIsEditingPhone(!isEditingPhone);
+  };
+
+  const [isDetailOpen, setIsDetailOpen] = useState(false); // 두 번째 모달의 상태를 관리하는 상태 변수
+
+  // 두 번째 모달을 토글하는 함수
+  const toggleDetail = () => {
+    setIsDetailOpen(!isDetailOpen);
+  };
+
   return (
     <StyledModifyProfileBox>
-      <UserProfile name={'홍길동'} src={changeImg} />
+      <UserProfile name={record.name} src={changeImg} />
       <StyledProfileBox>
         <label htmlFor="modifyCamera">
           <img
@@ -194,7 +244,7 @@ const ModifyProfile = () => {
                 id="name"
                 type="text"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handelChangePhone}
                 required
               />
             ) : (
@@ -203,7 +253,7 @@ const ModifyProfile = () => {
             <button
               className="orangeButton"
               type="button"
-              onClick={() => handleSearchAddress}
+              onClick={handlePhoneNumber}
             >
               {isEditingPhone ? '저장' : '변경'}
             </button>
@@ -213,31 +263,50 @@ const ModifyProfile = () => {
           <span>내 주소</span>
           <div>
             {isEditingAddress ? (
-              <StyledAddressBox>
-                <input value={roadAddress} readOnly placeholder="도로명 주소" />
-                <button onClick={toggle}>주소 검색</button>
-                <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                  <DaumPostcode onComplete={completeHandler} />
-                </Modal>
+              <>
+                <button onClick={toggleDetail}>주소검색</button>
                 <input
                   type="text"
-                  onChange={changeHandler}
-                  value={detailAddress}
-                  placeholder="상세주소"
+                  value={address}
+                  style={{ width: 250 }}
+                  readOnly
+                  placeholder="검색된 주소"
                 />
-              </StyledAddressBox>
+              </>
             ) : (
               <p>{record.address}</p>
             )}
             <button
               className="orangeButton"
               type="button"
-              onClick={clickHandler}
+              onClick={handleSearchAddress}
             >
               {isEditingAddress ? '저장' : '변경'}
             </button>
           </div>
         </StyledEmailBox>
+
+        <Modal isOpen={isDetailOpen} ariaHideApp={false} style={customStyles}>
+          <StyledAddressBox>
+            <div>
+              <input value={roadAddress} readOnly placeholder="도로명 주소" />
+              <button onClick={toggle}>주소 검색</button>
+            </div>
+            <div>
+              <input
+                type="text"
+                onChange={changeHandler}
+                value={detailAddress}
+                placeholder="상세주소"
+              />
+              <button onClick={clickHandler}>주소 저장</button>
+            </div>
+          </StyledAddressBox>
+        </Modal>
+
+        <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
+          <DaumPostcode onComplete={completeHandler} />
+        </Modal>
       </StyledProfileBox>
     </StyledModifyProfileBox>
   );
