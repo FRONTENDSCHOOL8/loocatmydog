@@ -102,9 +102,7 @@ const BigPhoto = ({
     case 'link':
       BigPhotoImage = (
         <Link to={link}>
-          <a href={imgSrc} target="_blank" rel="noopener noreferrer">
-            <img src={imgSrc} alt="" />
-          </a>
+          <img src={imgSrc} alt="" />
         </Link>
       );
       break;

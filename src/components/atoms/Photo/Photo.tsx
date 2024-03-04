@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components';
 
 export interface ButtonProps {
   imgSrc?: string;
-  totalImageNum?: Number;
-  currentImageNum?: Number;
+  totalImageNum?: number;
+  currentImageNum?: number;
   type: 'default' | 'picture' | 'total';
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -111,7 +111,7 @@ const Photo = ({
     case 'picture':
       PhotoImage = (
         <div>
-          <button type="button" onClick={onClick}>
+          <button type="button" onClick={onClick} data-src={imgSrc}>
             <img src="/images/xIcon.svg" alt="삭제" />
           </button>
           <img className="photo" src={imgSrc} alt="" />

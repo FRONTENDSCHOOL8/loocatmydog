@@ -7,6 +7,9 @@ import HeartList from '@/components/organisms/HeartList/HeartList';
 import { RouteObject } from 'react-router-dom';
 import { HeaderProps } from '@/components/molecules/Header/Header';
 import Landing from '@/pages/Landing/Landing';
+import StoryWrite, {
+  storyFormAction,
+} from '@/components/organisms/Stories/StoryWrite';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -74,8 +77,9 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/stories/post',
-    element: '',
+    element: <StoryWrite />,
     headerType: ['popup', null],
+    action: storyFormAction,
   },
   {
     path: '/reserve_list',

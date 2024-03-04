@@ -8,6 +8,11 @@ interface ContentSwiperContainerProps {
   perView?: number;
   slideGap?: number;
 }
+interface swiperParams {
+  slidesPerView: number;
+  direction: 'horizontal' | 'vertical';
+  spaceBetween: number;
+}
 
 const StyledContentSwiperContainer = styled.div`
   .swiper-container {
@@ -33,10 +38,10 @@ const ContentSwiperContainer = ({
   perView = 3,
   slideGap = 10,
 }: ContentSwiperContainerProps) => {
-  const swiperParams = {
+  const swiperParams: swiperParams = {
     direction: 'horizontal',
     slidesPerView: perView,
-    sapceBetween: 10,
+    spaceBetween: 10,
   };
 
   return (
