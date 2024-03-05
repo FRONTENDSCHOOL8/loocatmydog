@@ -48,7 +48,6 @@ interface SearchInputProps {
 
 const SearchInput = forwardRef<any, SearchInputProps>(
   ({ address, onClick, value = '' }, ref) => {
-    console.log(value);
     const date = value?.replace(' - ', ' ~ ');
     const dateText = date === '' ? '날짜선택' : date;
     return (

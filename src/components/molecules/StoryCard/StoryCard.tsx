@@ -156,7 +156,7 @@ const StyledMoreViewButton = styled.button.attrs({
     top: 50%;
     left: 0;
     translate: 0 -50%;
-    rotate: ${(props) => (props.$isExpand ? '180deg' : '0deg')};
+    rotate: ${(props) => (props.$isExpand ? '0deg' : '180deg')};
     background: url('/images/direction_down.svg') no-repeat;
     inline-size: 10px;
     block-size: 6px;
@@ -180,9 +180,9 @@ const StoryCard = ({
     .fill(false)
     .map((_, idx) => idx < starCount);
   const [isPopUpMenuOpen, setIsPopUpMenuOpen] = useState<boolean>(false);
-  const [isExpandText, setIsExpandText] = useState<boolean>(false);
+  const [isExpandText, setIsExpandText] = useState<boolean>(text.length > 150);
 
-  const textContents = isExpandText ? text : text.slice(0, 150) + '...';
+  const textContents = isExpandText ? text.slice(0, 150) + '...' : text;
 
   const handleDeleteStory = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log('story deleted');
@@ -244,7 +244,7 @@ const StoryCard = ({
             $isExpand={isExpandText}
             onClick={() => setIsExpandText((prev) => !prev)}
           >
-            {isExpandText ? '접기' : '펼치기'}
+            {isExpandText ? '펼치기' : '접기'}
           </StyledMoreViewButton>
         )}
       </StyledStoryContents>
