@@ -2,6 +2,7 @@ import Button from '@/components/atoms/Button/Button';
 import CheckBox from '@/components/atoms/CheckBox/CheckBox';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import SignUpHeader from './SignUpHeader';
 
 const StyledSignUpAgree = styled.div`
   padding-inline: 20px;
@@ -45,7 +46,11 @@ const StyledSignUpAgree = styled.div`
   }
 `;
 
-const SignUpAgree = () => {
+interface SignUpAgreeProps {
+  back(): void;
+  next(): void;
+}
+const SignUpAgree = ({ back, next }: SignUpAgreeProps) => {
   // 이용약관 동의 초기값 false
   const initialValue: { [key: number]: boolean } = {
     0: false,
@@ -108,76 +113,79 @@ const SignUpAgree = () => {
   };
 
   return (
-    <StyledSignUpAgree>
-      <p className="p-signUp">어서오세요,</p>
-      <p className="p-signUp">약관동의가 필요해요</p>
-      <div className="div-agreeAll">
-        <CheckBox
-          reservation={false}
-          isChecked={isAllChecked}
-          onChange={handleAllCheck}
-        >
-          이용약관 전체 동의
-        </CheckBox>
-      </div>
-      <div className="div-line"></div>
-      <div className="div-checkBoxList">
-        <CheckBox
-          reservation={false}
-          isChecked={isChecked[0]}
-          onChange={() => handleCheck(0)}
-        >
-          봐주개냥 서비스 이용약관 동의(필수)
-        </CheckBox>
-        <span className="span-checkBoxList">보기</span>
-      </div>
-      <div className="div-checkBoxList">
-        <CheckBox
-          reservation={false}
-          isChecked={isChecked[1]}
-          onChange={() => handleCheck(1)}
-        >
-          개인정보 수집 및 이용 동의(필수)
-        </CheckBox>
-        <span className="span-checkBoxList">보기</span>
-      </div>
-      <div className="div-checkBoxList">
-        <CheckBox
-          reservation={false}
-          isChecked={isChecked[2]}
-          onChange={() => handleCheck(2)}
-        >
-          안전보상 프로그램 약관 동의(필수)
-        </CheckBox>
-        <span className="span-checkBoxList">보기</span>
-      </div>
-      <div className="div-checkBoxList">
-        <CheckBox
-          reservation={false}
-          isChecked={isChecked[3]}
-          onChange={() => handleCheck(3)}
-        >
-          위치기반 서비스 이용약관 동의(필수)
-        </CheckBox>
-        <span className="span-checkBoxList">보기</span>
-      </div>
-      <div className="imgWrapper">
-        <img
-          src="/images/pet-signUp.png"
-          alt="한 쪽 발을 들고 있는 강아지 사진"
-        />
-      </div>
-      {isActive && (
-        <Button size={'100%'} mode={'normal'}>
-          다음으로
-        </Button>
-      )}
-      {!isActive && (
-        <Button size={'100%'} mode={'disabled'}>
-          다음으로
-        </Button>
-      )}
-    </StyledSignUpAgree>
+    <>
+      <SignUpHeader type={'popup'} back={back} />
+      <StyledSignUpAgree>
+        <p className="p-signUp">어서오세요,</p>
+        <p className="p-signUp">약관동의가 필요해요</p>
+        <div className="div-agreeAll">
+          <CheckBox
+            reservation={false}
+            isChecked={isAllChecked}
+            onChange={handleAllCheck}
+          >
+            이용약관 전체 동의
+          </CheckBox>
+        </div>
+        <div className="div-line"></div>
+        <div className="div-checkBoxList">
+          <CheckBox
+            reservation={false}
+            isChecked={isChecked[0]}
+            onChange={() => handleCheck(0)}
+          >
+            봐주개냥 서비스 이용약관 동의(필수)
+          </CheckBox>
+          <span className="span-checkBoxList">보기</span>
+        </div>
+        <div className="div-checkBoxList">
+          <CheckBox
+            reservation={false}
+            isChecked={isChecked[1]}
+            onChange={() => handleCheck(1)}
+          >
+            개인정보 수집 및 이용 동의(필수)
+          </CheckBox>
+          <span className="span-checkBoxList">보기</span>
+        </div>
+        <div className="div-checkBoxList">
+          <CheckBox
+            reservation={false}
+            isChecked={isChecked[2]}
+            onChange={() => handleCheck(2)}
+          >
+            안전보상 프로그램 약관 동의(필수)
+          </CheckBox>
+          <span className="span-checkBoxList">보기</span>
+        </div>
+        <div className="div-checkBoxList">
+          <CheckBox
+            reservation={false}
+            isChecked={isChecked[3]}
+            onChange={() => handleCheck(3)}
+          >
+            위치기반 서비스 이용약관 동의(필수)
+          </CheckBox>
+          <span className="span-checkBoxList">보기</span>
+        </div>
+        <div className="imgWrapper">
+          <img
+            src="/images/pet-signUp.png"
+            alt="한 쪽 발을 들고 있는 강아지 사진"
+          />
+        </div>
+        {isActive && (
+          <Button size={'100%'} mode={'normal'} onClick={next}>
+            다음으로
+          </Button>
+        )}
+        {!isActive && (
+          <Button size={'100%'} mode={'disabled'}>
+            다음으로
+          </Button>
+        )}
+      </StyledSignUpAgree>
+    </>
   );
 };
 

@@ -1,32 +1,28 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import LogoInline from '@/components/atoms/Logo/LogoInline';
-import HeartButton from '@/components/atoms/HeartButton/HeartButton';
-import Calendar from '@/components/atoms/Calendar/Calendar';
-import React from 'react';
-import SearchInput from '../SearchInput/SearchInput';
-import useModalControlStore from '@/store/useModalControl';
 
-// type = 'step' | 'main' | 'logo'  | 'place' | 'popup' | 'back'
 export interface HeaderProps {
-  type: 'step' | 'main' | 'logo' | 'place' | 'popup' | 'back';
+  type: 'step' | 'popup';
   title?: string | null;
   phase?: string;
+  back(): void;
 }
 interface StyledHeaderProps {
-  $type: 'step' | 'main' | 'logo' | 'place' | 'popup' | 'back';
+  $type: 'step' | 'popup';
 }
 
 const StyledHeader = styled.header<StyledHeaderProps>`
   position: relative;
   inline-size: 100%;
   block-size: 50px;
-  padding: 0.75rem;
+  padding-block: 0.75rem;
+  padding-inline: 2rem;
+  padding: 0.75rem 2rem 0.75rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   column-gap: 10px;
-  border-bottom: 1px solid ${(props) => props.theme.colors.gray300};
 
   & > .left-side {
     inline-size: 23px;
@@ -36,18 +32,12 @@ const StyledHeader = styled.header<StyledHeaderProps>`
         ? `
             background: url('/images/cross.svg') no-repeat center;
           `
-        : props.$type === 'main'
-          ? `background: url('/images/hamburger.svg') no-repeat center`
-          : `background: url('/images/direction_left.svg') no-repeat center`};
+        : `background: url('/images/direction_left.svg') no-repeat center`};
   }
 
   & .text-title {
     ${(props) => props.theme.fontStyles.headingMd}
     color: ${(props) => props.theme.colors.textBlack};
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
   }
   & .text-step {
     ${(props) => props.theme.fontStyles.textSemiboldSm}
@@ -60,38 +50,36 @@ const StyledHeader = styled.header<StyledHeaderProps>`
     display: flex;
     justify-content: center;
     align-items: center;
-    inline-size: 100%;
-    block-size: 100%;
   }
 `;
 
-function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
-  const { setModal } = useModalControlStore();
+function SignUpHeader({
+  type = 'popup',
+  title = '',
+  phase = '1/1',
+  back,
+}: HeaderProps) {
   const navigate = useNavigate();
   const handleClickLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (type === 'popup') return;
     e.preventDefault();
     navigate(-1);
   };
-  const ariaLabel =
-    type === 'step' || type === 'logo' || type === 'place' || type === 'back'
-      ? '뒤로가기'
-      : '닫기';
+  const ariaLabel = type === 'popup' ? '닫기' : '뒤로가기';
 
   let leftSideContents;
-  if (type === 'main')
+  if (type === 'step')
     leftSideContents = (
       <button
-        type="button"
+        onClick={back}
         className="left-side"
-        aria-label="사이드메뉴 열기"
-        onClick={() => setModal(true)}
+        aria-label={ariaLabel}
       ></button>
     );
   else
     leftSideContents = (
       <Link
-        to={'/main'}
+        to={'/'}
         onClick={handleClickLink}
         className="left-side"
         aria-label={ariaLabel}
@@ -103,33 +91,8 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
       center: null,
       right: <span className="text-step">{phase}</span>,
     },
-    main: {
-      center: (
-        <Calendar customInput={<SearchInput address="마포구" />} isModal />
-      ),
-      right: (
-        <h1>
-          <LogoInline inlineSize={67} />
-        </h1>
-      ),
-    },
-    logo: {
-      center: (
-        <h1 className="text-title">
-          <LogoInline inlineSize={67} />
-        </h1>
-      ),
-      right: null,
-    },
-    place: {
-      center: <h1 className="text-title">플레이스</h1>,
-      right: <HeartButton fill={false} />,
-    },
+
     popup: {
-      center: <h1 className="text-title">{title}</h1>,
-      right: null,
-    },
-    back: {
       center: <h1 className="text-title">{title}</h1>,
       right: null,
     },
@@ -143,4 +106,4 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
   );
 }
 
-export default Header;
+export default SignUpHeader;

@@ -31,7 +31,6 @@ export const navigationItems: NavigationRouteObject[] = [
   {
     path: '/signup',
     element: <SignUp />,
-    headerType: ['step', null],
   },
   // 종연님
   {
@@ -83,7 +82,7 @@ export const navigationItems: NavigationRouteObject[] = [
     action: storyFormAction,
   },
   {
-    path: '/reserve_list',
+    path: '/reservation_list',
     element: <></>,
     headerType: ['logo', null],
   },
