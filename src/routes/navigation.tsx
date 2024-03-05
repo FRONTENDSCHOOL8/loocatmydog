@@ -31,7 +31,6 @@ export const navigationItems: NavigationRouteObject[] = [
   {
     path: '/signup',
     element: <SignUp />,
-    headerType: ['step', null],
     action: signupFormAction,
   },
   // 종연님

@@ -18,6 +18,8 @@ interface FormData {
   addressDetail: string;
   zonecode: string;
   sigungu: string;
+  latitude: string;
+  longitude: string;
 }
 
 const INITIAL_DATA: FormData = {
@@ -32,6 +34,8 @@ const INITIAL_DATA: FormData = {
   addressDetail: '',
   zonecode: '',
   sigungu: '',
+  latitude: '',
+  longitude: '',
 };
 
 const SignUp = () => {
@@ -57,7 +61,6 @@ const SignUp = () => {
 
   // 상단의 뒤로가기 버튼 클릭 시 실행
   function back() {
-    console.log('back');
     setCurrentStepIndex((i) => {
       if (i <= 0) return i;
       return i - 1;
@@ -99,8 +102,6 @@ const SignUp = () => {
 export async function signupFormAction({ request }: { request: any }) {
   const formData = await request.formData();
 
-  console.log(formData);
-
   const eventData = {
     email: formData.get('email'),
     password: formData.get('password'),
@@ -110,8 +111,6 @@ export async function signupFormAction({ request }: { request: any }) {
     phone: formData.get('phone'),
     address: formData.get('address'),
   };
-
-  console.log(eventData);
 
   try {
     await pb.collection('users').create(eventData);
