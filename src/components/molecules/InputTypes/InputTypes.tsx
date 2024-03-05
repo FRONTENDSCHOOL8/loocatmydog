@@ -66,7 +66,7 @@ const InputTypes = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange(item, e)
             }
-            value={inputValues[item] as string | any}
+            defaultValue={inputValues[item] as string | any}
             placeholder={item}
             disabled={check}
             style={check ? { paddingInlineStart: '30px' } : {}}

@@ -3,6 +3,7 @@ import React, {
   ReactNode,
   SetStateAction,
   forwardRef,
+  useEffect,
   useRef,
 } from 'react';
 import DatePicker, {
@@ -146,25 +147,27 @@ const DatePickerContainer = (
 };
 
 interface CalenderProps {
-  minMaxDateRange: (Date | null)[];
-
+  minMaxDateRange?: (Date | null)[];
   isModal?: boolean;
   customInput?: ReactNode;
 }
 
 const Calendar = ({
-  minMaxDateRange,
+  minMaxDateRange = [null, null],
   isModal = false,
   customInput = <CustomInput />,
 }: CalenderProps) => {
-  const { dateRange, setDateRange, resetDateRange } = useDateRangeStore();
+  const { dateRange, setDateRange } = useDateRangeStore();
   const [minDate, maxDate] = minMaxDateRange;
   const [startDate, endDate] = dateRange;
   const datePickerRef = useRef<any>(null);
   const handleCloseCalendar = () => {
     datePickerRef.current?.setOpen(false);
-    if (!startDate || !endDate) resetDateRange();
+    if (!startDate || !endDate) setDateRange([minDate, minDate]);
   };
+  useEffect(() => {
+    setDateRange([minDate, minDate]);
+  }, [minDate, setDateRange]);
 
   return (
     <DatePicker
@@ -195,7 +198,9 @@ const Calendar = ({
       endDate={endDate}
       minDate={minDate}
       maxDate={maxDate}
-      onClickOutside={() => resetDateRange()}
+      onClickOutside={() => {
+        (!startDate || !endDate) && setDateRange([minDate, minDate]);
+      }}
       onChange={(date) => setDateRange(date)}
       customInput={customInput}
       inline={!isModal}

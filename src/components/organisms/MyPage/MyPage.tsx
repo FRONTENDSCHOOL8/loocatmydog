@@ -9,10 +9,12 @@ const StyledMyPage = styled.div`
   display: flex;
   flex-direction: column;
   inline-size: 100%;
+  padding-block-start: 20px;
 
   & .petSpan {
     display: inline-block;
     inline-size: 100%;
+    padding-block-start: 20px;
     margin-block: 16px;
     ${(props) => props.theme.fontStyles.textSemiboldMd}
     color:  ${(props) => props.theme.colors.textBlack}

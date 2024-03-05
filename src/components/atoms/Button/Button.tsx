@@ -14,7 +14,7 @@ interface StyledButtonProps {
   $mode?: 'normal' | 'gray' | 'disabled' | 'kakao' | 'google' | 'chat';
 }
 
-const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
+const StyledButton = styled.button.attrs({})<StyledButtonProps>`
   padding-block: 12px;
   padding-inline: 10px;
   inline-size: ${(props) => props.$size};
@@ -27,19 +27,19 @@ const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
       case 'normal':
         style = `
         background-color: #FFD233;
-        border: 1px solid: #FFD233;
+        border: 1px solid #FFD233;
       `;
         break;
       case 'gray':
         style = `
         background-color: #F7F7F7;
-        border: 1px solid: #F7F7F7;
+        border: 1px solid #F7F7F7;
       `;
         break;
       case 'disabled':
         style = `
         background-color: #F7F7F7;
-        border: 1px solid: #D9D9D9;
+        border: 1px solid #D9D9D9;
       `;
         break;
       case 'kakao':
@@ -68,7 +68,7 @@ const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
       default:
         style = `
         background-color: #FFD233;
-        border: 1px solid: #FFD233;
+        border: 1px solid #FFD233;
       `;
         break;
     }
