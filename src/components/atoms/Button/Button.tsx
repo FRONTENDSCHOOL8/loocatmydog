@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 interface ButtonProps {
+  type?: 'button' | 'submit' | 'reset';
   size: string;
   isRounded?: boolean;
   mode: 'normal' | 'gray' | 'disabled' | 'kakao' | 'google' | 'chat';
@@ -14,7 +15,7 @@ interface StyledButtonProps {
   $mode?: 'normal' | 'gray' | 'disabled' | 'kakao' | 'google' | 'chat';
 }
 
-const StyledButton = styled.button.attrs({})<StyledButtonProps>`
+const StyledButton = styled.button<StyledButtonProps>`
   padding-block: 12px;
   padding-inline: 10px;
   inline-size: ${(props) => props.$size};
@@ -107,6 +108,7 @@ const StyledButton = styled.button.attrs({})<StyledButtonProps>`
 `;
 
 const Button = ({
+  type = 'button',
   size = '100%',
   isRounded = false,
   mode = 'normal',
@@ -128,6 +130,7 @@ const Button = ({
 
   return (
     <StyledButton
+      type={type}
       $size={size}
       $isRounded={isRounded}
       $mode={mode}

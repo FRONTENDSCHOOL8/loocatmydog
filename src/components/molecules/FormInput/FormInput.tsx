@@ -49,6 +49,7 @@ interface FormInputProps {
   children?: ReactNode;
   hiddenLabel?: boolean;
   placeholder?: string;
+  isDisabled?: boolean;
   onChange?: ChangeEventHandler;
   onBlur?: FocusEventHandler;
   [key: string]: any;
@@ -63,6 +64,7 @@ const FormInput = ({
   name,
   placeholder = '실명 입력',
   value,
+  isDisabled,
   onChange,
   onBlur,
   ...restProps
@@ -90,6 +92,7 @@ const FormInput = ({
         value={value}
         onChange={onChange}
         onBlur={onBlur}
+        disabled={isDisabled}
       />
     </Component>
   );
