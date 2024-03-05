@@ -81,6 +81,7 @@ const StoryWrite = () => {
     }
 
     const fileURL = URL.createObjectURL(file as Blob);
+
     if (fileURL) {
       setImageURLs([...imageURLs, fileURL]);
       e.target.value = '';
@@ -112,14 +113,6 @@ const StoryWrite = () => {
             placeholder="공유하고 싶은 이야기가 있나요?"
             required
           />
-          {imageFiles.map((url, index) => (
-            <input
-              key={index}
-              type="hidden"
-              name={`photo_${index}`}
-              value={''}
-            />
-          ))}
         </Form>
       </div>
       <div className="photoAdd-wrapper">
@@ -144,19 +137,12 @@ export async function storyFormAction({ request }: { request: any }) {
   const type = getFirstPathName();
 
   const formData = await request.formData();
-  const photoUrls = [];
-
-  for (let i = 0; i < 4; i++) {
-    if (formData.has(`photo_${i}`)) {
-      photoUrls.push(formData.get(`photo_${i}`));
-    }
-  }
 
   const eventData = {
-    writer: null,
+    userId: null,
+    type: type,
     content: formData.get('textArea'),
     image: imageFiles,
-    type: type,
     productId: null,
     rate: null,
   };
@@ -165,7 +151,10 @@ export async function storyFormAction({ request }: { request: any }) {
 
   try {
     await pb.collection('boards').create(eventData);
+
+    // 메모리 비우기
     imageFiles.splice(0, imageFiles.length);
+
     alert('스토리 작성이 완료됐습니다.');
   } catch (error) {
     console.log('Error while writing : ', error);
