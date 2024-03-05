@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 //type 정의
 interface A11yHiddenProps {
+  as?: string;
   [key: string]: any;
 }
 
@@ -16,8 +17,11 @@ const StyledA11yHidden = styled.span`
   white-space: nowrap;
 `;
 
-const A11yHidden = ({ ...restProps }: A11yHiddenProps) => {
-  return <StyledA11yHidden {...restProps} />;
+const A11yHidden = ({
+  as: ComponentName = 'span',
+  ...restProps
+}: A11yHiddenProps) => {
+  return <StyledA11yHidden as={ComponentName} {...restProps} />;
 };
 
 export default A11yHidden;

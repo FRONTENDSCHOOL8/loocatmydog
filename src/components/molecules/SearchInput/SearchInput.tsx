@@ -48,10 +48,8 @@ interface SearchInputProps {
 
 const SearchInput = forwardRef<any, SearchInputProps>(
   ({ address, onClick, value = '' }, ref) => {
-    const date = value
-      ?.split(' - ')
-      .map((date) => `${date}`)
-      .join(' ~ ');
+    console.log(value);
+    const date = value?.replace(' - ', ' ~ ');
     const dateText = date === '' ? '날짜선택' : date;
     return (
       <StyledSearchInputContainer onClick={onClick} ref={ref}>
