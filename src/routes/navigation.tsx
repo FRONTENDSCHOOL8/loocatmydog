@@ -9,7 +9,7 @@ import StoryWrite, {
 } from '@/components/organisms/Stories/StoryWrite';
 import Stories from '@/components/organisms/Stories/Stories';
 import Landing from '@/pages/Landing/Landing';
-import SignUp from '@/pages/SignUp/SignUp';
+import SignUp, { signupFormAction } from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
 
 type NavigationRouteObject = RouteObject & {
@@ -32,6 +32,7 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/signup',
     element: <SignUp />,
     headerType: ['step', null],
+    action: signupFormAction,
   },
   // 종연님
   {

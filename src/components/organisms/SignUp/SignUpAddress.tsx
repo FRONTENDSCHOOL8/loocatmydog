@@ -2,6 +2,9 @@ import Button from '@/components/atoms/Button/Button';
 import styled from 'styled-components';
 import FormInput from '../../molecules/FormInput/FormInput';
 import SignUpHeader from './SignUpHeader';
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+import DaumPostcode from 'react-daum-postcode';
 
 const StyledSignUpAddress = styled.div`
   padding-inline: 20px;
@@ -53,6 +56,7 @@ const StyledSignUpAddress = styled.div`
   }
 
   & .exampleWrapper {
+    margin-block-end: 50px;
     ${(props) => props.theme.fontStyles.textRegularBase}
     color: ${(props) => props.theme.colors.textGray};
 
@@ -63,13 +67,15 @@ const StyledSignUpAddress = styled.div`
   }
 
   & .addressDetailWrapper {
-    margin-block-end: 57px;
+    margin-block-end: 50px;
   }
 `;
 
 interface SignUpAddressData {
   address: string;
   addressDetail: string;
+  zonecode: string;
+  sigungu: string;
 }
 interface SignUpAddressProps extends SignUpAddressData {
   updateFields: (fields: Partial<SignUpAddressData>) => void;
@@ -78,8 +84,70 @@ interface SignUpAddressProps extends SignUpAddressData {
 }
 
 const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [address, setAddress] = useState('');
+  const [addressDetail, setAddressDetail] = useState('');
+  const [addressData, setAddressData] = useState({
+    address: '',
+    addressDetail: '',
+    zonecode: '',
+    sigungu: '',
+  });
+
+  function handleClickSearchButton() {
+    setIsModalOpen(true);
+  }
+
+  const customStyles = {
+    overlay: {
+      backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    content: {
+      margin: '0 auto',
+      width: '300px',
+      height: '500px',
+      padding: '0',
+      overflow: 'hidden',
+    },
+  };
+
+  function handleSearchAddress(data: any) {
+    setIsModalOpen(false);
+    setAddress(data.roadAddress);
+    setAddressData({
+      address: data.address,
+      addressDetail: addressDetail,
+      zonecode: data.zonecode,
+      sigungu: data.sigungu,
+    });
+  }
+
+  function handleInputAddressDetailChange(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setAddressDetail(e.target.value);
+  }
+
+  function handleClickSignupButton() {
+    updateFields({
+      address,
+      addressDetail,
+      zonecode: addressData.zonecode,
+      sigungu: addressData.sigungu,
+    });
+  }
+
   return (
     <>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        ariaHideApp={false}
+        style={customStyles}
+      >
+        <DaumPostcode onComplete={handleSearchAddress} />
+      </Modal>
+
       <SignUpHeader type={'step'} phase="3/3" back={back} />
       <StyledSignUpAddress>
         <div className="div-phase">
@@ -97,40 +165,59 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
             type={'text'}
             name={'address'}
             hiddenLabel={true}
-            placeholder="연희동 132"
+            value={address}
+            placeholder="예) 연희동 132"
+            isDisabled={true}
           >
             주소
           </FormInput>
-          <Button size="20%" mode={'gray'}>
+          <Button size="20%" mode={'gray'} onClick={handleClickSearchButton}>
             검색
           </Button>
         </div>
 
-        <div className="exampleWrapper">
-          <p>
-            <span>도로명&nbsp;&nbsp;&nbsp;</span>예) 무학로 33, 도신대로 8길 23
-          </p>
-          <p>
-            <span>동주소&nbsp;&nbsp;&nbsp;</span>예) 연희동 42-18
-          </p>
-          <p>
-            <span>건물명&nbsp;&nbsp;&nbsp;</span>예) 역삼동 푸르지오, 텐즈휠
-          </p>
-        </div>
-        <div className="addressDetailWrapper">
-          <FormInput
-            mode={'register'}
-            type={'text'}
-            name={'addressDetail'}
-            hiddenLabel={true}
-            placeholder="상세주소 입력(건물명, 동/호수, 단독 주택 등"
+        {!address && (
+          <div className="exampleWrapper">
+            <p>
+              <span>도로명&nbsp;&nbsp;&nbsp;</span>예) 무학로 33, 도신대로 8길
+              23
+            </p>
+            <p>
+              <span>동주소&nbsp;&nbsp;&nbsp;</span>예) 연희동 42-18
+            </p>
+            <p>
+              <span>건물명&nbsp;&nbsp;&nbsp;</span>예) 역삼동 푸르지오, 텐즈휠
+            </p>
+          </div>
+        )}
+
+        {address && (
+          <div className="addressDetailWrapper">
+            <FormInput
+              mode={'register'}
+              type={'text'}
+              name={'addressDetail'}
+              hiddenLabel={true}
+              placeholder="상세주소 입력(건물명, 동/호수, 단독 주택 등"
+              value={addressDetail}
+              onChange={handleInputAddressDetailChange}
+            >
+              주소
+            </FormInput>
+          </div>
+        )}
+
+        {address && addressDetail && (
+          <Button
+            type="submit"
+            form="signupForm"
+            size={'100%'}
+            mode={'normal'}
+            onClick={handleClickSignupButton}
           >
-            주소
-          </FormInput>
-        </div>
-        <Button size={'100%'} mode={'normal'}>
-          가입완료
-        </Button>
+            가입완료
+          </Button>
+        )}
       </StyledSignUpAddress>
     </>
   );
