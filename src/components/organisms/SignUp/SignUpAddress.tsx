@@ -1,10 +1,11 @@
 import Button from '@/components/atoms/Button/Button';
+import getGeolocation from '@/utils/getGeolocation';
+import React, { useState } from 'react';
+import DaumPostcode from 'react-daum-postcode';
+import Modal from 'react-modal';
 import styled from 'styled-components';
 import FormInput from '../../molecules/FormInput/FormInput';
 import SignUpHeader from './SignUpHeader';
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import DaumPostcode from 'react-daum-postcode';
 
 const StyledSignUpAddress = styled.div`
   padding-inline: 20px;
@@ -76,6 +77,8 @@ interface SignUpAddressData {
   addressDetail: string;
   zonecode: string;
   sigungu: string;
+  latitude: string;
+  longitude: string;
 }
 interface SignUpAddressProps extends SignUpAddressData {
   updateFields: (fields: Partial<SignUpAddressData>) => void;
@@ -92,6 +95,8 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
     addressDetail: '',
     zonecode: '',
     sigungu: '',
+    latitude: '',
+    longitude: '',
   });
 
   function handleClickSearchButton() {
@@ -111,14 +116,17 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
     },
   };
 
-  function handleSearchAddress(data: any) {
+  async function handleSearchAddress(data: any) {
     setIsModalOpen(false);
     setAddress(data.roadAddress);
+    const geolocationData = await getGeolocation(data.address);
     setAddressData({
       address: data.address,
       addressDetail: addressDetail,
       zonecode: data.zonecode,
       sigungu: data.sigungu,
+      latitude: geolocationData.latitude,
+      longitude: geolocationData.longitude,
     });
   }
 
@@ -134,6 +142,8 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
       addressDetail,
       zonecode: addressData.zonecode,
       sigungu: addressData.sigungu,
+      latitude: addressData.latitude,
+      longitude: addressData.longitude,
     });
   }
 
