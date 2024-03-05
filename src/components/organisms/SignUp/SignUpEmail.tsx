@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FormInput from './../../molecules/FormInput/FormInput';
+import SignUpHeader from './SignUpHeader';
 
 const StyledSignUpEmail = styled.div`
   padding-inline: 20px;
@@ -63,7 +64,18 @@ const StyledSignUpEmail = styled.div`
   }
 `;
 
-const SignUpEmail = () => {
+interface SignUpEmailData {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+interface SignUpEmailProps extends SignUpEmailData {
+  updateFields: (fields: Partial<SignUpEmailData>) => void;
+  back: () => void;
+  next: () => void;
+}
+
+const SignUpEmail = ({ updateFields, back, next }: SignUpEmailProps) => {
   // '다음으로' 버튼 활성 여부 state
   const [isActive, setIsActive] = useState(false);
 
@@ -117,82 +129,92 @@ const SignUpEmail = () => {
   ]);
 
   return (
-    <StyledSignUpEmail>
-      <div className="div-phase">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div className="pWrapper">
-        <p className="p-signUp">이메일을</p>
-        <p className="p-signUp">입력하세요</p>
-      </div>
-      <div className="inputWrapper">
-        <div className="formInputWrapper">
-          <FormInput
-            mode={'register'}
-            type={'email'}
-            name={'email'}
-            placeholder="이메일 주소"
-            value={emailValue}
-            onBlur={handleEmailBlur}
-            onChange={handleEmailChange}
-          >
-            이메일
-          </FormInput>
-          {emailHasError && (
-            <span className="span-error">
-              올바른 이메일 형식을 입력해주세요.
-            </span>
-          )}
+    <>
+      <SignUpHeader type={'step'} phase="1/3" back={back} />
+      <StyledSignUpEmail>
+        <div className="div-phase">
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
-        <div className="formInputWrapper">
-          <FormInput
-            mode={'register'}
-            type={'password'}
-            name={'password'}
-            placeholder="영문, 숫자, 특수문자 조합 8~20자리"
-            value={passwordValue}
-            onBlur={handlePasswordBlur}
-            onChange={handlePasswordChange}
-          >
-            비밀번호
-          </FormInput>
-          {passwordHasError && (
-            <span className="span-error">
-              8~20자리 영문, 숫자, 특수문자 조합으로 입력해 주세요.{' '}
-            </span>
-          )}
+        <div className="pWrapper">
+          <p className="p-signUp">이메일을</p>
+          <p className="p-signUp">입력하세요</p>
         </div>
-        <div className="formInputWrapper">
-          <FormInput
-            mode={'register'}
-            type={'password'}
-            name={'passwordConfirm'}
-            placeholder="비밀번호 확인"
-            value={passwordConfirmValue}
-            onBlur={handlePasswordConfirmBlur}
-            onChange={handlePasswordConfirmChange}
-          >
-            비밀번호 확인
-          </FormInput>
-          {passwordConfirmHasError && (
-            <span className="span-error">비밀번호가 일치하지 않습니다.</span>
-          )}
+        <div className="inputWrapper">
+          <div className="formInputWrapper">
+            <FormInput
+              mode={'register'}
+              type={'email'}
+              name={'email'}
+              placeholder="이메일 주소"
+              value={emailValue}
+              onBlur={handleEmailBlur}
+              onChange={handleEmailChange}
+            >
+              이메일
+            </FormInput>
+            {emailHasError && (
+              <span className="span-error">
+                올바른 이메일 형식을 입력해주세요.
+              </span>
+            )}
+          </div>
+          <div className="formInputWrapper">
+            <FormInput
+              mode={'register'}
+              type={'password'}
+              name={'password'}
+              placeholder="영문, 숫자, 특수문자 조합 8~20자리"
+              value={passwordValue}
+              onBlur={handlePasswordBlur}
+              onChange={handlePasswordChange}
+            >
+              비밀번호
+            </FormInput>
+            {passwordHasError && (
+              <span className="span-error">
+                8~20자리 영문, 숫자, 특수문자 조합으로 입력해 주세요.{' '}
+              </span>
+            )}
+          </div>
+          <div className="formInputWrapper">
+            <FormInput
+              mode={'register'}
+              type={'password'}
+              name={'passwordConfirm'}
+              placeholder="비밀번호 확인"
+              value={passwordConfirmValue}
+              onBlur={handlePasswordConfirmBlur}
+              onChange={handlePasswordConfirmChange}
+            >
+              비밀번호 확인
+            </FormInput>
+            {passwordConfirmHasError && (
+              <span className="span-error">비밀번호가 일치하지 않습니다.</span>
+            )}
+          </div>
         </div>
-      </div>
 
-      {isActive && (
-        <Button size={'100%'} mode={'normal'}>
-          다음으로
-        </Button>
-      )}
-      {!isActive && (
-        <Button size={'100%'} mode={'disabled'}>
-          다음으로
-        </Button>
-      )}
-    </StyledSignUpEmail>
+        {isActive && (
+          <Button
+            size={'100%'}
+            mode={'normal'}
+            onClick={() => {
+              next();
+              updateFields({ email: emailValue, password: passwordValue });
+            }}
+          >
+            다음으로
+          </Button>
+        )}
+        {!isActive && (
+          <Button size={'100%'} mode={'disabled'}>
+            다음으로
+          </Button>
+        )}
+      </StyledSignUpEmail>
+    </>
   );
 };
 

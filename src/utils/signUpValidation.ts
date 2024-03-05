@@ -23,3 +23,27 @@ export function isValidPassword(value: string) {
 export function isEqualsToOtherValue(value: string, otherValue: string) {
   return value === otherValue;
 }
+
+// 이름 검사(한글 2~10자리)
+export function isName(value: string) {
+  const reg = /^[가-힣]{2,10}$/;
+  return reg.test(value);
+}
+
+// 생년월일 검사(숫자 6자리)
+export function isBirthday(value: string) {
+  const reg = /([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))/;
+  return reg.test(value);
+}
+
+// 주민등록번호 성별 숫자 검사(1~4 사이의 한자리 수 )
+export function isGenderNo(value: string) {
+  const reg = /^[1-4]$/;
+  return reg.test(value);
+}
+
+// 휴대폰 번호 검사
+export function isPhone(value: string) {
+  const reg = /^(01[016789]{1})[0-9]{3,4}[0-9]{4}$/;
+  return reg.test(value);
+}
