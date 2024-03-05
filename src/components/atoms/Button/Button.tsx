@@ -14,7 +14,7 @@ interface StyledButtonProps {
   $mode?: 'normal' | 'gray' | 'disabled' | 'kakao' | 'google' | 'chat';
 }
 
-const StyledButton = styled.button.attrs({ type: 'button' })<StyledButtonProps>`
+const StyledButton = styled.button.attrs({})<StyledButtonProps>`
   padding-block: 12px;
   padding-inline: 10px;
   inline-size: ${(props) => props.$size};

@@ -1,5 +1,5 @@
 import { HeaderProps } from '@/components/molecules/Header/Header';
-import AddPet from '@/components/organisms/AddPet/AddPet';
+import AddPet, { addPetFormAction } from '@/components/organisms/AddPet/AddPet';
 import HeartList from '@/components/organisms/HeartList/HeartList';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import MyPage from '@/components/organisms/MyPage/MyPage';
@@ -110,6 +110,7 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/add_mypet',
     element: <AddPet />,
     headerType: ['back', '반려동물 추가'],
+    action: addPetFormAction,
   },
   {
     path: '/edit_my_profile',

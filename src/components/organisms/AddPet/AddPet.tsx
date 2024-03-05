@@ -1,9 +1,11 @@
+import pb from '@/api/pocketbase';
 import BigPhoto from '@/components/atoms/BigPhoto/BigPhoto';
 import Button from '@/components/atoms/Button/Button';
 import CheckBox from '@/components/atoms/CheckBox/CheckBox';
 import InputTextArea from '@/components/molecules/InputTextArea/InputTextArea';
 import InputTypes from '@/components/molecules/InputTypes/InputTypes';
 import { useState, ChangeEvent } from 'react';
+import { Form, redirect } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledAddPetBox = styled.div`
@@ -36,6 +38,8 @@ const StyledGenderBox = styled.div`
   gap: 30px;
 `;
 
+let imageUrl: File[] = [];
+
 const AddPet = () => {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -46,6 +50,7 @@ const AddPet = () => {
     let file;
     if (e.target.files && e.target.files[0]) {
       file = e.target.files[0];
+      imageUrl.push(file);
     }
 
     const fileURL = URL.createObjectURL(file as Blob);
@@ -55,10 +60,8 @@ const AddPet = () => {
     }
   };
 
-  const handlePetProfile = () => {};
-
   return (
-    <form onSubmit={handlePetProfile}>
+    <Form id="addPetForm" method="post">
       <BigPhoto
         type={type}
         value="사진"
@@ -107,12 +110,41 @@ const AddPet = () => {
             기재한 경우, 약관에 따라 예약이 거부될 수 있습니다
           </p>
         </StyledPromiseBox>
-        <Button size={'100%'} mode="normal" type="button">
+        <Button size={'100%'} mode="normal" type="submit" form="addPetForm">
           {'저장하기'}
         </Button>
       </StyledAddPetBox>
-    </form>
+    </Form>
   );
 };
 
 export default AddPet;
+
+export async function addPetFormAction({ request }: { request: any }) {
+  const formData = await request.formData();
+
+  const eventData = {
+    petName: formData.get('이름'),
+    image: imageUrl[0],
+    breed: formData.get('품종'),
+    gender: formData.get('성별') === true ? 'M' : 'F',
+    birthYear: formData.getAll('생일')[0],
+    birthMonth: formData.getAll('생일')[1],
+    weight: formData.get('몸무게'),
+    isNeutered: formData.get('중성화') === '없음' ? false : true,
+    hospital:
+      formData.get('중성화') === '없음' ? '없음' : formData.get('중성화'),
+    note: formData.get('contents'),
+  };
+  console.log(eventData);
+
+  try {
+    await pb.collection('pet').create(eventData);
+
+    alert('반려동물 정보가 추가 되었습니다.');
+  } catch (error) {
+    console.log('Error while writing : ', error);
+  }
+
+  return redirect('/mypage');
+}
