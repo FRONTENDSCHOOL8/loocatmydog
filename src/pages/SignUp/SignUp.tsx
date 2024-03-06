@@ -5,7 +5,7 @@ import SignUpAgree from '@/components/organisms/SignUp/SignUpAgree';
 import SignUpEmail from '@/components/organisms/SignUp/SignUpEmail';
 import SignUpPhone from '@/components/organisms/SignUp/SignUpPhone';
 import React, { useState } from 'react';
-import { Form, redirect } from 'react-router-dom';
+import { Form, redirect, useNavigate } from 'react-router-dom';
 
 interface FormData {
   email: string;
@@ -40,6 +40,8 @@ const INITIAL_DATA: FormData = {
 };
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   // 데이터 저장을 위한 상태관리
   const [data, setData] = useState(INITIAL_DATA);
   // 현재 화면에 보이는 컴포넌트 조절을 위한 상태관리
@@ -91,7 +93,7 @@ const SignUp = () => {
     try {
       await pb.collection('users').create(userData);
       alert('회원가입을 완료했습니다.');
-      location.href = '/';
+      navigate('/');
     } catch (error) {
       console.log('데이터 통신 중 에러가 발생했습니다. : ', error);
     }
@@ -125,28 +127,5 @@ const SignUp = () => {
     <form onSubmit={(e) => handleSubmit(e)}>{steps[currentStepIndex]}</form>
   );
 };
-
-export async function signupFormAction({ request }: { request: any }) {
-  const formData = await request.formData();
-
-  const eventData = {
-    email: formData.get('email'),
-    password: formData.get('password'),
-    name: formData.get('name'),
-    birthday: formData.get('birthday'),
-    genderNo: formData.get('genderNo'),
-    phone: formData.get('phone'),
-    address: formData.get('address'),
-  };
-
-  try {
-    await pb.collection('users').create(eventData);
-    alert('완료!');
-  } catch (error) {
-    console.log('Error while writing : ', error);
-  }
-
-  return redirect('/');
-}
 
 export default SignUp;
