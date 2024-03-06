@@ -1,5 +1,5 @@
-import { Schema } from "@/@types/test"
-import { TypedPocketBase } from "typed-pocketbase"
+import { Schema } from '@/@types/database';
+import { TypedPocketBase } from 'typed-pocketbase';
 
 const pb = new TypedPocketBase<Schema>(import.meta.env.VITE_PB_API_URL);
 
