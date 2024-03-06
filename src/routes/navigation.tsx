@@ -12,6 +12,7 @@ import Landing from '@/pages/Landing/Landing';
 import SignUp, { signupFormAction } from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
 import Reservations from '@/components/organisms/Reservations/Reservations';
+import { queryClient } from '@/app/App';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -37,7 +38,10 @@ export const navigationItems: NavigationRouteObject[] = [
   // 종연님
   {
     path: '/main',
-    lazy: () => import('@/pages/Main/Main'),
+    async lazy() {
+      const { loader, Component } = await import('@/pages/Main/Main');
+      return { loader: loader(queryClient), Component };
+    },
     headerType: ['main', null],
   },
   {
