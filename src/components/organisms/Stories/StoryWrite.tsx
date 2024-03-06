@@ -1,6 +1,6 @@
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import styled from 'styled-components';
-import { Form, redirect, useLocation } from 'react-router-dom';
+import { Form, redirect } from 'react-router-dom';
 import Photo from '@/components/atoms/Photo/Photo';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import pb from '@/api/pocketbase';
@@ -20,6 +20,10 @@ const StyledStoryWrite = styled.div`
     background-color: ${(props) => props.theme.colors.primary};
     padding: 4px 6px;
     ${(props) => props.theme.fontStyles.textSemiboldMd}
+  }
+
+  .write-submit:disabled {
+    cursor: default;
   }
 
   .textArea-wrapper {
@@ -53,20 +57,24 @@ const StyledStoryWrite = styled.div`
   }
 `;
 
-/* 
-  id
-  userId
-  avatar
-  type
-  content
-  photos
-  created
-*/
+// multi imageFiles container
 const imageFiles: File[] = [];
 
+// dummy userId
+const currentUserId = 'qx6lpgtzmsdy3id';
+
 const StoryWrite = () => {
+  // 화면에 이미지 렌더링을 위한 상태
   const [imageURLs, setImageURLs] = useState<string[]>([]);
 
+  // 게시하기 버튼 비활성화 | 활성화
+  const [textArea, setTextArea] = useState<string>('');
+  const isDisable = textArea.length < 1;
+  const handleTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setTextArea(e.target.value);
+  };
+
+  // 이미지 파일 업로드 이벤트
   const handleImageInput = (e: ChangeEvent<HTMLInputElement>) => {
     let file;
 
@@ -88,6 +96,7 @@ const StoryWrite = () => {
     }
   };
 
+  // 업로드한 파일 삭제 이벤트
   const handleImageDelete = (e: MouseEvent<HTMLButtonElement>) => {
     const currentSource = e.currentTarget.dataset.src;
     setImageURLs(
@@ -100,17 +109,23 @@ const StoryWrite = () => {
 
   return (
     <StyledStoryWrite>
-      <button className="write-submit" type="submit" form="storyForm">
+      <button
+        className="write-submit"
+        type="submit"
+        form="storyForm"
+        disabled={isDisable}
+      >
         게시하기
       </button>
       <div className="textArea-wrapper">
         <ProfileImage />
-        <Form id="storyForm" method="post">
+        <Form id="storyForm" method="post" action="/stories/post">
           <label htmlFor="textArea"></label>
           <textarea
             name="textArea"
             id="textArea"
             placeholder="공유하고 싶은 이야기가 있나요?"
+            onChange={handleTextArea}
             required
           />
         </Form>
@@ -133,21 +148,20 @@ const StoryWrite = () => {
 
 export default StoryWrite;
 
+// submit action 함수
 export async function storyFormAction({ request }: { request: any }) {
   const type = getFirstPathName();
 
   const formData = await request.formData();
 
   const eventData = {
-    userId: null,
+    userId: currentUserId,
     type: type,
     content: formData.get('textArea'),
     image: imageFiles,
     productId: null,
     rate: null,
   };
-
-  console.log(eventData);
 
   try {
     await pb.collection('boards').create(eventData);
@@ -160,5 +174,5 @@ export async function storyFormAction({ request }: { request: any }) {
     console.log('Error while writing : ', error);
   }
 
-  return redirect('/stories/');
+  return redirect('/stories/post');
 }
