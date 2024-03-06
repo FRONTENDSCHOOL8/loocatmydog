@@ -24,12 +24,11 @@ const StyledRootLayout = styled.div`
 
 function RootLayout() {
   const { isShowModal, resetModal } = useModalControlStore();
-  const firstPathName = '/' + useFirstPathName();
-
+  const firstPathName = useFirstPathName();
   let headerContents = null;
   let sideMenuContents = null;
   const currentRouteObject = navigationItems.find(
-    ({ path }) => firstPathName === path
+    ({ path }) => firstPathName === path?.split('/')[1]
   );
   if (currentRouteObject && currentRouteObject?.headerType) {
     const [type, title] = currentRouteObject.headerType;

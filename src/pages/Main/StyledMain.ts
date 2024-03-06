@@ -24,6 +24,7 @@ export const MainSection = styled.section<StyledMainSectionProps>`
     justify-content: space-between;
     align-items: center;
   }
+
   & .section-content {
     display: flex;
     flex-flow: ${(props) => `${props.$flexDirection || 'row'} nowrap`};
