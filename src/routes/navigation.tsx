@@ -5,6 +5,7 @@ import HeartList from '@/components/organisms/HeartList/HeartList';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import MyPage from '@/components/organisms/MyPage/MyPage';
 import Reservations from '@/components/organisms/Reservations/Reservations';
+import ServiceCanUse from '@/components/organisms/ServiceCanUse/ServiceCanUse';
 import Settings from '@/components/organisms/Settings/Settings';
 import Stories from '@/components/organisms/Stories/Stories';
 import StoryWrite, {
@@ -56,7 +57,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 경화님
   {
     path: '/add_place',
-    element: '',
+    element: <ServiceCanUse />,
     headerType: ['back', '플레이스 등록'],
   },
   {

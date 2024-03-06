@@ -1,11 +1,24 @@
 import { CustomInput } from '@/components/atoms/Calendar/Calendar';
-import PlaceSection from '@/components/molecules/PlaceSection/PlaceSection';
+import useDateRangeStore from '@/store/useDateRange';
+import styled from 'styled-components';
+
+const StyledDatePick = styled.div`
+  & p {
+    ${(props) => props.theme.fontStyles.textSemiboldBase}
+    color: ${(props) => props.theme.colors.textBlack};
+    margin-bottom: 15px;
+  }
+  margin-bottom: 30px;
+`;
 
 const DatePick = () => {
+  const { dateRange } = useDateRangeStore();
+  console.log(dateRange);
   return (
-    <PlaceSection title={'날짜 선택'}>
+    <StyledDatePick>
+      <p>날짜 선택</p>
       <CustomInput />
-    </PlaceSection>
+    </StyledDatePick>
   );
 };
 
