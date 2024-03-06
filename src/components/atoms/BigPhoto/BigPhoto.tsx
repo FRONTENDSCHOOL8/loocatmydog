@@ -86,7 +86,6 @@ const BigPhoto = ({
             <img src="/images/plusButton.svg" alt="+" />
           </label>
           <input type="file" name="addImg" id="addImg" onChange={onChange} />
-          {/* <img src="/images/plusButton.svg" alt="+" /> */}
         </div>
       );
       break;

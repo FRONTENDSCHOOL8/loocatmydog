@@ -5,6 +5,7 @@ import A11yHidden from '@/components/A11yHidden/A11yHidden';
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import StarRating from '@/components/atoms/StarRating/StarRating';
 import { convertTime } from '@/utils';
+import pb from '@/api/pocketbase';
 
 interface StoryCardProps {
   id: string;
@@ -164,6 +165,8 @@ const StyledMoreViewButton = styled.button.attrs({
   }
 `;
 
+const currentUserId = 'qx6lpgtzmsdy3id';
+
 const StoryCard = ({
   id,
   type,
@@ -184,9 +187,47 @@ const StoryCard = ({
 
   const textContents = isExpandText ? text : text.slice(0, 150) + '...';
 
+  const isActive = userId === currentUserId;
+
+  const deleteStory = async (id: string) => {
+    await pb.collection('boards').delete(id);
+  };
+
   const handleDeleteStory = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log('story deleted');
+    deleteStory(id).then(() => {
+      location.reload();
+    });
   };
+
+  const PopUpButtonContainer = (
+    <StyledPopUpButtonContainer>
+      <StyledPopUpButton
+        aria-labelledby="more"
+        aria-haspopup={true}
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log('popup open clicked');
+          setIsPopUpMenuOpen(true);
+        }}
+      >
+        <A11yHidden id="more">더보기</A11yHidden>
+      </StyledPopUpButton>
+      {isPopUpMenuOpen && (
+        <PopUpMenu aria-expanded={isPopUpMenuOpen}>
+          <li role="none">
+            <button
+              className="delete-story"
+              type="button"
+              onClick={handleDeleteStory}
+            >
+              삭제하기
+            </button>
+          </li>
+        </PopUpMenu>
+      )}
+    </StyledPopUpButtonContainer>
+  );
 
   useEffect(() => {
     const handleClosePopupMenu = () => setIsPopUpMenuOpen(false);
@@ -248,33 +289,7 @@ const StoryCard = ({
           </StyledMoreViewButton>
         )}
       </StyledStoryContents>
-
-      <StyledPopUpButtonContainer>
-        <StyledPopUpButton
-          aria-labelledby="more"
-          aria-haspopup={true}
-          onClick={(e) => {
-            e.stopPropagation();
-            console.log('popup open clicked');
-            setIsPopUpMenuOpen(true);
-          }}
-        >
-          <A11yHidden id="more">더보기</A11yHidden>
-        </StyledPopUpButton>
-        {isPopUpMenuOpen && (
-          <PopUpMenu aria-expanded={isPopUpMenuOpen}>
-            <li role="none">
-              <button
-                className="delete-story"
-                type="button"
-                onClick={handleDeleteStory}
-              >
-                삭제하기
-              </button>
-            </li>
-          </PopUpMenu>
-        )}
-      </StyledPopUpButtonContainer>
+      {isActive ? PopUpButtonContainer : null}
     </StyledStoryCard>
   );
 };

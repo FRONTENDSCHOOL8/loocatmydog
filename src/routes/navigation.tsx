@@ -11,6 +11,7 @@ import Stories from '@/components/organisms/Stories/Stories';
 import Landing from '@/pages/Landing/Landing';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
+import Reservations from '@/components/organisms/Reservations/Reservations';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -83,7 +84,7 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/reservation_list',
-    element: <></>,
+    element: <Reservations />,
     headerType: ['logo', null],
   },
   {
