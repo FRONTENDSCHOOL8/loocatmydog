@@ -246,7 +246,10 @@ const ModifyProfile = () => {
 
   return (
     <StyledModifyProfileBox>
-      <UserProfile name={(record as UsersResponse).name} src={changeImg} />
+      <UserProfile
+        name={(record as UsersResponse).name}
+        src={changeImg === '' ? '/images/profileNone.svg' : changeImg}
+      />
       <StyledProfileBox>
         <label htmlFor="modifyCamera">
           <img

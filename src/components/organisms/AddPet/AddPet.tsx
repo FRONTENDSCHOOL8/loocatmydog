@@ -240,11 +240,6 @@ const AddPet = () => {
           size={'100%'}
           mode={isActive === true ? 'normal' : 'disabled'}
           type={isActive === true ? 'submit' : 'button'}
-          // mode={'normal'}
-          // type={'button'}
-          // onClick={() => {
-          //   console.log(isEmpty);
-          // }}
           form="addPetForm"
         >
           {'저장하기'}

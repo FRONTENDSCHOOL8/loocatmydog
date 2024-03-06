@@ -30,7 +30,7 @@ const StyledProfileImg = styled.img.attrs((props) => ({
 const ProfileImage = ({
   blockSize = 40,
   inlineSize = 40,
-  src = '/images/starDog.svg',
+  src = '/images/profileNone.svg',
   ...restProps
 }: ProfileImageProps) => {
   return (

@@ -8,7 +8,7 @@ export default {
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    src: '/images/starDog.svg',
+    src: '/images/grayCircle.svg',
     blockSize: 40,
     inlineSize: 40,
   },

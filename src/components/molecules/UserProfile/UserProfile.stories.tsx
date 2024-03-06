@@ -8,7 +8,7 @@ export default {
 /**@type{import('@storybook/react').StoryObj} */
 export const 기본표시 = {
   args: {
-    src: '/images/grayCircle.svg',
+    src: '/images/profileNone.svg',
     name: '홍길동',
   },
 };
