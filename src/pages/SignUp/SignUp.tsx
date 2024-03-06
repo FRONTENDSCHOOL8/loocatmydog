@@ -128,27 +128,4 @@ const SignUp = () => {
   );
 };
 
-// export async function signupFormAction({ request }: { request: any }) {
-//   const formData = await request.formData();
-
-//   const eventData = {
-//     email: formData.get('email'),
-//     password: formData.get('password'),
-//     name: formData.get('name'),
-//     birthday: formData.get('birthday'),
-//     genderNo: formData.get('genderNo'),
-//     phone: formData.get('phone'),
-//     address: formData.get('address'),
-//   };
-
-//   try {
-//     await pb.collection('users').create(eventData);
-//     alert('완료!');
-//   } catch (error) {
-//     console.log('Error while writing : ', error);
-//   }
-
-//   return redirect('/');
-// }
-
 export default SignUp;
