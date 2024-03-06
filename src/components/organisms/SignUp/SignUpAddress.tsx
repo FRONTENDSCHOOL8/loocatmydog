@@ -119,7 +119,9 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
   async function handleSearchAddress(data: any) {
     setIsModalOpen(false);
     setAddress(data.roadAddress);
+
     const geolocationData = await getGeolocation(data.address);
+
     setAddressData({
       address: data.address,
       addressDetail: addressDetail,
@@ -136,16 +138,16 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
     setAddressDetail(e.target.value);
   }
 
-  function handleClickSignupButton() {
-    updateFields({
-      address,
-      addressDetail,
-      zonecode: addressData.zonecode,
-      sigungu: addressData.sigungu,
-      latitude: addressData.latitude,
-      longitude: addressData.longitude,
-    });
-  }
+  // function handleClickSignupButton() {
+  //   updateFields({
+  //     address,
+  //     addressDetail,
+  //     zonecode: addressData.zonecode,
+  //     sigungu: addressData.sigungu,
+  //     latitude: addressData.latitude,
+  //     longitude: addressData.longitude,
+  //   });
+  // }
 
   return (
     <>
@@ -223,7 +225,7 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
             form="signupForm"
             size={'100%'}
             mode={'normal'}
-            onClick={handleClickSignupButton}
+            // onClick={handleClickSignupButton}
           >
             가입완료
           </Button>
