@@ -1,13 +1,5 @@
 import styled, { css } from 'styled-components';
-import {
-  MouseEvent,
-  useEffect,
-  useRef,
-  useState,
-  Dispatch,
-  SetStateAction,
-  KeyboardEvent,
-} from 'react';
+import { MouseEvent, useState, KeyboardEvent } from 'react';
 
 interface MenuItem {
   id: string;

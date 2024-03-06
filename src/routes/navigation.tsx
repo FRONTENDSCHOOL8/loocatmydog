@@ -12,6 +12,9 @@ import Landing from '@/pages/Landing/Landing';
 import SignUp, { signupFormAction } from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
 import Reservations from '@/components/organisms/Reservations/Reservations';
+import ChatRoom, {
+  chatRoomFormAction,
+} from '@/components/organisms/Chat/ChatRoom';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -95,7 +98,9 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/chat_room',
-    element: '',
+    element: <ChatRoom />,
+    headerType: ['back', '플레이스'],
+    action: chatRoomFormAction,
   },
 
   // 다영님

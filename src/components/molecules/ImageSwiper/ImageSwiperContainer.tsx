@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 import { register } from 'swiper/element/bundle';
 import ImageSwiperSlide from './ImageSwiperSlide';
 import { ChangeEventHandler } from 'react';
@@ -49,12 +49,8 @@ const ImageSwiperContainer = ({
   onChange,
   ...restProps
 }: ImageSwiperContainerProps) => {
-  const swiperParams = {
+  const swiperParams: { [key: string]: string | number | boolean } = {
     direction: 'horizontal',
-    slidesPerView: 1,
-    pagination: {
-      clickable: true,
-    },
   };
 
   const ImageAddSlide =
@@ -71,7 +67,7 @@ const ImageSwiperContainer = ({
       <swiper-container
         className="swiper-container"
         {...swiperParams}
-        style={{ ...swiperStyle }}
+        style={{ ...swiperStyle } as CSSProperties}
       >
         {imageUrls.map((url, index) => (
           <swiper-slide key={index}>
