@@ -1,9 +1,10 @@
 import pb from '@/api/pocketbase';
+import Button from '@/components/atoms/Button/Button';
 import SignUpAddress from '@/components/organisms/SignUp/SignUpAddress';
 import SignUpAgree from '@/components/organisms/SignUp/SignUpAgree';
 import SignUpEmail from '@/components/organisms/SignUp/SignUpEmail';
 import SignUpPhone from '@/components/organisms/SignUp/SignUpPhone';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Form, redirect } from 'react-router-dom';
 
 interface FormData {
@@ -67,6 +68,34 @@ const SignUp = () => {
     });
   }
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const userData = {
+      email: data.email,
+      password: data.password,
+      passwordConfirm: data.password,
+      name: data.name,
+      birthday: data.birthday,
+      genderNo: data.genderNo,
+      phone: data.phone,
+      address: data.address,
+      addressDetail: data.addressDetail,
+      addressInfo: {
+        zonecode: data.zonecode,
+        sigungu: data.sigungu,
+        latitude: data.latitude,
+        longitude: data.longitude,
+      },
+    };
+    try {
+      await pb.collection('users').create(userData);
+      alert('회원가입을 완료했습니다.');
+      location.href = '/';
+    } catch (error) {
+      console.log('데이터 통신 중 에러가 발생했습니다. : ', error);
+    }
+  }
   const steps = [
     <SignUpAgree {...data} next={next} back={back} key="signUpAgree" />,
     <SignUpEmail
@@ -93,9 +122,7 @@ const SignUp = () => {
   ];
 
   return (
-    <Form id="signupForm" method="post">
-      {steps[currentStepIndex]}
-    </Form>
+    <form onSubmit={(e) => handleSubmit(e)}>{steps[currentStepIndex]}</form>
   );
 };
 

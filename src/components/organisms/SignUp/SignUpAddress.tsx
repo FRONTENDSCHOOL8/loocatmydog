@@ -136,6 +136,14 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) {
     setAddressDetail(e.target.value);
+    updateFields({
+      address,
+      addressDetail,
+      zonecode: addressData.zonecode,
+      sigungu: addressData.sigungu,
+      latitude: addressData.latitude,
+      longitude: addressData.longitude,
+    });
   }
 
   // function handleClickSignupButton() {
@@ -222,7 +230,6 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
         {address && addressDetail && (
           <Button
             type="submit"
-            form="signupForm"
             size={'100%'}
             mode={'normal'}
             // onClick={handleClickSignupButton}
