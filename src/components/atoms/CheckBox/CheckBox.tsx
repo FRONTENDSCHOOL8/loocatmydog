@@ -11,6 +11,7 @@ interface CheckBoxProps {
   name?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   type?: 'checkbox' | 'radio';
+  value?: string;
   [key: string]: any;
 }
 interface StyleCheckBoxLabelProps {
@@ -56,6 +57,7 @@ const CheckBox = ({
   type = 'checkbox',
   children,
   label = true,
+  value,
   name,
   onChange,
   ...restProps
@@ -67,8 +69,9 @@ const CheckBox = ({
         type={type}
         id={id}
         name={name}
-        defaultChecked={isChecked}
+        checked={isChecked}
         onChange={onChange}
+        value={value}
       ></StyledCheckBox>
       <StyledLabel htmlFor={id} $reservation={reservation}>
         {label ? (
