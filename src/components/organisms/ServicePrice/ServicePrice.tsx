@@ -1,5 +1,21 @@
 import PetIcon from '@/components/atoms/PetIcon/PetIcon';
 import styled from 'styled-components';
+import PocketBase from 'pocketbase';
+import { useEffect, useState } from 'react';
+
+//test
+const placeId = '2h6cgg5ssvke4t1';
+
+//DB URL
+const API = import.meta.env.VITE_PB_API_URL;
+const pb = new PocketBase(API);
+
+async function fetchPlaceRecords() {
+  const record = await pb.collection('places').getOne(placeId, {
+    expand: 'userId',
+  });
+  return record;
+}
 
 //type 지정
 interface PriceWrapProps {
@@ -59,15 +75,32 @@ const PriceWrap = ({ size, weight, price }: PriceWrapProps) => {
     </StyledPriceWrap>
   );
 };
+// type 지정
+interface PriceProps {
+  small: number;
+  middle: number;
+  large: number;
+}
 
-const ServicePrice = ({ price = [0] }: { price: Array<number> }) => {
+const ServicePrice = () => {
+  const [priceList, setPriceList] = useState({ small: 0, middle: 0, large: 0 });
+  useEffect(() => {
+    fetchPlaceRecords().then((Place) => {
+      setPriceList(Place.price[0]);
+    });
+  }, []);
+
   return (
     <StyledServicePrice>
       <p>이용 금액</p>
       <div className="priceWrapContainer">
-        <PriceWrap size={'소형'} weight={'7kg 미만'} price={price[0]} />
-        <PriceWrap size={'중형'} weight={'7kg ~ 14.9kg'} price={price[1]} />
-        <PriceWrap size={'대형'} weight={'15kg 이상'} price={price[2]} />
+        <PriceWrap size={'소형'} weight={'7kg 미만'} price={priceList.small} />
+        <PriceWrap
+          size={'중형'}
+          weight={'7kg ~ 14.9kg'}
+          price={priceList.middle}
+        />
+        <PriceWrap size={'대형'} weight={'15kg 이상'} price={priceList.large} />
       </div>
     </StyledServicePrice>
   );

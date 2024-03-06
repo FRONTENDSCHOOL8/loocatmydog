@@ -1,6 +1,7 @@
 import PlaceSection from '@/components/molecules/PlaceSection/PlaceSection';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+declare const window: Window & typeof globalThis & { kakao: any };
 
 const { kakao } = window;
 
