@@ -140,7 +140,7 @@ export interface UsersResponse extends AuthCollectionResponse {
 	name: string;
 	avatar: string;
 	petId: Array<string>;
-	phoneNumber: string;
+	phone: string;
 	address: string;
 }
 
@@ -148,7 +148,7 @@ export interface UsersCreate extends AuthCollectionCreate {
 	name?: string;
 	avatar?: File | null;
 	petId?: MaybeArray<string>;
-	phoneNumber?: string;
+	phone?: string;
 	address?: string;
 }
 
@@ -158,7 +158,7 @@ export interface UsersUpdate extends AuthCollectionUpdate {
 	petId?: MaybeArray<string>;
 	'petId+'?: MaybeArray<string>;
 	'petId-'?: MaybeArray<string>;
-	phoneNumber?: string;
+	phone?: string;
 	address?: string;
 }
 

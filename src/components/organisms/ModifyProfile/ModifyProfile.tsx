@@ -110,7 +110,7 @@ const StyledAddressBox = styled.div`
 
 const ModifyProfile = () => {
   //이미지 바꾸는 함수
-  const [changeImg, setChangeImg] = useState<string>('/images/profileNone.svg');
+  const [changeImg, setChangeImg] = useState<string>('');
   const [record, setRecord] = useState<UsersResponse | {}>({});
 
   const [isEditingPhone, setIsEditingPhone] = useState(false);
@@ -149,10 +149,9 @@ const ModifyProfile = () => {
           .getOne('p85jypwlgke40oq');
         // 로그인 후 사용자 정보 가져오기
         setRecord(record);
-        setPhone(record?.phoneNumber);
+        setPhone(record?.phone);
         setAddress(record?.address);
         setChangeImg(record?.avatar);
-        console.log(typeof record.avatar);
       } catch (error) {
         console.error('Error logging in:', error);
       }
@@ -222,7 +221,7 @@ const ModifyProfile = () => {
     }
 
     if (isValid) {
-      setRecord((prevRecord) => ({ ...prevRecord, phoneNumber: phone }));
+      setRecord((prevRecord) => ({ ...prevRecord, phone: phone }));
       setIsEditingPhone(!isEditingPhone);
       return;
     } else return alert('알맞은 휴대전화번호를 입력해주세요');

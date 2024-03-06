@@ -77,7 +77,7 @@ const ProfileCard = ({
       <StyledButtonCheck
         id={id}
         type="checkbox"
-        checked={isChecked}
+        defaultChecked={isChecked}
         value={name}
         onChange={onChange}
       />
