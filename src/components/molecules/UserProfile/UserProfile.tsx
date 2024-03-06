@@ -1,6 +1,14 @@
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+`;
 
 const StyledUserProfileBox = styled.div`
   display: flex;
@@ -36,13 +44,15 @@ const UserProfile = ({
   [key: string]: any;
 }) => {
   return (
-    <StyledUserProfileBox>
-      <StyledUserProfileSpanBox>
-        <span className="userName">{name} 님</span>
-        <span className="welcome">환영합니다!</span>
-      </StyledUserProfileSpanBox>
-      <ProfileImage blockSize={43} inlineSize={43} src={src} {...restProps} />
-    </StyledUserProfileBox>
+    <StyledLink to="/edit_my_profile">
+      <StyledUserProfileBox>
+        <StyledUserProfileSpanBox>
+          <span className="userName">{name} 님</span>
+          <span className="welcome">환영합니다!</span>
+        </StyledUserProfileSpanBox>
+        <ProfileImage blockSize={43} inlineSize={43} src={src} {...restProps} />
+      </StyledUserProfileBox>
+    </StyledLink>
   );
 };
 

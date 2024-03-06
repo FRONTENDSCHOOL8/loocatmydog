@@ -1,8 +1,10 @@
+import pb from '@/api/pocketbase';
 import SignUpAddress from '@/components/organisms/SignUp/SignUpAddress';
 import SignUpAgree from '@/components/organisms/SignUp/SignUpAgree';
 import SignUpEmail from '@/components/organisms/SignUp/SignUpEmail';
 import SignUpPhone from '@/components/organisms/SignUp/SignUpPhone';
 import { useState } from 'react';
+import { Form, redirect } from 'react-router-dom';
 
 interface FormData {
   email: string;
@@ -14,6 +16,10 @@ interface FormData {
   phone: string;
   address: string;
   addressDetail: string;
+  zonecode: string;
+  sigungu: string;
+  latitude: string;
+  longitude: string;
 }
 
 const INITIAL_DATA: FormData = {
@@ -26,6 +32,10 @@ const INITIAL_DATA: FormData = {
   phone: '',
   address: '',
   addressDetail: '',
+  zonecode: '',
+  sigungu: '',
+  latitude: '',
+  longitude: '',
 };
 
 const SignUp = () => {
@@ -51,7 +61,6 @@ const SignUp = () => {
 
   // 상단의 뒤로가기 버튼 클릭 시 실행
   function back() {
-    console.log('back');
     setCurrentStepIndex((i) => {
       if (i <= 0) return i;
       return i - 1;
@@ -83,7 +92,34 @@ const SignUp = () => {
     />,
   ];
 
-  return <div>{steps[currentStepIndex]}</div>;
+  return (
+    <Form id="signupForm" method="post">
+      {steps[currentStepIndex]}
+    </Form>
+  );
 };
+
+export async function signupFormAction({ request }: { request: any }) {
+  const formData = await request.formData();
+
+  const eventData = {
+    email: formData.get('email'),
+    password: formData.get('password'),
+    name: formData.get('name'),
+    birthday: formData.get('birthday'),
+    genderNo: formData.get('genderNo'),
+    phone: formData.get('phone'),
+    address: formData.get('address'),
+  };
+
+  try {
+    await pb.collection('users').create(eventData);
+    alert('완료!');
+  } catch (error) {
+    console.log('Error while writing : ', error);
+  }
+
+  return redirect('/');
+}
 
 export default SignUp;

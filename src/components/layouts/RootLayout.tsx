@@ -8,6 +8,7 @@ import Header from '../molecules/Header/Header';
 import { navigationItems } from '@/routes/navigation';
 import SideMenu from '../organisms/SideMenu/SideMenu';
 import useModalControlStore from '@/store/useModalControl';
+import useFirstPathName from '@/hooks/useFirstPathName';
 
 const StyledRootLayout = styled.div`
   position: relative;
@@ -23,11 +24,12 @@ const StyledRootLayout = styled.div`
 
 function RootLayout() {
   const { isShowModal, resetModal } = useModalControlStore();
-  const { pathname } = useLocation();
+  const firstPathName = '/' + useFirstPathName();
+
   let headerContents = null;
   let sideMenuContents = null;
   const currentRouteObject = navigationItems.find(
-    ({ path }) => pathname === path
+    ({ path }) => firstPathName === path
   );
   if (currentRouteObject && currentRouteObject?.headerType) {
     const [type, title] = currentRouteObject.headerType;
@@ -36,14 +38,18 @@ function RootLayout() {
   }
 
   let isShownGlobalNavBar = true;
-  if (pathname === '/' || pathname === '/signin' || pathname === '/signup') {
+  if (
+    firstPathName === '/' ||
+    firstPathName === '/signin' ||
+    firstPathName === '/signup'
+  ) {
     isShownGlobalNavBar = false;
   }
 
   useEffect(() => {
     // 페이지 이동할 때마다 모달 isShow 변수 초기화
     resetModal();
-  }, [pathname, resetModal]);
+  }, [firstPathName, resetModal]);
   return (
     <StyledRootLayout>
       {headerContents}

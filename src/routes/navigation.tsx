@@ -1,5 +1,5 @@
 import { HeaderProps } from '@/components/molecules/Header/Header';
-import AddPet from '@/components/organisms/AddPet/AddPet';
+import AddPet, { addPetFormAction } from '@/components/organisms/AddPet/AddPet';
 import HeartList from '@/components/organisms/HeartList/HeartList';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import MyPage from '@/components/organisms/MyPage/MyPage';
@@ -9,7 +9,7 @@ import StoryWrite, {
 } from '@/components/organisms/Stories/StoryWrite';
 import Stories from '@/components/organisms/Stories/Stories';
 import Landing from '@/pages/Landing/Landing';
-import SignUp from '@/pages/SignUp/SignUp';
+import SignUp, { signupFormAction } from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
 import Reservations from '@/components/organisms/Reservations/Reservations';
 
@@ -32,6 +32,7 @@ export const navigationItems: NavigationRouteObject[] = [
   {
     path: '/signup',
     element: <SignUp />,
+    action: signupFormAction,
   },
   // 종연님
   {
@@ -111,6 +112,7 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/add_mypet',
     element: <AddPet />,
     headerType: ['back', '반려동물 추가'],
+    action: addPetFormAction,
   },
   {
     path: '/edit_my_profile',

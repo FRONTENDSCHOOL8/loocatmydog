@@ -67,7 +67,7 @@ const CheckBox = ({
         type={type}
         id={id}
         name={name}
-        checked={isChecked}
+        defaultChecked={isChecked}
         onChange={onChange}
       ></StyledCheckBox>
       <StyledLabel htmlFor={id} $reservation={reservation}>
