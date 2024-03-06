@@ -4,6 +4,7 @@ import StateBadge from './../../atoms/StateBadge/StateBadge';
 import HeartButton from '@/components/atoms/HeartButton/HeartButton';
 import { MouseEventHandler } from 'react';
 import { comma } from '@/utils';
+import { Link } from 'react-router-dom';
 
 interface PlaceProps {
   src: string;
@@ -13,18 +14,20 @@ interface PlaceProps {
   address: string;
   price: number;
   isActive: boolean;
-  starFill: boolean;
   heartFill: boolean;
+  path: string;
   onChangeHeartButton: MouseEventHandler<HTMLButtonElement>;
 }
 
-const StyledPlace = styled.div`
+const StyledPlace = styled(Link)`
   inline-size: 100%;
   display: inline-block;
+  &:hover {
+    text-decoration: none;
+  }
 
   & figure img {
     margin-block-end: 0.625rem;
-    /* inline-size: 100%; */
     aspect-ratio: 16 / 10;
     border-radius: 8px;
     object-fit: cover;
@@ -81,12 +84,12 @@ const Place = ({
   address,
   price,
   isActive,
-  starFill,
   heartFill,
+  path,
   onChangeHeartButton,
 }: PlaceProps) => {
   return (
-    <StyledPlace>
+    <StyledPlace to={path}>
       <div className="imageWrapper">
         <figure>
           <img src={src} alt="플레이스 소개 이미지" />
@@ -95,9 +98,7 @@ const Place = ({
         <HeartButton fill={heartFill} onClick={onChangeHeartButton} />
       </div>
       <div className="reviewWrapper">
-        {reviewNumber === 0 ? undefined : (
-          <StarRating fill={starFill} count={1} />
-        )}
+        {reviewNumber === 0 ? undefined : <StarRating fill={true} count={1} />}
         {reviewNumber === 0 ? undefined : <span>{rate.toFixed(1)}</span>}
         <span>
           {' '}

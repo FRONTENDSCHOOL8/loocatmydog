@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { css } from 'styled-components';
 import { format } from 'date-fns';
 
+import { PlacesResponse } from '@/@types/database';
 import useDateRangeStore from '@/store/useDateRange';
 import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
-import ProfileCard from '@/components/molecules/ProfileCard/ProfileCard';
 import HotPlace from '@/components/molecules/HotPlace/HotPlace';
 import ContentSwiperContainer from '@/components/molecules/ImageSwiper/ContentSwiperContainer';
 import MoreButton from '@/components/atoms/MoreButton/MoreButton';
@@ -14,9 +15,10 @@ import DropDown from '@/components/atoms/DropDown/DropDown';
 import Place from '@/components/molecules/Place/Place';
 import * as S from './StyledMain';
 import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
-import pb from '@/api/pocketbase';
 import { dummyPlaceData } from '@/data/dummyPlaceData';
-import { QueryClient } from '@tanstack/react-query';
+import { fetchPlaceList } from './loader';
+import ShortcutMenu from '@/components/molecules/ShortcutMenu/ShortcutMenu';
+import usePlaceList from '@/hooks/usePlaceList';
 
 type PlaceSortType = {
   id: string;
@@ -43,10 +45,18 @@ export function Component() {
   const [placeSortType, setPlaceSortType] = useState<PlaceSortType | string>(
     '거리순'
   );
+  const { data: cachedPlaceData } = usePlaceList();
+
   const navigate = useNavigate();
-  const hotPlaceContents = dummyPlaceData.map((item) => (
-    <Link key={item.id} to={item.path}>
-      <HotPlace {...item} />
+  const hotPlaceContents = cachedPlaceData?.map((item) => (
+    <Link key={item.id} to={`/place_detail/${item.id}`}>
+      <HotPlace
+        src={item.photo[0]}
+        title={item.title}
+        rate={3}
+        reviewNumber={21}
+        address={item.address}
+      />
     </Link>
   ));
   const handleChangeSortType = ({ id, label }: PlaceSortType) => {
@@ -55,7 +65,6 @@ export function Component() {
   };
 
   useEffect(() => {
-    console.log(pb.authStore.isAdmin);
     const [startDate, endDate] = dateRange;
     if (startDate && endDate) {
       navigate(
@@ -76,13 +85,20 @@ export function Component() {
         <h2 className="section-title">
           <span>봐주개냥 서비스</span>
         </h2>
+
         <div className="section-content">
-          <ProfileCard profile={true} name="예약하기">
-            필요한 공간을 찾아보세요.
-          </ProfileCard>
-          <ProfileCard profile={true} name="예약하기">
-            필요한 공간을 찾아보세요.
-          </ProfileCard>
+          <ShortcutMenu
+            path="/place_list?filterType=range&sortType=popular"
+            title="예약하기"
+            description="필요한 공간을 찾아보세요."
+            photo="/images/sidemenu/sidebar_dog_small.png"
+          />
+          <ShortcutMenu
+            path="/stories"
+            title="스토리"
+            description="다른 친구들의 이야기"
+            photo="/images/place-ex.jpg"
+          />
         </div>
       </S.MainSection>
 
@@ -92,7 +108,7 @@ export function Component() {
           <MoreButton path="/place_list?filterType=range&sortType=popular" />
         </h2>
         <ContentSwiperContainer
-          contents={hotPlaceContents}
+          contents={hotPlaceContents as React.JSX.Element[]}
           swiperParams={{
             direction: 'horizontal',
             'slides-per-view': 1.6,
@@ -112,18 +128,18 @@ export function Component() {
           <DropDown items={initialSortType} setCurrent={handleChangeSortType} />
         </h2>
         <div className="section-content">
-          {dummyPlaceData.map((item) => (
+          {cachedPlaceData?.map((item) => (
             <Place
               key={item.id}
-              src={item.src}
+              path={`/place_detail/${item.id}`}
+              src={item.photo[0]}
               title={item.title}
-              rate={item.rate}
-              reviewNumber={item.reviewNumber}
+              rate={3}
+              reviewNumber={25}
               address={item.address}
-              price={item.price.small}
-              heartFill={item.heartFill}
-              starFill={item.starFill}
-              isActive={item.isActive}
+              price={item.price[0].small}
+              heartFill={true}
+              isActive={true}
               onChangeHeartButton={(e) => console.log(e.currentTarget)}
             />
           ))}
@@ -133,25 +149,3 @@ export function Component() {
   );
 }
 Component.displayName = 'Main';
-
-const fetchPlaceList = async () => {
-  const response = await pb
-    .collection('places')
-    .getFullList({ expand: 'userId' });
-  const newResponse = response.map((item) => {
-    item.photo.map((photo: string) => {
-      const url = pb.files.getUrl(item, photo, { thumb: '500x0' });
-    });
-    console.log(item.photo);
-    return item;
-  });
-  console.log(newResponse);
-  return newResponse;
-};
-
-export const loader = (queryClient: QueryClient) => async () => {
-  return await queryClient.ensureQueryData({
-    queryKey: ['places'],
-    queryFn: fetchPlaceList,
-  });
-};

@@ -39,7 +39,7 @@ export const navigationItems: NavigationRouteObject[] = [
   {
     path: '/main',
     async lazy() {
-      const { loader, Component } = await import('@/pages/Main/Main');
+      const { loader, Component } = await import('@/pages/Main');
       return { loader: loader(queryClient), Component };
     },
     headerType: ['main', null],
