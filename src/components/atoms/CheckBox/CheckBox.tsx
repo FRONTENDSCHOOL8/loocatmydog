@@ -68,8 +68,8 @@ const CheckBox = ({
       <StyledCheckBox
         type={type}
         id={id}
-        name={name}
         checked={isChecked}
+        name={name}
         onChange={onChange}
         value={value}
       ></StyledCheckBox>
