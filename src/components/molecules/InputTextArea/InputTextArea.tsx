@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 
 const StyledInputTextAreaBox = styled.div`
@@ -46,12 +47,14 @@ interface InputTextAreaProps {
   request?: string;
   requestCheck: '필수' | '선택';
   placeholder?: string;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 const InputTextArea = ({
   request = '산책 요청 사항',
   requestCheck = '필수',
   placeholder = '',
+  onChange,
 }: InputTextAreaProps) => {
   return (
     <StyledInputTextAreaBox>
@@ -64,6 +67,7 @@ const InputTextArea = ({
         placeholder={placeholder}
         cols={5}
         rows={8}
+        onChange={onChange}
       ></textarea>
     </StyledInputTextAreaBox>
   );

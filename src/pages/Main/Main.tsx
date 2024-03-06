@@ -16,6 +16,7 @@ import * as S from './StyledMain';
 import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
 import pb from '@/api/pocketbase';
 import { dummyPlaceData } from '@/data/dummyPlaceData';
+import { QueryClient } from '@tanstack/react-query';
 
 type PlaceSortType = {
   id: string;
@@ -132,3 +133,25 @@ export function Component() {
   );
 }
 Component.displayName = 'Main';
+
+const fetchPlaceList = async () => {
+  const response = await pb
+    .collection('places')
+    .getFullList({ expand: 'userId' });
+  const newResponse = response.map((item) => {
+    item.photo.map((photo: string) => {
+      const url = pb.files.getUrl(item, photo, { thumb: '500x0' });
+    });
+    console.log(item.photo);
+    return item;
+  });
+  console.log(newResponse);
+  return newResponse;
+};
+
+export const loader = (queryClient: QueryClient) => async () => {
+  return await queryClient.ensureQueryData({
+    queryKey: ['places'],
+    queryFn: fetchPlaceList,
+  });
+};

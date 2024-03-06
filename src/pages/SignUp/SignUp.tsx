@@ -1,10 +1,11 @@
 import pb from '@/api/pocketbase';
+import Button from '@/components/atoms/Button/Button';
 import SignUpAddress from '@/components/organisms/SignUp/SignUpAddress';
 import SignUpAgree from '@/components/organisms/SignUp/SignUpAgree';
 import SignUpEmail from '@/components/organisms/SignUp/SignUpEmail';
 import SignUpPhone from '@/components/organisms/SignUp/SignUpPhone';
-import { useState } from 'react';
-import { Form, redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Form, redirect, useNavigate } from 'react-router-dom';
 
 interface FormData {
   email: string;
@@ -39,6 +40,8 @@ const INITIAL_DATA: FormData = {
 };
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   // 데이터 저장을 위한 상태관리
   const [data, setData] = useState(INITIAL_DATA);
   // 현재 화면에 보이는 컴포넌트 조절을 위한 상태관리
@@ -67,6 +70,34 @@ const SignUp = () => {
     });
   }
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const userData = {
+      email: data.email,
+      password: data.password,
+      passwordConfirm: data.password,
+      name: data.name,
+      birthday: data.birthday,
+      genderNo: data.genderNo,
+      phone: data.phone,
+      address: data.address,
+      addressDetail: data.addressDetail,
+      addressInfo: {
+        zonecode: data.zonecode,
+        sigungu: data.sigungu,
+        latitude: data.latitude,
+        longitude: data.longitude,
+      },
+    };
+    try {
+      await pb.collection('users').create(userData);
+      alert('회원가입을 완료했습니다.');
+      navigate('/');
+    } catch (error) {
+      console.log('데이터 통신 중 에러가 발생했습니다. : ', error);
+    }
+  }
   const steps = [
     <SignUpAgree {...data} next={next} back={back} key="signUpAgree" />,
     <SignUpEmail
@@ -93,33 +124,8 @@ const SignUp = () => {
   ];
 
   return (
-    <Form id="signupForm" method="post">
-      {steps[currentStepIndex]}
-    </Form>
+    <form onSubmit={(e) => handleSubmit(e)}>{steps[currentStepIndex]}</form>
   );
 };
-
-export async function signupFormAction({ request }: { request: any }) {
-  const formData = await request.formData();
-
-  const eventData = {
-    email: formData.get('email'),
-    password: formData.get('password'),
-    name: formData.get('name'),
-    birthday: formData.get('birthday'),
-    genderNo: formData.get('genderNo'),
-    phone: formData.get('phone'),
-    address: formData.get('address'),
-  };
-
-  try {
-    await pb.collection('users').create(eventData);
-    alert('완료!');
-  } catch (error) {
-    console.log('Error while writing : ', error);
-  }
-
-  return redirect('/');
-}
 
 export default SignUp;

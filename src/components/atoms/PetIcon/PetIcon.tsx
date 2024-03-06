@@ -32,12 +32,12 @@ const StyledPet = styled.img.attrs((props) => ({
 
 interface PetIconProps {
   // Union Type : 또는
-  dogSize: '대형견' | '중형견' | '소형견';
+  dogSize: string;
 }
 
 const PetIcon = ({ dogSize }: PetIconProps) => {
   return (
-    <StyledPet src={'/images/bigDog.svg'} $dogSize={dogSize} alt={dogSize} />
+    <StyledPet src={'/images/BigDog.svg'} $dogSize={dogSize} alt={dogSize} />
   );
 };
 

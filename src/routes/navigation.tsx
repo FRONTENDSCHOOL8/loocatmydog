@@ -1,17 +1,19 @@
+import { queryClient } from '@/app/App';
 import { HeaderProps } from '@/components/molecules/Header/Header';
 import AddPet, { addPetFormAction } from '@/components/organisms/AddPet/AddPet';
 import HeartList from '@/components/organisms/HeartList/HeartList';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import MyPage from '@/components/organisms/MyPage/MyPage';
+import Reservations from '@/components/organisms/Reservations/Reservations';
+import ServiceCanUse from '@/components/organisms/ServiceCanUse/ServiceCanUse';
 import Settings from '@/components/organisms/Settings/Settings';
+import Stories from '@/components/organisms/Stories/Stories';
 import StoryWrite, {
   storyFormAction,
 } from '@/components/organisms/Stories/StoryWrite';
-import Stories from '@/components/organisms/Stories/Stories';
 import Landing from '@/pages/Landing/Landing';
-import SignUp, { signupFormAction } from '@/pages/SignUp/SignUp';
+import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
-import Reservations from '@/components/organisms/Reservations/Reservations';
 import ChatRoom, {
   chatRoomFormAction,
 } from '@/components/organisms/Chat/ChatRoom';
@@ -35,12 +37,14 @@ export const navigationItems: NavigationRouteObject[] = [
   {
     path: '/signup',
     element: <SignUp />,
-    action: signupFormAction,
   },
   // 종연님
   {
     path: '/main',
-    lazy: () => import('@/pages/Main/Main'),
+    async lazy() {
+      const { loader, Component } = await import('@/pages/Main/Main');
+      return { loader: loader(queryClient), Component };
+    },
     headerType: ['main', null],
   },
   {
@@ -56,7 +60,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 경화님
   {
     path: '/add_place',
-    element: '',
+    element: <ServiceCanUse />,
     headerType: ['back', '플레이스 등록'],
   },
   {

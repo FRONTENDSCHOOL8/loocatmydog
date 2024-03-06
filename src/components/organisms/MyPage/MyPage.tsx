@@ -59,7 +59,7 @@ const MyPage = () => {
       <ProfileCardSection>
         <span className="petSpan">반려동물</span>
         <ProfileCard
-          // onClick={handleProfileCardClick}
+          onClick={handleProfileCardClick}
           isChecked={false}
           profile={false}
           name={'현재 없음'}

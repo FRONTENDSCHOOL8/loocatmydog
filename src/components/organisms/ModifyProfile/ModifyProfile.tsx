@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { TypedPocketBase } from 'typed-pocketbase';
 
 // 명령어로 자동 생성된 타입 정의 파일에서 Schema를 가져옵니다.
-import { Schema, UsersResponse } from '@/@types/test';
+import { Schema, UsersResponse } from '@/@types/database';
 
 // 사용할 PocketBase 주소를 지정합니다.
 const db = new TypedPocketBase<Schema>(import.meta.env.VITE_PB_API_URL);
@@ -110,7 +110,7 @@ const StyledAddressBox = styled.div`
 
 const ModifyProfile = () => {
   //이미지 바꾸는 함수
-  const [changeImg, setChangeImg] = useState<string>('/images/profileNone.svg');
+  const [changeImg, setChangeImg] = useState<string>('');
   const [record, setRecord] = useState<UsersResponse | {}>({});
 
   const [isEditingPhone, setIsEditingPhone] = useState(false);
@@ -149,10 +149,9 @@ const ModifyProfile = () => {
           .getOne('p85jypwlgke40oq');
         // 로그인 후 사용자 정보 가져오기
         setRecord(record);
-        setPhone(record?.phoneNumber);
+        setPhone(record?.phone);
         setAddress(record?.address);
         setChangeImg(record?.avatar);
-        console.log(typeof record.avatar);
       } catch (error) {
         console.error('Error logging in:', error);
       }
@@ -222,7 +221,7 @@ const ModifyProfile = () => {
     }
 
     if (isValid) {
-      setRecord((prevRecord) => ({ ...prevRecord, phoneNumber: phone }));
+      setRecord((prevRecord) => ({ ...prevRecord, phone: phone }));
       setIsEditingPhone(!isEditingPhone);
       return;
     } else return alert('알맞은 휴대전화번호를 입력해주세요');
@@ -247,7 +246,10 @@ const ModifyProfile = () => {
 
   return (
     <StyledModifyProfileBox>
-      <UserProfile name={(record as UsersResponse).name} src={changeImg} />
+      <UserProfile
+        name={(record as UsersResponse).name}
+        src={changeImg === '' ? '/images/profileNone.svg' : changeImg}
+      />
       <StyledProfileBox>
         <label htmlFor="modifyCamera">
           <img

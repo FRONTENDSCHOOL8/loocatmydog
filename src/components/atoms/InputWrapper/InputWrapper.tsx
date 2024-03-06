@@ -1,7 +1,6 @@
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
 import { ReactNode, useId } from 'react';
 import styled from 'styled-components';
-import CheckBox from '../CheckBox/CheckBox';
 
 //type 정의
 interface InputWrapperProps {
@@ -19,6 +18,7 @@ const StyledInputWrapper = styled.div`
     position: relative;
     display: flex;
     align-items: center;
+
     & span {
       position: absolute;
       right: 0;
@@ -27,7 +27,7 @@ const StyledInputWrapper = styled.div`
     }
   }
 
-  .inputTextWrapper input[type='text'] {
+  .inputWrapper {
     padding: 8px 0;
     padding-inline-start: 5px;
     padding-inline-end: 20px;
@@ -60,7 +60,7 @@ const InputWrapper = ({
           type={type}
           id={id}
           name={name}
-          className="input-wrapper"
+          className="inputWrapper"
           {...restProps}
         />
         <span>{unit}</span>

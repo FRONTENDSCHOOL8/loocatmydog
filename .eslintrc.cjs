@@ -14,7 +14,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   overrides: [
     {
-      files: ['*.js', '*.jsx'],
+      files: ['*.ts', '*.tsx'],
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
