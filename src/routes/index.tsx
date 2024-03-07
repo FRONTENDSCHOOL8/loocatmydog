@@ -14,4 +14,6 @@ const routes: RouteObject[] = [
   },
 ];
 
-export let router = createBrowserRouter(routes);
+export let router = createBrowserRouter(routes, {
+  basename: import.meta.env.DEV ? '/' : import.meta.env.VITE_PUBLIC_URL,
+});
