@@ -2,11 +2,11 @@ import { ChangeEvent, useState } from 'react';
 
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
 import * as S from '@/pages/PlaceList/StyledPlaceList';
-import Place from '@/components/molecules/Place/Place';
 import DropDown from '@/components/atoms/DropDown/DropDown';
 import FilterButton from '@/components/atoms/FilterButton/FilterButton';
 import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
-import { dummyPlaceData } from '@/data/dummyPlaceData';
+import usePlaceList from '@/hooks/usePlaceList';
+import Place from '@/components/molecules/Place/Place';
 
 type PlaceSortType = {
   id: string;
@@ -34,18 +34,22 @@ const initialFilterType: PlaceFilterType = {
 };
 
 export function Component() {
-  const { setParams } = useGetAllSearchParams();
+  const {
+    allParams: { filterType, sortType },
+    setParams,
+  } = useGetAllSearchParams();
+
   const [placeSortType, setPlaceSortType] = useState<PlaceSortType>(
     initialSortType[0]
   );
   const [placeFilterType, setPlaceFilterType] =
     useState<PlaceFilterType>(initialFilterType);
+  const { data: cachedPlaceData } = usePlaceList();
 
   const handleChangeSortType = ({ id, label }: PlaceSortType) => {
     setPlaceSortType({ id, label });
     setParams('sortType', id);
   };
-
   const handleChangeFilterType = (e: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, checked },
@@ -81,18 +85,18 @@ export function Component() {
           <A11yHidden as="h2">플레이스 목록</A11yHidden>
         </div>
         <div className="section-content">
-          {dummyPlaceData.map((item) => (
+          {cachedPlaceData?.map((item) => (
             <Place
               key={item.id}
-              src={item.src}
+              path={`/place_detail/${item.id}`}
+              src={item.photo[0]}
               title={item.title}
-              rate={item.rate}
-              reviewNumber={item.reviewNumber}
+              rate={4}
+              reviewNumber={25}
               address={item.address}
-              price={item.price.small}
-              heartFill={item.heartFill}
-              starFill={item.starFill}
-              isActive={item.isActive}
+              price={item.price[0].small}
+              heartFill={true}
+              isActive={true}
               onChangeHeartButton={(e) => console.log(e.currentTarget)}
             />
           ))}
