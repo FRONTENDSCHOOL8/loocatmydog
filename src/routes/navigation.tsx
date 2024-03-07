@@ -12,6 +12,7 @@ import StoryWrite, {
   storyFormAction,
 } from '@/components/organisms/Stories/StoryWrite';
 import Landing from '@/pages/Landing/Landing';
+import SignIn, { signInFormAction } from '@/pages/SignIn/SignIn';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
 
@@ -28,7 +29,8 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/signin',
-    element: '',
+    element: <SignIn />,
+    action: signInFormAction,
     headerType: ['back', null],
   },
   {
