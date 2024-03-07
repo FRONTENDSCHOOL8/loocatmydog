@@ -12,6 +12,7 @@ import StoryWrite, {
   storyFormAction,
 } from '@/components/organisms/Stories/StoryWrite';
 import Landing from '@/pages/Landing/Landing';
+import SignIn, { signInFormAction } from '@/pages/SignIn/SignIn';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
 import ChatRoom, {
@@ -31,7 +32,8 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/signin',
-    element: '',
+    element: <SignIn />,
+    action: signInFormAction,
     headerType: ['back', null],
   },
   {
@@ -42,7 +44,7 @@ export const navigationItems: NavigationRouteObject[] = [
   {
     path: '/main',
     async lazy() {
-      const { loader, Component } = await import('@/pages/Main/Main');
+      const { loader, Component } = await import('@/pages/Main');
       return { loader: loader(queryClient), Component };
     },
     headerType: ['main', null],
