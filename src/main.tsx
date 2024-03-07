@@ -10,10 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ThemeProvider theme={theme}>
     <React.StrictMode>
-      <BrowserRouter basename={import.meta.env.VITE_PUBLIC_URL}>
-        <GlobalStyles />
-        <App />
-      </BrowserRouter>
+      <GlobalStyles />
+      <App />
     </React.StrictMode>
   </ThemeProvider>
 );
