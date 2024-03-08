@@ -9,8 +9,8 @@ const StyledFilterCheck = styled.label`
   gap: 5px;
   padding: 3px 10px;
   ${(props) => props.theme.fontStyles.textRegularSm};
-  background-color: ${(props) => props.theme.colors.white};
-  border: 1px solid ${(props) => props.theme.colors.lineColorGray};
+  background-color: ${(props) => props.theme.colors.gray100};
+  border: 1px solid ${(props) => props.theme.colors.gray300};
   border-radius: 10px;
   cursor: pointer;
   user-select: none;

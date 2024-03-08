@@ -16,7 +16,7 @@ const StyledRootLayout = styled.div`
   max-inline-size: 420px;
   block-size: 100dvh;
   margin: 0 auto;
-  background-color: skyblue;
+  background-color: ${(props) => props.theme.colors.white};
   display: flex;
   flex-flow: column nowrap;
   overflow: hidden;
@@ -38,9 +38,9 @@ function RootLayout() {
 
   let isShownGlobalNavBar = true;
   if (
-    firstPathName === '/' ||
-    firstPathName === '/signin' ||
-    firstPathName === '/signup'
+    firstPathName === '' ||
+    firstPathName === 'signin' ||
+    firstPathName === 'signup'
   ) {
     isShownGlobalNavBar = false;
   }
