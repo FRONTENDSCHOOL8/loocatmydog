@@ -1,4 +1,11 @@
-export const service = [
+interface serviceProps {
+  [key: string]: {
+    name: string;
+    text: string;
+  };
+}
+
+export const service: serviceProps[] = [
   {
     daily: {
       name: '매일 산책',
