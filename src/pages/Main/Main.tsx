@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { css } from 'styled-components';
 import { format } from 'date-fns';
+import { useInView } from 'framer-motion';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import useDateRangeStore from '@/store/useDateRange';
 import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
@@ -14,7 +16,6 @@ import Place from '@/components/molecules/Place/Place';
 import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
 import ShortcutMenu from '@/components/molecules/ShortcutMenu/ShortcutMenu';
 import * as S from './StyledMain';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { getPlaceInifiniteQueryOptions } from '@/utils/getQueryOptions';
 
 type PlaceSortType = {
@@ -42,7 +43,6 @@ export function Component() {
   const [placeSortType, setPlaceSortType] = useState<PlaceSortType | string>(
     '거리순'
   );
-
   const loadedPlaceData = useLoaderData() as any;
   const {
     data: cachedPlaceData,
@@ -55,6 +55,10 @@ export function Component() {
   const placeListData = cachedPlaceData
     ? cachedPlaceData.pages.flatMap((data) => data.items)
     : [];
+
+  const ref = useRef(null);
+  const isInView = useInView(ref);
+
   const navigate = useNavigate();
   const hotPlaceContents = placeListData?.map((item) => (
     <Link key={item.id} to={`/place_detail/${item.id}`}>
@@ -81,6 +85,9 @@ export function Component() {
     }
   }, [dateRange, navigate, resetDateRange]);
 
+  useEffect(() => {
+    fetchNextPage();
+  }, [isInView, fetchNextPage]);
   return (
     <S.MainContainer>
       <A11yHidden as="h2" className="section-title">
@@ -107,16 +114,7 @@ export function Component() {
           />
         </div>
       </S.MainSection>
-      <button
-        type="button"
-        onClick={() => {
-          console.log('클릭');
-          console.log(hasNextPage);
-          fetchNextPage();
-        }}
-      >
-        더불러오기
-      </button>
+
       <S.MainSection>
         <h2 className="section-title">
           <span>인기 플레이스</span>
@@ -149,13 +147,14 @@ export function Component() {
               rate={item.averageStar}
               reviewNumber={item.reviewCount}
               address={item.address}
-              price={item.price[0].small}
+              price={item.price.small}
               heartFill={true}
               isActive={true}
             />
           ))}
         </div>
       </S.MainSection>
+      {hasNextPage && <div ref={ref}>더보기</div>}
     </S.MainContainer>
   );
 }
