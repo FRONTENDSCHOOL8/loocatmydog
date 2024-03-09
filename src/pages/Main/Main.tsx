@@ -17,6 +17,7 @@ import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
 import ShortcutMenu from '@/components/molecules/ShortcutMenu/ShortcutMenu';
 import * as S from './StyledMain';
 import { getPlaceInifiniteQueryOptions } from '@/utils/getQueryOptions';
+import { useAuthStore } from '@/store/useAuthStore';
 
 type PlaceSortType = {
   id: string;
@@ -137,21 +138,25 @@ export function Component() {
           <DropDown items={initialSortType} setCurrent={handleChangeSortType} />
         </h2>
         <div className="section-content">
-          {placeListData?.map((item) => (
-            <Place
-              id={item.id}
-              key={item.id}
-              path={`/place_detail/${item.id}`}
-              src={item.photo[0]}
-              title={item.title}
-              rate={item.averageStar}
-              reviewNumber={item.reviewCount}
-              address={item.address}
-              price={item.price.small}
-              heartFill={true}
-              isActive={true}
-            />
-          ))}
+          {placeListData?.map((item) => {
+            const myData = useAuthStore.getState().user;
+            const heartFill = myData?.heart.includes(item.id);
+            return (
+              <Place
+                id={item.id}
+                key={item.id}
+                path={`/place_detail/${item.id}`}
+                src={item.photo[0]}
+                title={item.title}
+                rate={item.averageStar}
+                reviewNumber={item.reviewCount}
+                address={item.address}
+                price={item.price.small}
+                heartFill={heartFill}
+                isActive={true}
+              />
+            );
+          })}
         </div>
       </S.MainSection>
       {hasNextPage && <div ref={ref}>더보기</div>}

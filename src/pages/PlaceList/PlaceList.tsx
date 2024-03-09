@@ -111,21 +111,25 @@ export function Component() {
           <A11yHidden as="h2">플레이스 목록</A11yHidden>
         </div>
         <div className="section-content">
-          {placeListData?.map((item) => (
-            <Place
-              key={item.id}
-              id={item.id}
-              path={`/place_detail/${item.id}`}
-              src={item.photo[0]}
-              title={item.title}
-              rate={item.averageStar}
-              reviewNumber={item.reviewCount}
-              address={item.address}
-              price={item.price.small}
-              heartFill={true}
-              isActive={true}
-            />
-          ))}
+          {placeListData?.map((item) => {
+            const myData = useAuthStore.getState().user;
+            const heartFill = myData?.heart.includes(item.id);
+            return (
+              <Place
+                key={item.id}
+                id={item.id}
+                path={`/place_detail/${item.id}`}
+                src={item.photo[0]}
+                title={item.title}
+                rate={item.averageStar}
+                reviewNumber={item.reviewCount}
+                address={item.address}
+                price={item.price.small}
+                heartFill={heartFill}
+                isActive={true}
+              />
+            );
+          })}
         </div>
       </S.MainSection>
       {hasNextPage && <div ref={ref}>더보기</div>}
