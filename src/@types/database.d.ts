@@ -145,8 +145,10 @@ export interface UsersResponse extends AuthCollectionResponse {
 	phone: string;
 	avatar: string;
 	petId: Array<string>;
+
 	heart: any;
 	addressInfo: any;
+
 }
 
 export interface UsersCreate extends AuthCollectionCreate {
@@ -158,8 +160,10 @@ export interface UsersCreate extends AuthCollectionCreate {
 	phone?: string;
 	avatar?: File | null;
 	petId?: MaybeArray<string>;
+
 	heart?: any;
 	addressInfo?: any;
+
 }
 
 export interface UsersUpdate extends AuthCollectionUpdate {
@@ -179,6 +183,7 @@ export interface UsersUpdate extends AuthCollectionUpdate {
 	'petId-'?: MaybeArray<string>;
 	heart?: any;
 	addressInfo?: any;
+
 }
 
 export interface UsersCollection {
@@ -190,6 +195,7 @@ export interface UsersCollection {
 	update: UsersUpdate;
 	relations: {
 		petId: PetCollection[];
+
 		'boards(userId)': BoardsCollection[];
 		'places(userId)': PlacesCollection[];
 		'chatRooms(members)': ChatRoomsCollection[];

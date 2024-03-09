@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import { css } from 'styled-components';
 import { format } from 'date-fns';
 
-import { PlacesResponse } from '@/@types/database';
 import useDateRangeStore from '@/store/useDateRange';
 import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
@@ -13,12 +11,11 @@ import ContentSwiperContainer from '@/components/molecules/ImageSwiper/ContentSw
 import MoreButton from '@/components/atoms/MoreButton/MoreButton';
 import DropDown from '@/components/atoms/DropDown/DropDown';
 import Place from '@/components/molecules/Place/Place';
-import * as S from './StyledMain';
 import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
-import { dummyPlaceData } from '@/data/dummyPlaceData';
-import { fetchPlaceList } from './loader';
 import ShortcutMenu from '@/components/molecules/ShortcutMenu/ShortcutMenu';
-import usePlaceList from '@/hooks/usePlaceList';
+import * as S from './StyledMain';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getPlaceInifiniteQueryOptions } from '@/utils/getQueryOptions';
 
 type PlaceSortType = {
   id: string;
@@ -45,16 +42,27 @@ export function Component() {
   const [placeSortType, setPlaceSortType] = useState<PlaceSortType | string>(
     '거리순'
   );
-  const { data: cachedPlaceData } = usePlaceList();
 
+  const loadedPlaceData = useLoaderData() as any;
+  const {
+    data: cachedPlaceData,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    ...getPlaceInifiniteQueryOptions(),
+    initialData: loadedPlaceData,
+  });
+  const placeListData = cachedPlaceData
+    ? cachedPlaceData.pages.flatMap((data) => data.items)
+    : [];
   const navigate = useNavigate();
-  const hotPlaceContents = cachedPlaceData?.map((item) => (
+  const hotPlaceContents = placeListData?.map((item) => (
     <Link key={item.id} to={`/place_detail/${item.id}`}>
       <HotPlace
         src={item.photo[0]}
         title={item.title}
-        rate={3}
-        reviewNumber={21}
+        rate={item.averageStar}
+        reviewNumber={item.reviewCount}
         address={item.address}
       />
     </Link>
@@ -63,7 +71,6 @@ export function Component() {
     setPlaceSortType({ id, label });
     setParams('sortType', id);
   };
-
   useEffect(() => {
     const [startDate, endDate] = dateRange;
     if (startDate && endDate) {
@@ -85,7 +92,6 @@ export function Component() {
         <h2 className="section-title">
           <span>봐주개냥 서비스</span>
         </h2>
-
         <div className="section-content">
           <ShortcutMenu
             path="/place_list?filterType=range&sortType=popular"
@@ -101,7 +107,16 @@ export function Component() {
           />
         </div>
       </S.MainSection>
-
+      <button
+        type="button"
+        onClick={() => {
+          console.log('클릭');
+          console.log(hasNextPage);
+          fetchNextPage();
+        }}
+      >
+        더불러오기
+      </button>
       <S.MainSection>
         <h2 className="section-title">
           <span>인기 플레이스</span>
@@ -115,10 +130,6 @@ export function Component() {
             'space-between': 20,
             'free-mode': true,
           }}
-          styles={css`
-            & swiper-container {
-            }
-          `}
         />
       </S.MainSection>
 
@@ -128,19 +139,19 @@ export function Component() {
           <DropDown items={initialSortType} setCurrent={handleChangeSortType} />
         </h2>
         <div className="section-content">
-          {cachedPlaceData?.map((item) => (
+          {placeListData?.map((item) => (
             <Place
+              id={item.id}
               key={item.id}
               path={`/place_detail/${item.id}`}
               src={item.photo[0]}
               title={item.title}
-              rate={3}
-              reviewNumber={25}
+              rate={item.averageStar}
+              reviewNumber={item.reviewCount}
               address={item.address}
               price={item.price[0].small}
               heartFill={true}
               isActive={true}
-              onChangeHeartButton={(e) => console.log(e.currentTarget)}
             />
           ))}
         </div>
