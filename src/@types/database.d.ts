@@ -145,8 +145,10 @@ export interface UsersResponse extends AuthCollectionResponse {
 	phone: string;
 	avatar: string;
 	petId: Array<string>;
+
+	heart: any;
 	addressInfo: any;
-	heart: Array<string>;
+
 }
 
 export interface UsersCreate extends AuthCollectionCreate {
@@ -158,8 +160,10 @@ export interface UsersCreate extends AuthCollectionCreate {
 	phone?: string;
 	avatar?: File | null;
 	petId?: MaybeArray<string>;
+
+	heart?: any;
 	addressInfo?: any;
-	heart?: MaybeArray<string>;
+
 }
 
 export interface UsersUpdate extends AuthCollectionUpdate {
@@ -177,10 +181,9 @@ export interface UsersUpdate extends AuthCollectionUpdate {
 	petId?: MaybeArray<string>;
 	'petId+'?: MaybeArray<string>;
 	'petId-'?: MaybeArray<string>;
+	heart?: any;
 	addressInfo?: any;
-	heart?: MaybeArray<string>;
-	'heart+'?: MaybeArray<string>;
-	'heart-'?: MaybeArray<string>;
+
 }
 
 export interface UsersCollection {
@@ -192,7 +195,7 @@ export interface UsersCollection {
 	update: UsersUpdate;
 	relations: {
 		petId: PetCollection[];
-		heart: PlacesCollection[];
+
 		'boards(userId)': BoardsCollection[];
 		'places(userId)': PlacesCollection[];
 		'chatRooms(members)': ChatRoomsCollection[];
@@ -358,7 +361,6 @@ export interface PlacesCollection {
 	create: PlacesCreate;
 	update: PlacesUpdate;
 	relations: {
-		'users(heart)': UsersCollection[];
 		'boards(placeId)': BoardsCollection[];
 		userId: UsersCollection;
 	};

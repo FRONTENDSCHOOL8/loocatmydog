@@ -9,6 +9,7 @@ interface ButtonCheckProps {
   children: string | ReactNode;
   isChecked?: boolean;
   profile?: boolean;
+  src?: string;
   [key: string]: any;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
@@ -69,6 +70,7 @@ const ProfileCard = ({
   onChange,
   isChecked = false,
   profile = true,
+  src,
   ...restProps
 }: ButtonCheckProps) => {
   const id = useId();
@@ -77,17 +79,18 @@ const ProfileCard = ({
       <StyledButtonCheck
         id={id}
         type="checkbox"
-        defaultChecked={isChecked}
+        checked={isChecked}
         value={name}
+        name={name}
         onChange={onChange}
       />
       <StyledButtonCheckLabel htmlFor={id}>
         <div className="textWrap">
           <StyledButtonCheckP>{name}</StyledButtonCheckP>
-          <p>{children}</p>
+          {children}
         </div>
         {profile ? (
-          <ProfileImage />
+          <ProfileImage src={src} />
         ) : (
           <ProfileImage src={'/images/plusIcon.svg'} />
         )}
