@@ -50,8 +50,13 @@ const StyledDropDownTest = styled.div<StyledDropDownTestProps>`
     align-items: center;
     gap: 5px;
     padding: 3px 10px;
-    background-color: ${(props) => props.theme.colors.white};
-    border: 1px solid ${(props) => props.theme.colors.lineColorGray};
+    background-color: ${(props) => props.theme.colors.gray100};
+    border: 1px solid ${(props) => props.theme.colors.gray300};
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: ${(props) => props.theme.colors.gray300};
+    }
+
     ${(props) => {
       if (props.$isOpen) {
         return css`

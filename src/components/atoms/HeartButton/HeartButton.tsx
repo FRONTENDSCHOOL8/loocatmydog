@@ -8,12 +8,21 @@ interface HeartButtonProps {
 const StyledHeartButton = styled.button.attrs({ type: 'button' })`
   border: none;
   background-color: transparent;
-  padding: 0;
   cursor: pointer;
   border-radius: 50%;
   display: flex;
   align-items: center;
-  padding: 2px;
+  padding: 3px;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.orange};
+    transform: scale(1.2);
+    box-shadow:
+      0 20px 25px -5px rgb(0 0 0 / 0.8),
+      0 8px 10px -6px rgb(0 0 0 / 0.8);
+  }
 `;
 
 const HeartButton = ({ fill = false, ...restProps }: HeartButtonProps) => {

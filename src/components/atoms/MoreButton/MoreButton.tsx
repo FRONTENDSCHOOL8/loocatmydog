@@ -17,11 +17,12 @@ const StyledMoreButton = styled(Link)<StyledMoreButtonProps>`
   padding-inline: 10px;
   text-decoration: none;
 
-  background-color: ${(props) => props.theme.colors.lineColorGray};
+  background-color: ${(props) => props.theme.colors.gray100};
   block-size: 21px;
   ${(props) => props.theme.fontStyles.textRegularSm}
-  border: 0px;
+  border: 1px solid ${(props) => props.theme.colors.gray300};
   border-radius: 10px;
+  transition: background-color 0.2s;
 
   &:active,
   &:visited {
