@@ -12,6 +12,8 @@ const StyledInputTextAreaBox = styled.div`
     resize: none;
     border: 1px solid ${(props) => props.theme.colors.lineColorGray};
     border-radius: 4px;
+    padding: 5px;
+    ${(props) => props.theme.fontStyles.textRegularMd}
   }
   & ::placeholder {
     padding: 10px 53px 10px 10px;
@@ -46,7 +48,10 @@ const InputTextAreaSpanWrapper = styled.div<InputTextAreaSpanWrapperProps>`
 interface InputTextAreaProps {
   request?: string;
   requestCheck: '필수' | '선택';
+  name?: string;
   placeholder?: string;
+  isRequired?: boolean;
+  inputValue?: string;
   onChange?: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
@@ -54,7 +59,11 @@ const InputTextArea = ({
   request = '산책 요청 사항',
   requestCheck = '필수',
   placeholder = '',
+  name,
+  isRequired = false,
+  inputValue,
   onChange,
+  ...restProps
 }: InputTextAreaProps) => {
   return (
     <StyledInputTextAreaBox>
@@ -63,11 +72,14 @@ const InputTextArea = ({
         <span className="essential">&#40;{requestCheck}&#41;</span>
       </InputTextAreaSpanWrapper>
       <textarea
-        name="contents"
+        name={name}
         placeholder={placeholder}
+        required={isRequired}
         cols={5}
-        rows={8}
+        rows={5}
+        value={inputValue}
         onChange={onChange}
+        {...restProps}
       ></textarea>
     </StyledInputTextAreaBox>
   );

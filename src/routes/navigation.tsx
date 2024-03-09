@@ -1,17 +1,19 @@
 import { queryClient } from '@/app/App';
 import { HeaderProps } from '@/components/molecules/Header/Header';
 import AddPet, { addPetFormAction } from '@/components/organisms/AddPet/AddPet';
+import DatePick from '@/components/organisms/DatePick/DatePick';
 import HeartList from '@/components/organisms/HeartList/HeartList';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
 import MyPage from '@/components/organisms/MyPage/MyPage';
 import Reservations from '@/components/organisms/Reservations/Reservations';
-import ServiceCanUse from '@/components/organisms/ServiceCanUse/ServiceCanUse';
 import Settings from '@/components/organisms/Settings/Settings';
 import Stories from '@/components/organisms/Stories/Stories';
 import StoryWrite, {
   storyFormAction,
 } from '@/components/organisms/Stories/StoryWrite';
 import Landing from '@/pages/Landing/Landing';
+import PlaceDetail from '@/pages/PlaceDetail/PlaceDetail';
+import { loader as detail } from '@/pages/PlaceDetail/loader';
 import SignIn, { signInFormAction } from '@/pages/SignIn/SignIn';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
@@ -62,13 +64,14 @@ export const navigationItems: NavigationRouteObject[] = [
   // 경화님
   {
     path: '/add_place',
-    element: <ServiceCanUse />,
+    element: '',
     headerType: ['back', '플레이스 등록'],
   },
   {
     path: '/place_detail/:id',
-    element: '',
+    element: <PlaceDetail />,
     headerType: ['place', null],
+    loader: detail,
   },
   {
     path: '/reservation_list/:id',

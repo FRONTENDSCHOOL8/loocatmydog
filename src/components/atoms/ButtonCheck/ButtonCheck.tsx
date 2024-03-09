@@ -1,12 +1,18 @@
-import { Dispatch, ReactNode, SetStateAction, useId } from 'react';
+import {
+  ChangeEventHandler,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useId,
+} from 'react';
 import styled from 'styled-components';
 
 // type 지정
 interface ButtonCheckProps {
   name: string;
   children: string | ReactNode;
-  isChecked: boolean;
-  setIsChecked: Dispatch<SetStateAction<boolean>>;
+  isChecked?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 //styled component 작성
@@ -15,7 +21,7 @@ const StyledButtonCheckContainer = styled.div`
   position: relative;
   max-inline-size: 140px;
   min-block-size: 70px;
-  inline-size: 33.333%;
+  inline-size: 30%;
   ${(props) => props.theme.fontStyles.textRegularSm}
   ${(props) => props.theme.colors.textGray}
 `;
@@ -58,9 +64,8 @@ const ButtonCheck = ({
   name,
   children,
   isChecked,
-  setIsChecked,
+  onChange,
 }: ButtonCheckProps) => {
-  const checkBoxChecked = () => setIsChecked(!isChecked);
   const id = useId();
   return (
     <StyledButtonCheckContainer>
@@ -69,7 +74,7 @@ const ButtonCheck = ({
         type="checkbox"
         checked={isChecked}
         value={name}
-        onChange={checkBoxChecked}
+        onChange={onChange}
       />
       <StyledButtonCheckLabel htmlFor={id}>
         <StyledButtonCheckP>{name}</StyledButtonCheckP>
