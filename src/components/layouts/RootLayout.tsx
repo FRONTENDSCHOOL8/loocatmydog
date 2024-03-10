@@ -54,14 +54,18 @@ function RootLayout() {
     isShownGlobalNavBar = false;
   }
 
-  // 메인페이지에서 벗어나면 인피니트 쿼리 초기화
-  if (firstPathName !== 'main') {
-    const queryKey = ['places'];
-    const placesData: PlacesData = queryClient.getQueryData(queryKey);
-    // if (placesData?.pageParams.length !== 1) {
-    console.log('인피니트 쿼리 초기화!');
-    queryClient.resetQueries({ queryKey });
-    // }
+  // 페이지 이동할 때마다 인피니트 쿼리 초기화
+  const mainQueryKey = ['places', 'main'];
+  const searchQueryKey = ['places', 'search'];
+  const placesMainData: PlacesData = queryClient.getQueryData(mainQueryKey);
+  const placesSearchData: PlacesData = queryClient.getQueryData(searchQueryKey);
+  if (placesMainData?.pageParams.length !== 1) {
+    console.log('main 쿼리 초기화');
+    queryClient.resetQueries({ queryKey: mainQueryKey });
+  }
+  if (placesSearchData?.pageParams.length !== 1) {
+    console.log('search 쿼리 초기화');
+    queryClient.resetQueries({ queryKey: searchQueryKey });
   }
 
   useEffect(() => {

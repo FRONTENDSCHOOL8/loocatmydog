@@ -36,8 +36,6 @@ export const fetchPlaceList = async (
   perPage = 1,
   options = {}
 ) => {
-  console.log('fetchPlaceList 호출, 페이지넘버', pageInfo.pageParam);
-  console.log('fetchPlaceList 호출, perPage', perPage);
   const response = await pb
     .from('places')
     .getList(pageInfo.pageParam, perPage, {

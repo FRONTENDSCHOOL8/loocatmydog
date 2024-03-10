@@ -50,12 +50,10 @@ export function Component() {
     : [];
 
   useEffect(() => {
-    console.log('filterString useEffect 호출', filterString);
     refetch();
   }, [filterString, refetch]);
 
   useEffect(() => {
-    console.log('isInView useEffect 호출', isInView);
     if (isInView) {
       console.log(isInView);
       fetchNextPage();
