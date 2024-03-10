@@ -6,8 +6,10 @@ export const loader = (queryClient: QueryClient) => async () => {
 
   const cachedPlaceData = queryClient.getQueryData(['places']);
 
-  if (cachedPlaceData) placeData = cachedPlaceData;
-  else
+  if (cachedPlaceData) {
+    placeData = cachedPlaceData;
+  } else {
     placeData = queryClient.fetchInfiniteQuery(getPlaceInifiniteQueryOptions());
+  }
   return placeData;
 };

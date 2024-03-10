@@ -56,7 +56,11 @@ export const navigationItems: NavigationRouteObject[] = [
     // filterType=range라면 => &startDate=yyMMdd&endDate=yyMMdd
     // sortType = distance | popular | price
     path: '/place_list',
-    lazy: async () => import('@/pages/PlaceList/PlaceList'),
+    async lazy() {
+      const { loader } = await import('@/pages/Main');
+      const { Component } = await import('@/pages/PlaceList');
+      return { loader: loader(queryClient), Component };
+    },
     headerType: ['main', null],
   },
 
