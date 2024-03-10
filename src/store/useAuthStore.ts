@@ -44,8 +44,11 @@ const createStore: CreateStore<AuthStore> = (set) => ({
   signIn: async (userNameOrEmail, password) => {
     const authData = await pb
       .collection(USER_COLLECTION)
-      .authWithPassword(userNameOrEmail, password);
+      .authWithPassword(userNameOrEmail, password, {
+        expand: 'petId, heart',
+      });
 
+    console.log(authData);
     const { record, token } = authData;
 
     set(
@@ -56,7 +59,7 @@ const createStore: CreateStore<AuthStore> = (set) => ({
         token,
       }),
       false,
-      'auth/singin'
+      'auth/signin'
     );
   },
 
@@ -70,7 +73,7 @@ const createStore: CreateStore<AuthStore> = (set) => ({
         ...initialAuthState,
       }),
       false,
-      'auth/singout'
+      'auth/signout'
     );
   },
 
@@ -104,7 +107,7 @@ export const useAuthStore = create<AuthStore>()(
       createStore,
       // persist : 저장할 스토리지 레이블(localstorage에 저장될 이름)
       {
-        name: 'app/singin',
+        name: 'app/signin',
       }
     )
   )
