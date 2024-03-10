@@ -46,7 +46,7 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/main',
     async lazy() {
       const { loader, Component } = await import('@/pages/Main');
-      return { loader: loader(queryClient), Component };
+      return { loader: loader(queryClient, ['places', 'main']), Component };
     },
     headerType: ['main', null],
   },
@@ -57,11 +57,10 @@ export const navigationItems: NavigationRouteObject[] = [
     // sortType = distance | popular | price
     path: '/place_list',
     async lazy() {
-      const { loader } = await import('@/pages/Main');
-      const { Component } = await import('@/pages/PlaceList');
-      return { loader: loader(queryClient), Component };
+      const { Component, loader } = await import('@/pages/PlaceList');
+      return { loader: loader(queryClient, ['places', 'search']), Component };
     },
-    headerType: ['main', null],
+    headerType: ['back', '플레이스 찾기'],
   },
 
   // 경화님

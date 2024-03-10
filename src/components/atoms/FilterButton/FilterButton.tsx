@@ -1,5 +1,4 @@
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
-import { PlaceFilterType } from '@/pages/PlaceList/PlaceList';
 import React, { useId } from 'react';
 import styled from 'styled-components';
 

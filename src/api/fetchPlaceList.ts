@@ -31,18 +31,23 @@ export const fetchPlaceFullList = async () => {
 };
 
 // List로 가져오기
-const PER_PAGE = 2;
-export const fetchPlaceList = async (pageInfo: any) => {
+export const fetchPlaceList = async (
+  pageInfo: any,
+  perPage = 1,
+  options = {}
+) => {
   console.log('fetchPlaceList 호출, 페이지넘버', pageInfo.pageParam);
+  console.log('fetchPlaceList 호출, perPage', perPage);
   const response = await pb
     .from('places')
-    .getList(pageInfo.pageParam, PER_PAGE, {
+    .getList(pageInfo.pageParam, perPage, {
       select: {
         expand: {
           userId: true,
           'boards(placeId)': true,
         },
       },
+      ...options,
     });
 
   // 필요한 데이터 추가 (별점, 리뷰갯수)
