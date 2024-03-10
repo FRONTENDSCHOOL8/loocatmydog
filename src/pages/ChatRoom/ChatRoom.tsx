@@ -30,7 +30,7 @@ const StyledChatRoom = styled.div`
   .chatArea {
     inline-size: 100%;
     block-size: 100%;
-    background-color: lime;
+    background-color: ${(props) => props.theme.colors.gray100};
     padding: 15px;
     display: flex;
     flex-flow: column nowrap;
@@ -95,18 +95,15 @@ const ChatRoom = () => {
   const [observer, setObserver] = useState<boolean>(false);
 
   useEffect(() => {
-    pb.from('chatRooms').subscribe(roomId, async (e) => {
-      console.log(e);
+    pb.collection('chatRooms').subscribe(roomId, async (e) => {
       if (e.record.messageBox) {
         setObserver(true);
-        console.log('업데이트 ', observer);
       }
     });
 
     return () => {
       pb.collection('chatRooms').unsubscribe(roomId);
       setObserver(false);
-      console.log(observer);
     };
   });
 
@@ -125,10 +122,9 @@ const ChatRoom = () => {
 
     const defaultData = data?.default;
     const messageBox = defaultData?.messageBox;
-    // console.log(messageBox);
 
     const textInput = document.getElementById('messageArea');
-    // console.log((textInput as HTMLInputElement).value);
+
     const message = (textInput as HTMLInputElement).value;
 
     const currentDate = new Date();

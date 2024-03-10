@@ -1,6 +1,7 @@
 import { UsersResponse } from '@/@types/database';
 import pb from '@/api/pocketbase';
 import ChatItem from '@/components/molecules/ChatItem/ChatItem';
+import setChatRead from './setChatRead';
 
 export const getChatRoomData = async (roomId: string, userId: string) => {
   const response = await pb.from('chatRooms').getOne(roomId, {
@@ -11,7 +12,7 @@ export const getChatRoomData = async (roomId: string, userId: string) => {
     },
   });
 
-  console.log(response);
+  setChatRead(roomId, userId, response);
 
   const userDatas = response?.expand as { members: UsersResponse[] };
 
@@ -23,8 +24,6 @@ export const getChatRoomData = async (roomId: string, userId: string) => {
   } else {
     sender = userDatas.members[0];
   }
-
-  console.log(sender);
 
   // 채팅
   const chatData = response?.messageBox;
