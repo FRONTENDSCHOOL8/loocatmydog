@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useChatListData } from './useChatListData';
 import React, { useEffect, useState } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
 const StyledChatList = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -10,10 +11,11 @@ const StyledChatList = styled.div`
   }
 `;
 
-const userId = 'qx6lpgtzmsdy3id';
-
 const ChatList = () => {
-  const { data, isLoading } = useChatListData(userId);
+  const currentUserData = useAuthStore.getState().user;
+  const currentUserId = currentUserData?.id;
+
+  const { data, isLoading } = useChatListData(currentUserId);
   const [chatRooms, setChatRooms] = useState<React.JSX.Element[]>([]);
 
   useEffect(() => {

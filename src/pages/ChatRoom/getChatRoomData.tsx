@@ -2,20 +2,6 @@ import { UsersResponse } from '@/@types/database';
 import pb from '@/api/pocketbase';
 import ChatItem from '@/components/molecules/ChatItem/ChatItem';
 
-// const getChatRoom = (roomId: string) => {
-//   try {
-//     return pb.from('chatRooms').getOne(roomId, {
-//       select: {
-//         expand: {
-//           members: true,
-//         },
-//       },
-//     });
-//   } catch (error) {
-//     console.log('error while get: ', error);
-//   }
-// };
-
 export const getChatRoomData = async (roomId: string, userId: string) => {
   const response = await pb.from('chatRooms').getOne(roomId, {
     select: {
@@ -24,12 +10,6 @@ export const getChatRoomData = async (roomId: string, userId: string) => {
       },
     },
   });
-
-  // let response = await getChatRoom(roomId);
-
-  // pb.from('chatRooms').subscribe(roomId, async (e) => {
-  //   response = await getChatRoom(roomId);
-  // });
 
   console.log(response);
 

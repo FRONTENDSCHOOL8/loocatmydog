@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useChatRoomData } from './useChatRoomData';
 import React, { FormEvent, useEffect, useState } from 'react';
 import pb from '@/api/pocketbase';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const StyledChatRoom = styled.div`
   inline-size: 100%;
@@ -83,10 +84,11 @@ const StyledChatRoom = styled.div`
   }
 `;
 
-// dummy userId
-const currentUserId = 'qx6lpgtzmsdy3id';
-
 const ChatRoom = () => {
+  // 로그인 유저 정보
+  const currentUserData = useAuthStore.getState().user;
+  const currentUserId = currentUserData?.id;
+
   // 채팅방 id 값
   const roomId = useParams().id as string;
   const [chatItems, setChatItems] = useState<React.JSX.Element[]>([]);
