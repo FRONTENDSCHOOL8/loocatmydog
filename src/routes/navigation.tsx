@@ -1,6 +1,7 @@
 import { queryClient } from '@/app/App';
 import { HeaderProps } from '@/components/molecules/Header/Header';
 import AddPet, { addPetFormAction } from '@/components/organisms/AddPet/AddPet';
+import ChatRoom from '@/pages/ChatRoom/ChatRoom';
 import DatePick from '@/components/organisms/DatePick/DatePick';
 import HeartList from '@/components/organisms/HeartList/HeartList';
 import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
@@ -11,6 +12,7 @@ import Stories from '@/components/organisms/Stories/Stories';
 import StoryWrite, {
   storyFormAction,
 } from '@/components/organisms/Stories/StoryWrite';
+import ChatList from '@/pages/ChatList/ChatList';
 import Landing from '@/pages/Landing/Landing';
 import PlaceDetail from '@/pages/PlaceDetail/PlaceDetail';
 import { loader as detail } from '@/pages/PlaceDetail/loader';
@@ -103,12 +105,14 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/chat_list',
-    element: '',
+    element: <ChatList />,
     headerType: ['back', '채팅 목록'],
   },
   {
-    path: '/chat_room',
-    element: '',
+    path: '/chat_room/:id',
+    element: <ChatRoom />,
+    headerType: ['back', '플레이스'],
+    // action: chatroomFormAction,
   },
 
   // 다영님

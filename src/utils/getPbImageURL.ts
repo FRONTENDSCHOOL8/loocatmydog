@@ -5,5 +5,5 @@ export default function getPbImageURL(
 ): string {
   return `${
     import.meta.env.VITE_PB_API_URL
-  }api/files/${collectionId}/${id}/${fileName}`;
+  }/api/files/${collectionId}/${id}/${fileName}`;
 }
