@@ -168,7 +168,7 @@ const Calendar = ({
   useEffect(() => {
     if (minMaxDateRange[0] && minMaxDateRange[1])
       setDateRange([minDate, minDate]);
-  }, [minDate, setDateRange, minMaxDateRange]);
+  }, []);
 
   return (
     <DatePicker
