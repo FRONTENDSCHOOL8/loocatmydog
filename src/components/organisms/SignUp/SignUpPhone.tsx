@@ -1,15 +1,15 @@
 import Button from '@/components/atoms/Button/Button';
-import styled from 'styled-components';
-import FormInput from '../../molecules/FormInput/FormInput';
-import React, { useEffect, useState } from 'react';
 import { useInput } from '@/hooks/useInput';
+import { getRandomNumber } from '@/utils';
 import {
   isBirthday,
   isGenderNo,
   isName,
-  isPhone,
+  isPhoneNum,
 } from '@/utils/signUpValidation';
-import { getRandomNumber } from '@/utils';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import FormInput from '../../molecules/FormInput/FormInput';
 import SignUpHeader from './SignUpHeader';
 
 const StyledSignUpPhone = styled.div`
@@ -136,7 +136,7 @@ const SignUpPhone = ({ back, next, updateFields }: SignUpPhoneProps) => {
     handleInputChange: handlePhoneChange,
     handleInputBlur: handlePhoneBlur,
     hasError: phoneHasError,
-  } = useInput('', (value: string) => isPhone(value));
+  } = useInput('', (value: string) => isPhoneNum(value));
 
   // 인증번호 state
   const [certificationNumber, setCertificationNumber] = useState('');
@@ -267,9 +267,9 @@ const SignUpPhone = ({ back, next, updateFields }: SignUpPhoneProps) => {
           <div className="inputPositionWrapper">
             <FormInput
               mode={'register'}
-              type={'number'}
+              type={'text'}
               name={'phone'}
-              placeholder="휴대폰 번호 입력"
+              placeholder="'-' 포함하여 입력"
               value={phoneValue}
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
