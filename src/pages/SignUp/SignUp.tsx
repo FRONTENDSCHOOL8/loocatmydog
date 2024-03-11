@@ -1,11 +1,11 @@
 import pb from '@/api/pocketbase';
-import Button from '@/components/atoms/Button/Button';
 import SignUpAddress from '@/components/organisms/SignUp/SignUpAddress';
 import SignUpAgree from '@/components/organisms/SignUp/SignUpAgree';
 import SignUpEmail from '@/components/organisms/SignUp/SignUpEmail';
 import SignUpPhone from '@/components/organisms/SignUp/SignUpPhone';
-import React, { useState } from 'react';
-import { Form, redirect, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/useAuthStore';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface FormData {
   email: string;
@@ -41,11 +41,22 @@ const INITIAL_DATA: FormData = {
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const socialLoginData = location.state?.data;
 
   // 데이터 저장을 위한 상태관리
   const [data, setData] = useState(INITIAL_DATA);
   // 현재 화면에 보이는 컴포넌트 조절을 위한 상태관리
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+
+  useEffect(() => {
+    if (socialLoginData) {
+      setCurrentStepIndex(2);
+      setData((prev) => {
+        return { ...prev, email: socialLoginData.record.email };
+      });
+    }
+  }, [socialLoginData]);
 
   // 회원가입 다음 단계로 이동 시 데이터 업데이트
   function updateFields(fields: Partial<FormData>) {
@@ -89,11 +100,21 @@ const SignUp = () => {
         latitude: data.latitude,
         longitude: data.longitude,
       },
+      isEdited: true,
     };
     try {
-      await pb.collection('users').create(userData);
-      alert('회원가입을 완료했습니다.');
-      navigate('/');
+      if (socialLoginData) {
+        await pb
+          .collection('users')
+          .update(socialLoginData.record.id, userData);
+        useAuthStore.getState().signInSocialLogin();
+        alert('회원가입을 완료했습니다.');
+      } else {
+        await pb.collection('users').create(userData);
+        useAuthStore.getState().signIn(data.email, data.password);
+        alert('회원가입을 완료했습니다.');
+      }
+      navigate('/main');
     } catch (error) {
       console.log('데이터 통신 중 에러가 발생했습니다. : ', error);
     }
