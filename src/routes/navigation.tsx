@@ -21,6 +21,7 @@ import { loader as detail } from '@/pages/PlaceDetail/loader';
 import SignIn, { signInFormAction } from '@/pages/SignIn/SignIn';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
+import NotFoundPage from '@/components/organisms/NotFoundPage/NotFoundPage';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -145,14 +146,13 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/settings',
-    element: (
-      <>
-        <Settings />
-      </>
-    ),
+    element: <Settings />,
     headerType: ['logo', null],
   },
-
+  {
+    path: '/*',
+    element: <NotFoundPage />,
+  },
   // 미할당
   {
     path: '/events',

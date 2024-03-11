@@ -161,7 +161,6 @@ const ModifyProfile = () => {
         setAddress(record?.address);
         setChangeImg(record?.avatar);
         setDetailAddress(record?.addressDetail);
-        console.log(record);
       } catch (error) {
         console.error('Error Logging:', error);
         // alert('로그인이 되어있어야 열람이 가능합니다.');
@@ -289,7 +288,7 @@ const ModifyProfile = () => {
                 type="text"
                 value={phone}
                 onChange={handleChangePhone}
-                disabled={!isEditingPhone}
+                readOnly={!isEditingPhone}
               />
               <button
                 className="orangeButton"
@@ -308,7 +307,7 @@ const ModifyProfile = () => {
                 value={address}
                 name="address"
                 onChange={handleChangeAddress}
-                disabled={!isEditingAddress}
+                readOnly={!isEditingAddress}
               />
               <button
                 className="orangeButton"
@@ -358,14 +357,19 @@ export async function edit({ request }: { request: any }) {
   const data = await request.formData();
   const record = await pb.from('users').getOne(user?.id);
 
-  for (const [key, value] of data.entries()) console.log(key, value);
+  const formData = Object.fromEntries(data.entries());
 
-  await pb.from('users').update(user?.id, {
-    addressDetail: data.get('detailAddress'),
-    address: data.get('address'),
-    phone: data.get('phone'),
-    avatar: data.get(`${record.name}`),
+  const { address, detailAddress, modifyCamera, phone } = formData;
+
+  const updatedUser = await pb.from('users').update(user?.id, {
+    addressDetail: detailAddress,
+    address: address,
+    phone: phone,
+    avatar: modifyCamera,
   });
+
+  // 업데이트 된 사용자 정보 출력
+  console.table(updatedUser);
 
   return redirect(`/edit_my_profile`);
 }
