@@ -1,15 +1,13 @@
 import { queryClient } from '@/app/App';
 import { HeaderProps } from '@/components/molecules/Header/Header';
-import AddPet, { addPetFormAction } from '@/components/organisms/AddPet/AddPet';
+import AddPet, { addPetFormAction } from '@/pages/AddPet/AddPet';
 import ChatRoom from '@/pages/ChatRoom/ChatRoom';
 import DatePick from '@/components/organisms/DatePick/DatePick';
 import HeartList from '@/components/organisms/HeartList/HeartList';
-import ModifyProfile, {
-  edit,
-} from '@/components/organisms/ModifyProfile/ModifyProfile';
-import MyPage from '@/components/organisms/MyPage/MyPage';
+import ModifyProfile, { edit } from '@/pages/ModifyProfile/ModifyProfile';
+import MyPage from '@/pages/MyPage/MyPage';
 import Reservations from '@/components/organisms/Reservations/Reservations';
-import Settings from '@/components/organisms/Settings/Settings';
+import Settings from '@/pages/Settings/Settings';
 import Stories from '@/components/organisms/Stories/Stories';
 import StoryWrite, {
   storyFormAction,
@@ -21,6 +19,7 @@ import { loader as detail } from '@/pages/PlaceDetail/loader';
 import SignIn, { signInFormAction } from '@/pages/SignIn/SignIn';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -119,11 +118,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 다영님
   {
     path: '/mypage',
-    element: (
-      <>
-        <MyPage />
-      </>
-    ),
+    element: <MyPage />,
     headerType: ['popup', '마이 페이지'],
   },
   {
@@ -145,14 +140,13 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/settings',
-    element: (
-      <>
-        <Settings />
-      </>
-    ),
+    element: <Settings />,
     headerType: ['logo', null],
   },
-
+  {
+    path: '/*',
+    element: <NotFoundPage />,
+  },
   // 미할당
   {
     path: '/events',
