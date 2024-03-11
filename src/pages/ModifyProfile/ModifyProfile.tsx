@@ -362,6 +362,8 @@ export async function edit({ request }: { request: any }) {
     avatar: modifyCamera,
   });
 
+  useAuthStore.getState().update();
+
   // 업데이트 된 사용자 정보 출력
   console.table(updatedUser);
 

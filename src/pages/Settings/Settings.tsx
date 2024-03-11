@@ -28,14 +28,19 @@ const Settings = () => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    useAuthStore.getState().signOut;
-    navigate('/');
+    if (confirm('로그아웃 하시겠습니까?')) {
+      useAuthStore.getState().signOut();
+      navigate('/');
+    }
   };
 
   const handleWithdrawal = () => {
-    useAuthStore.getState().withDrawal;
-    navigate('/');
-    //탈퇴 하시겠습니까? 문구 먼저 띄워주고 탈퇴를 선택하면 탈퇴 시킴
+    const userData = useAuthStore.getState().user;
+    const userId = userData?.id;
+    if (confirm('탈퇴하시겠습니까?')) {
+      useAuthStore.getState().withDrawal(userId);
+      navigate('/');
+    }
   };
 
   return (

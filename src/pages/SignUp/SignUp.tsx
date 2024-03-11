@@ -108,7 +108,7 @@ const SignUp = () => {
         await pb
           .collection('users')
           .update(socialLoginData.record.id, userData);
-        useAuthStore.getState().signInSocialLogin();
+        useAuthStore.getState().update();
         alert('회원가입을 완료했습니다.');
       } else {
         await pb.collection('users').create(userData);

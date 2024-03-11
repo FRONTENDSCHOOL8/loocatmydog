@@ -69,7 +69,7 @@ const Landing = () => {
     if (provider === 'google') {
       data = await googleLogin();
     }
-    useAuthStore.getState().signInSocialLogin();
+    useAuthStore.getState().update();
 
     if (data?.record.isEdited) {
       navigate('/main');
