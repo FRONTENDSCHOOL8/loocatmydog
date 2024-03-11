@@ -7,12 +7,10 @@ import styled from 'styled-components';
 
 // 명령어로 자동 생성된 타입 정의 파일에서 Schema를 가져옵니다.
 import { useAuthStore } from '@/store/useAuthStore';
-import { Form, redirect, useNavigate } from 'react-router-dom';
+import { Form, redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { isPhoneNum } from '@/utils/signUpValidation';
 import pb from '@/api/pocketbase';
 import { UsersCreate } from '@/@types/database';
-import Button from '@/components/atoms/Button/Button';
-import getPbImageURL from '@/utils/getPbImageURL';
 
 const StyledModifyProfileBox = styled.div`
   padding-block-start: 23px;
@@ -33,10 +31,6 @@ const StyledEmailBox = styled.div`
   margin-inline: 20px;
   margin-block-end: 30px;
   gap: 14px;
-
-  & input {
-    border: none;
-  }
 
   & span {
     color: ${(props) => props.theme.colors.textBlack};
@@ -211,6 +205,7 @@ const ModifyProfile = () => {
       const newDetailAddress = `${detailAddress}`;
       setAddress(newAddress);
       setDetailAddress(newDetailAddress);
+
       setIsDetailOpen(!isDetailOpen);
     }
   };
@@ -286,6 +281,7 @@ const ModifyProfile = () => {
                 type="text"
                 value={phone}
                 onChange={handleChangePhone}
+                required
                 disabled={!isEditingPhone}
               />
               <button
@@ -302,9 +298,10 @@ const ModifyProfile = () => {
             <div>
               <input
                 type="text"
-                value={address}
                 name="address"
+                value={address}
                 onChange={handleChangeAddress}
+                required
                 disabled={!isEditingAddress}
               />
               <button
@@ -317,32 +314,30 @@ const ModifyProfile = () => {
             </div>
           </StyledEmailBox>
           <StyledEmailBox>
-            <input type="text" name="detailAddress" value={detailAddress} />
+            <p>{(record as UsersCreate).addressDetail}</p>
           </StyledEmailBox>
-          <Button size="80%" mode="normal" type="submit">
-            수정하기
-          </Button>
+          <Modal isOpen={isDetailOpen} ariaHideApp={false} style={customStyles}>
+            <StyledAddressBox>
+              <div>
+                <input value={roadAddress} readOnly placeholder="도로명 주소" />
+                <button onClick={toggle}>주소 검색</button>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  name="detailAddress"
+                  onChange={changeHandler}
+                  value={detailAddress}
+                  placeholder="상세주소"
+                />
+                <button onClick={clickHandler}>주소 저장</button>
+              </div>
+            </StyledAddressBox>
+          </Modal>
+          <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
+            <DaumPostcode onComplete={completeHandler} />
+          </Modal>
         </StyledProfileBox>
-        <Modal isOpen={isDetailOpen} ariaHideApp={false} style={customStyles}>
-          <StyledAddressBox>
-            <div>
-              <input value={roadAddress} readOnly placeholder="도로명 주소" />
-              <button onClick={toggle}>주소 검색</button>
-            </div>
-            <div>
-              <input
-                type="text"
-                onChange={changeHandler}
-                value={detailAddress}
-                placeholder="상세주소"
-              />
-              <button onClick={clickHandler}>주소 저장</button>
-            </div>
-          </StyledAddressBox>
-        </Modal>
-        <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-          <DaumPostcode onComplete={completeHandler} />
-        </Modal>
       </StyledModifyProfileBox>
     </Form>
   );
@@ -354,12 +349,11 @@ export async function edit({ request }: { request: any }) {
   const user = useAuthStore.getState().user;
   const data = await request.formData();
   const record = await pb.from('users').getOne(user?.id);
-
-  for (const [key, value] of data.entries()) console.log(key, value);
+  for (const [key, value] of data.entries) console.log(key, value);
 
   await pb.from('users').update(user?.id, {
-    addressDetail: data.get('detailAddress'),
     address: data.get('address'),
+    addressDetail: data.get('detailAddress'),
     phone: data.get('phone'),
     avatar: data.get(`${record.name}`),
   });

@@ -4,7 +4,9 @@ import AddPet, { addPetFormAction } from '@/components/organisms/AddPet/AddPet';
 import ChatRoom from '@/pages/ChatRoom/ChatRoom';
 import DatePick from '@/components/organisms/DatePick/DatePick';
 import HeartList from '@/components/organisms/HeartList/HeartList';
-import ModifyProfile from '@/components/organisms/ModifyProfile/ModifyProfile';
+import ModifyProfile, {
+  edit,
+} from '@/components/organisms/ModifyProfile/ModifyProfile';
 import MyPage from '@/components/organisms/MyPage/MyPage';
 import Reservations from '@/components/organisms/Reservations/Reservations';
 import Settings from '@/components/organisms/Settings/Settings';
@@ -135,6 +137,7 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/edit_my_profile',
     element: <ModifyProfile />,
     headerType: ['back', '프로필 변경'],
+    action: edit,
   },
   {
     path: '/bookmark',

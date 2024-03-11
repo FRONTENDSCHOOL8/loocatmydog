@@ -1,7 +1,13 @@
+import { PetCreate, UsersCreate } from '@/@types/database';
+import pb from '@/api/pocketbase';
+import ContentSwiperContainer from '@/components/molecules/ImageSwiper/ContentSwiperContainer';
 import Payment from '@/components/molecules/Payment/Payment';
 import ProfileCard from '@/components/molecules/ProfileCard/ProfileCard';
 import ProfileListLink from '@/components/molecules/ProfileListLink/ProfileListLink';
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
+import { useAuthStore } from '@/store/useAuthStore';
+import getPbImageURL from '@/utils/getPbImageURL';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -49,23 +55,66 @@ const MyPage = () => {
     navigate('/add_mypet');
   };
 
+  const user = useAuthStore.getState().user;
+  const [petData, setPetData] = useState<any>(null);
+
+  const petImage = useEffect(() => {
+    const fetchPetData = async () => {
+      const record = await pb.from('users').getOne(user?.id, {
+        select: {
+          expand: {
+            petId: true,
+          },
+        },
+      });
+
+      setPetData(record.expand?.petId);
+      console.log(record.expand?.petId);
+      // const petId: any = record?.petId;
+      // if (petId) {
+      //   const petData = await pb.from('pet').getOne(petId);
+      //   setPetData(petData); // 상태 업데이트
+      // }
+    };
+    fetchPetData();
+  }, [user]);
+
   return (
     <StyledMyPage>
       <UserProfile
         style={{ marginBlock: 35 }}
-        name={'홍길동'}
-        src={'/images/grayCircle.svg'}
+        name={user?.name}
+        src={user?.avatar === '' ? '/images/profileNone.svg' : user?.avatar}
       />
       <ProfileCardSection>
         <span className="petSpan">반려동물</span>
-        <ProfileCard
-          onClick={handleProfileCardClick}
-          isChecked={false}
-          profile={false}
-          name={'현재 없음'}
-        >
-          {'반려동물을 등록해주세요'}
-        </ProfileCard>
+
+        <ul>
+          {petData === null ? (
+            <li>
+              <ProfileCard
+                onClick={handleProfileCardClick}
+                isChecked={false}
+                profile={false}
+                name={'현재 없음'}
+              >
+                {'반려동물을 등록해주세요'}
+              </ProfileCard>
+            </li>
+          ) : (
+            petData.map((data: any) => (
+              <li key={data.id}>
+                <ProfileCard
+                  profile={true}
+                  name={data.petName}
+                  src={getPbImageURL(data.collectionId, data.id, data.image)}
+                >
+                  {data.breed} {`${data.weight}kg`}
+                </ProfileCard>
+              </li>
+            ))
+          )}
+        </ul>
       </ProfileCardSection>
       <ProfileListLink />
       <ProfileListLink
