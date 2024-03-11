@@ -86,6 +86,7 @@ const SignUp = () => {
 
     const userData = {
       email: data.email,
+      emailVisibility: true,
       password: data.password,
       passwordConfirm: data.password,
       name: data.name,

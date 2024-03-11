@@ -136,6 +136,7 @@ const SignUpPhone = ({ back, next, updateFields }: SignUpPhoneProps) => {
     handleInputChange: handlePhoneChange,
     handleInputBlur: handlePhoneBlur,
     hasError: phoneHasError,
+    isDuplicate: phoneIsDuplicate,
   } = useInput('', (value: string) => isPhoneNum(value));
 
   // 인증번호 state
@@ -272,13 +273,18 @@ const SignUpPhone = ({ back, next, updateFields }: SignUpPhoneProps) => {
               placeholder="'-' 포함하여 입력"
               value={phoneValue}
               onChange={handlePhoneChange}
-              onBlur={handlePhoneBlur}
+              onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
+                handlePhoneBlur(e, 'phone')
+              }
             >
               휴대폰 정보
             </FormInput>
 
             {phoneHasError && (
               <span className="span-error">휴대폰 번호를 확인해주세요.</span>
+            )}
+            {!phoneHasError && phoneIsDuplicate && (
+              <span className="span-error">이미 등록된 휴대폰 번호입니다.</span>
             )}
           </div>
           <div className="inputPositionWrapper">
