@@ -1,5 +1,5 @@
-import { fetchPlaceList } from '@/api/fetchPlaceList';
-import { infiniteQueryOptions } from '@tanstack/react-query';
+import { fetchPlaceFullList, fetchPlaceList } from '@/api/fetchPlaceList';
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 const INITIAL_PAGE = 1;
 
@@ -15,5 +15,14 @@ export const getPlaceInfiniteQueryOptions = (
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.page < lastPage.totalPages ? allPages.length + 1 : null;
     },
+    staleTime: 1 * 1000 * 60,
+  });
+};
+
+export const getPlaceQueryOptions = (queryKey: string[]) => {
+  return queryOptions({
+    queryKey,
+    queryFn: fetchPlaceFullList,
+    staleTime: 1 * 1000 * 60,
   });
 };

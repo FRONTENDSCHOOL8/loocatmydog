@@ -15,7 +15,7 @@ const convertFilterString = (
     const FilterArray = [...target].map(
       (item) => `${fieldName} ${operator} "${item}"`
     );
-    result = FilterArray.join(' || ');
+    result = `(${FilterArray.join(' || ')})`;
   }
   return result;
 };

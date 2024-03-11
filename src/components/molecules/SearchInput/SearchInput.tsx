@@ -1,4 +1,7 @@
-import { forwardRef } from 'react';
+import useDateRangeStore from '@/store/useDateRange';
+import { format } from 'date-fns';
+import React, { forwardRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledSearchInputContainer = styled.div`
@@ -13,9 +16,7 @@ const StyledSearchInputContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 0 auto;
-  background:
-    url('/images/search.svg') no-repeat 10px center,
-    url('/images/plus.svg') no-repeat 95% center;
+  background: url('/images/home.svg') no-repeat 10px center;
   background-color: ${(props) => props.theme.colors.white};
 
   & .address {
@@ -25,6 +26,21 @@ const StyledSearchInputContainer = styled.div`
     border-right: 1px solid ${(props) => props.theme.colors.textGray};
     position: absolute;
     left: 30px;
+  }
+
+  & .search-button {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    translate: 0% -50%;
+    background: url('/images/search.svg') no-repeat center;
+    inline-size: 30px;
+    block-size: 30px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: ${(props) => props.theme.colors.gray300};
+    }
   }
 `;
 const StyledSearchInput = styled.span`
@@ -48,12 +64,31 @@ interface SearchInputProps {
 
 const SearchInput = forwardRef<any, SearchInputProps>(
   ({ address, onClick, value = '' }, ref) => {
+    const {
+      dateRange: [startDate, endDate],
+    } = useDateRangeStore();
+    const navigate = useNavigate();
     const date = value?.replace(' - ', ' ~ ');
     const dateText = date === '' ? '날짜선택' : date;
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      if (startDate === null || endDate === null)
+        return alert('정확한 날짜를 선택해주세요.');
+      navigate(
+        `/place_list?startDate=${format(startDate, 'yyMMdd')}&endDate=${format(endDate, 'yyMMdd')}`,
+        { state: [startDate, endDate] }
+      );
+    };
     return (
       <StyledSearchInputContainer onClick={onClick} ref={ref}>
         <span className="address">{address}</span>
         <StyledSearchInput>{dateText}</StyledSearchInput>
+        <button
+          className="search-button"
+          type="button"
+          aria-label="날짜 검색"
+          onClick={handleClick}
+        ></button>
       </StyledSearchInputContainer>
     );
   }
