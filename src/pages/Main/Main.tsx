@@ -16,8 +16,9 @@ import Place from '@/components/molecules/Place/Place';
 import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
 import ShortcutMenu from '@/components/molecules/ShortcutMenu/ShortcutMenu';
 import * as S from './StyledMain';
-import { getPlaceInifiniteQueryOptions } from '@/utils/getQueryOptions';
 import { useAuthStore } from '@/store/useAuthStore';
+import useSearchDate from '@/hooks/useSearchDate.';
+import { getPlaceInfiniteQueryOptions } from '@/utils';
 
 type PlaceSortType = {
   id: string;
@@ -37,10 +38,9 @@ const initialSortType: PlaceSortType[] = [
     label: '인기순',
   },
 ];
-
 export function Component() {
+  useSearchDate();
   const { setParams } = useGetAllSearchParams();
-  const { dateRange, resetDateRange } = useDateRangeStore();
   const [placeSortType, setPlaceSortType] = useState<PlaceSortType | string>(
     '거리순'
   );
@@ -50,7 +50,7 @@ export function Component() {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    ...getPlaceInifiniteQueryOptions(),
+    ...getPlaceInfiniteQueryOptions(['places', 'main']),
     initialData: loadedPlaceData,
   });
   const placeListData = cachedPlaceData
@@ -60,7 +60,6 @@ export function Component() {
   const ref = useRef(null);
   const isInView = useInView(ref);
 
-  const navigate = useNavigate();
   const hotPlaceContents = placeListData?.map((item) => (
     <Link key={item.id} to={`/place_detail/${item.id}`}>
       <HotPlace
@@ -76,18 +75,9 @@ export function Component() {
     setPlaceSortType({ id, label });
     setParams('sortType', id);
   };
-  useEffect(() => {
-    const [startDate, endDate] = dateRange;
-    if (startDate && endDate) {
-      navigate(
-        `/place_list?sortType=range&startDate=${format(startDate, 'yyMMdd')}&endDate=${format(endDate, 'yyMMdd')}`
-      );
-      resetDateRange();
-    }
-  }, [dateRange, navigate, resetDateRange]);
 
   useEffect(() => {
-    fetchNextPage();
+    if (isInView) fetchNextPage();
   }, [isInView, fetchNextPage]);
   return (
     <S.MainContainer>

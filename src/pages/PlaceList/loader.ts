@@ -11,7 +11,7 @@ export const loader =
       placeData = cachedPlaceData;
     } else {
       placeData = queryClient.fetchInfiniteQuery(
-        getPlaceInfiniteQueryOptions(queryKey)
+        getPlaceInfiniteQueryOptions(queryKey, 3)
       );
     }
     return placeData;

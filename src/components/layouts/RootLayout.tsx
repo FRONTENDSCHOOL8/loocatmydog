@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import GlobalNavBar from '@/components/molecules/GlobalNavBar/GlobalNavBar';
@@ -9,6 +9,7 @@ import { navigationItems } from '@/routes/navigation';
 import SideMenu from '../organisms/SideMenu/SideMenu';
 import useModalControlStore from '@/store/useModalControl';
 import useFirstPathName from '@/hooks/useFirstPathName';
+import { queryClient } from '@/app/App';
 
 const StyledRootLayout = styled.div`
   position: relative;
@@ -22,20 +23,28 @@ const StyledRootLayout = styled.div`
   overflow: hidden;
 `;
 
+type PlacesData = { pageParams: number[] } | undefined;
+
 function RootLayout() {
   const { isShowModal, resetModal } = useModalControlStore();
+  // 현재 path의 첫번째 depth의 이름 구하기
   const firstPathName = useFirstPathName();
+  // 헤더와 사이드바 컨텐츠 초기화
   let headerContents = null;
   let sideMenuContents = null;
+  // navigationItem에서 현재 path에 대한 route object 가져오기
   const currentRouteObject = navigationItems.find(
     ({ path }) => firstPathName === path?.split('/')[1]
   );
+
+  // route object가 존재하고 headerType이 존재할 경우 Header와 SideMenu 컴포넌트 삽입
   if (currentRouteObject && currentRouteObject?.headerType) {
     const [type, title] = currentRouteObject.headerType;
     headerContents = <Header type={type} title={title} />;
     sideMenuContents = type === 'main' ? <SideMenu /> : null;
   }
 
+  // 랜딩, 로그인, 회원가입 페이지에는 GNB 숨기기
   let isShownGlobalNavBar = true;
   if (
     firstPathName === '' ||
@@ -43,6 +52,20 @@ function RootLayout() {
     firstPathName === 'signup'
   ) {
     isShownGlobalNavBar = false;
+  }
+
+  // 페이지 이동할 때마다 인피니트 쿼리 초기화
+  const mainQueryKey = ['places', 'main'];
+  const searchQueryKey = ['places', 'search'];
+  const placesMainData: PlacesData = queryClient.getQueryData(mainQueryKey);
+  const placesSearchData: PlacesData = queryClient.getQueryData(searchQueryKey);
+  if (placesMainData?.pageParams.length !== 1) {
+    console.log('main 쿼리 초기화');
+    queryClient.resetQueries({ queryKey: mainQueryKey });
+  }
+  if (placesSearchData?.pageParams.length !== 1) {
+    console.log('search 쿼리 초기화');
+    queryClient.resetQueries({ queryKey: searchQueryKey });
   }
 
   useEffect(() => {
