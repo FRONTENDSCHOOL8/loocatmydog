@@ -86,7 +86,7 @@ const ServicePrice = () => {
   const [priceList, setPriceList] = useState({ small: 0, middle: 0, large: 0 });
   useEffect(() => {
     fetchPlaceRecords().then((Place) => {
-      setPriceList(Place.price[0]);
+      setPriceList(Place.price);
     });
   }, []);
 

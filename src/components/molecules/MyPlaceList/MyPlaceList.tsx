@@ -8,6 +8,7 @@ interface MyPlaceListProps {
   dDay?: string;
   src?: string;
   like?: boolean;
+  state: string;
   review?: boolean;
 }
 
@@ -55,13 +56,20 @@ function MyPlaceList({
   like = false,
   review = false,
   dDay,
+  state = '당일가능',
   src = '/images/story_sample3.jpg',
   ...restProps
 }: MyPlaceListProps) {
   const isLike = like ? (
     <HeartButton fill />
   ) : (
-    <DateList mode="normal" date={'yyyy.mm.dd'} dDay={dDay} review={review} />
+    <DateList
+      mode="normal"
+      date={'yyyy.mm.dd'}
+      dDay={dDay}
+      review={review}
+      state={state}
+    />
   );
   return (
     <StyledMyPlaceListContainer $dDay={dDay} {...restProps}>
