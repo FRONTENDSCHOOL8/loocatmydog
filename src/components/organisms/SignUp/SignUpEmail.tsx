@@ -6,7 +6,7 @@ import {
   isNotEmpty,
   isValidPassword,
 } from '@/utils/signUpValidation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FormInput from './../../molecules/FormInput/FormInput';
 import SignUpHeader from './SignUpHeader';
@@ -85,6 +85,7 @@ const SignUpEmail = ({ updateFields, back, next }: SignUpEmailProps) => {
     handleInputChange: handleEmailChange,
     handleInputBlur: handleEmailBlur,
     hasError: emailHasError,
+    isDuplicate: emailIsDuplicate,
   } = useInput('', (value: string) => isEmail(value) && isNotEmpty(value));
 
   // 비밀번호 state (useInput 커스텀훅 사용)
@@ -149,7 +150,9 @@ const SignUpEmail = ({ updateFields, back, next }: SignUpEmailProps) => {
               name={'email'}
               placeholder="이메일 주소"
               value={emailValue}
-              onBlur={handleEmailBlur}
+              onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
+                handleEmailBlur(e, 'email')
+              }
               onChange={handleEmailChange}
             >
               이메일
@@ -158,6 +161,9 @@ const SignUpEmail = ({ updateFields, back, next }: SignUpEmailProps) => {
               <span className="span-error">
                 올바른 이메일 형식을 입력해주세요.
               </span>
+            )}
+            {!emailHasError && emailIsDuplicate && (
+              <span className="span-error">이미 가입된 이메일입니다.</span>
             )}
           </div>
           <div className="formInputWrapper">
