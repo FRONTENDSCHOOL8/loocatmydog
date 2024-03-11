@@ -11,6 +11,7 @@ import getPbImageURL from '@/utils/getPbImageURL';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { Form, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuthStore } from '@/store/useAuthStore';
 
 //test
 const nowUser = 'gukoblvn0comp9j';
@@ -91,6 +92,8 @@ const AnimalProfile = ({
 }) => {
   return (
     <ProfileImage
+      as="button"
+      type="button"
       style={{ border: '2px solid #f1f1f1' }}
       src={src}
       {...restProps}
@@ -99,6 +102,7 @@ const AnimalProfile = ({
 };
 
 const AnimalPick = () => {
+  const userData = useAuthStore.getState().user;
   const modalRef = useRef<HTMLDialogElement>(null);
   const requireRef = useRef(null);
   const etcRef = useRef(null);
@@ -112,11 +116,7 @@ const AnimalPick = () => {
   });
   const { setReservation, reservation } = useReservationStore();
   useEffect(() => {
-    const fetchData = async () => {
-      const userData = await fetchUserRecords(nowUser);
-      setPetList(userData.expand?.petId);
-    };
-    fetchData();
+    setPetList(userData.expand?.petId);
   }, []);
   useEffect(() => {
     function petValidation() {
@@ -137,7 +137,7 @@ const AnimalPick = () => {
     require: '',
     etc: '',
   };
-  function handleTextChange(e) {
+  function handleTextChange(e: React.ChangeEvent) {
     const { name, value } = e.target;
     setInputTextValue((prevState) => ({
       ...prevState,
@@ -145,12 +145,12 @@ const AnimalPick = () => {
     }));
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setReservation(inputTextValue, petId.id);
     modalRef.current?.close();
   }
-  console.log(reservation[petId.id]);
+  console.log(userData.petId);
 
   return (
     <>
@@ -210,8 +210,11 @@ const AnimalPick = () => {
           }}
         >
           <StyledPetListContainer>
-            {petList?.length === 0 ? (
-              <p className="info">반려동물을 추가해주세요</p>
+            {userData.petId?.length === 0 ? (
+              <>
+                <p className="info">반려동물을 추가해주세요</p>
+                <StyledPlusButton></StyledPlusButton>
+              </>
             ) : (
               petList?.map((item) => (
                 <AnimalProfile
@@ -225,7 +228,6 @@ const AnimalPick = () => {
               ))
             )}
           </StyledPetListContainer>
-          <StyledPlusButton></StyledPlusButton>
         </div>
       </StyledAnimalPickSection>
     </>

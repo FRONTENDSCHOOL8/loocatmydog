@@ -7,6 +7,7 @@ interface DateListProps {
   dDay?: string;
   mode: 'normal' | 'fill';
   review?: boolean;
+  state?: string;
 }
 
 //style 컴포넌트
@@ -41,6 +42,7 @@ const DateList = ({
   dDay = 'd-day',
   review,
   mode,
+  state = '당일가능',
   ...restProps
 }: DateListProps) => {
   return (
@@ -50,7 +52,9 @@ const DateList = ({
         {date.slice(5, 7)}/{date.slice(8)}
       </span>
       {review ? (
-        <StateBadge mode={mode} isActive />
+        <StateBadge mode={mode} isActive>
+          {state}
+        </StateBadge>
       ) : (
         <span className="dDay">{dDay}</span>
       )}

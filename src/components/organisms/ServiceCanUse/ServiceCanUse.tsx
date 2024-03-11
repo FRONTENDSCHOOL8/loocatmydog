@@ -6,14 +6,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 //test
-const placeId = '2h6cgg5ssvke4t1';
 
-async function fetchPlaceRecords() {
-  const record = await pb.collection('places').getOne(placeId, {
-    expand: 'userId',
-  });
-  return record;
-}
 //type 지정
 // interface serviceProps {
 //   [key]: { name: string; text: string };
@@ -26,17 +19,16 @@ const StyledServiceContainer = styled.div`
   gap: 10px;
 `;
 
-const ServiceCanUse = () => {
+const ServiceCanUse = (placeData) => {
+  console.log(placeData.placeData.service);
   const [serviceList, setServiceList] = useState<Array<Object>>();
   const [isChecked, setIsChecked] = useState(false);
   useEffect(() => {
-    fetchPlaceRecords().then((Place) => {
-      const serviceCan: Array<Object> | undefined = [];
-      Place.service.map((item: string) => {
-        serviceCan.push(service[0][item]);
-      });
-      setServiceList(serviceCan);
+    const serviceCan: Array<Object> | undefined = [];
+    placeData.placeData.service.map((item: string) => {
+      serviceCan.push(service[0][item]);
     });
+    setServiceList(serviceCan);
   }, []);
   console.log(serviceList);
 

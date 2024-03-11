@@ -20,7 +20,6 @@ const DatePick = ({ minDate, maxDate }: { minDate: Date; maxDate: Date }) => {
     setReservation({ date: dateRange }, 'vfmxkb6b62e5rvm');
   }, [dateRange]);
 
-  console.log(dateRange);
   // console.log(format(dateRange[0], 'yy.MM.dd'));
 
   return (

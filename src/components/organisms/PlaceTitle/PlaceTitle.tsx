@@ -33,6 +33,7 @@ const StlyedPlaceUserInfo = styled.div`
   ${(props) => props.theme.fontStyles.textRegularMd};
   color: ${(props) => props.theme.colors.textDarkGray};
   display: flex;
+  gap: 5px;
 `;
 const StyledTagContainer = styled.div`
   display: flex;
@@ -48,8 +49,8 @@ const PlaceUserInfo = ({
   return (
     <StlyedPlaceUserInfo {...restProps}>
       <StarRating fill={true} />
-      <span>리뷰 {review}개</span>
-      <span>{address}</span>
+      <span>리뷰 {review}개 </span>
+      <span>{address.split(' ', 2)}</span>
       <span>{maskingName(name)}</span>
     </StlyedPlaceUserInfo>
   );
