@@ -9,9 +9,15 @@ import ServiceCanUse from '@/components/organisms/ServiceCanUse/ServiceCanUse';
 import ServicePrice from '@/components/organisms/ServicePrice/ServicePrice';
 import SwiperProfile from '@/components/organisms/SwiperProfile/SwiperProfile';
 import { useAuthStore } from '@/store/useAuthStore';
+import useDateRangeStore from '@/store/useDateRange';
+import { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 const PlaceDetail = () => {
+  const { resetDateRange } = useDateRangeStore();
+  useEffect(() => {
+    return () => resetDateRange();
+  }, []);
   const placeData = useLoaderData() as any;
   console.log(placeData);
   const userData = useAuthStore.getState().user;
