@@ -1,18 +1,14 @@
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
-
 import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-// 명령어로 자동 생성된 타입 정의 파일에서 Schema를 가져옵니다.
 import { useAuthStore } from '@/store/useAuthStore';
-import { Form, redirect, useNavigate } from 'react-router-dom';
+import { Form, redirect } from 'react-router-dom';
 import { isPhoneNum } from '@/utils/signUpValidation';
 import pb from '@/api/pocketbase';
 import { UsersCreate } from '@/@types/database';
 import Button from '@/components/atoms/Button/Button';
-import getPbImageURL from '@/utils/getPbImageURL';
 
 const StyledModifyProfileBox = styled.div`
   padding-block-start: 23px;
@@ -149,7 +145,7 @@ const ModifyProfile = () => {
   };
 
   const user = useAuthStore.getState().user;
-  const navigate = useNavigate();
+
   //데이터 불러오는 훅
   useEffect(() => {
     const login = async () => {
@@ -163,8 +159,6 @@ const ModifyProfile = () => {
         setDetailAddress(record?.addressDetail);
       } catch (error) {
         console.error('Error Logging:', error);
-        // alert('로그인이 되어있어야 열람이 가능합니다.');
-        //navigate('/signin');
       }
     };
 
