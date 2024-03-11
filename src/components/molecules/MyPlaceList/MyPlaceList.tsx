@@ -8,7 +8,7 @@ interface MyPlaceListProps {
   dDay?: string;
   src?: string;
   like?: boolean;
-  state: string;
+  state?: string;
   review?: boolean;
 }
 

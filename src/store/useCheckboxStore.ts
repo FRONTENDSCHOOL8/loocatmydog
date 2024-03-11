@@ -1,11 +1,24 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-const initialState = {
+//type 지정
+interface InitialState {
+  reservation: Object;
+}
+
+interface ReservationStore extends InitialState {
+  reservation: {
+    [key: string]: any;
+  };
+  setReservation: (reservationData: Object, key: string) => void;
+  resetReservation: () => void;
+}
+
+const initialState: InitialState = {
   reservation: {},
 };
 
-const useReservationStore = create()(
+const useReservationStore = create<ReservationStore>()(
   devtools((set) => ({
     ...initialState,
     setReservation: (reservationData, key) =>

@@ -81,6 +81,10 @@ export const navigationItems: NavigationRouteObject[] = [
     element: '',
   },
   {
+    path: '/payment/:id',
+    element: '',
+  },
+  {
     path: '/reservation_done',
     element: '',
     headerType: ['popup', null],
