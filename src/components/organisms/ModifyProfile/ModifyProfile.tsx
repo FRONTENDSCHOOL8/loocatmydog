@@ -23,6 +23,9 @@ const StyledModifyProfileBox = styled.div`
     top: 60px;
     right: 18px;
   }
+  & .modifyBtn {
+    margin-inline-start: 40px;
+  }
 `;
 
 const StyledEmailBox = styled.div`
@@ -319,7 +322,7 @@ const ModifyProfile = () => {
           <StyledEmailBox>
             <input type="text" name="detailAddress" value={detailAddress} />
           </StyledEmailBox>
-          <Button size="80%" mode="normal" type="submit">
+          <Button className="modifyBtn" size="80%" mode="normal" type="submit">
             수정하기
           </Button>
         </StyledProfileBox>

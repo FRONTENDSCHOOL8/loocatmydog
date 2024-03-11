@@ -8,7 +8,7 @@ import UserProfile from '@/components/molecules/UserProfile/UserProfile';
 import { useAuthStore } from '@/store/useAuthStore';
 import getPbImageURL from '@/utils/getPbImageURL';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledMyPage = styled.div`
@@ -16,6 +16,7 @@ const StyledMyPage = styled.div`
   flex-direction: column;
   inline-size: 100%;
   padding-block-start: 20px;
+  position: relative;
 
   & .petSpan {
     display: inline-block;
@@ -24,6 +25,20 @@ const StyledMyPage = styled.div`
     margin-block: 16px;
     ${(props) => props.theme.fontStyles.textSemiboldMd}
     color:  ${(props) => props.theme.colors.textBlack}
+  }
+`;
+
+const AddPetPlusBox = styled(Link)`
+  position: absolute;
+  right: 20px;
+  top: 120px;
+
+  & .addPetBtn {
+    display: flex;
+    flex-flow: row;
+    cursor: pointer;
+    ${(props) => props.theme.fontStyles.textSemiboldSm}
+    color:  ${(props) => props.theme.colors.textDarkGray}
   }
 `;
 
@@ -70,11 +85,6 @@ const MyPage = () => {
 
       setPetData(record.expand?.petId);
       console.log(record.expand?.petId);
-      // const petId: any = record?.petId;
-      // if (petId) {
-      //   const petData = await pb.from('pet').getOne(petId);
-      //   setPetData(petData); // 상태 업데이트
-      // }
     };
     fetchPetData();
   }, [user]);
@@ -88,6 +98,16 @@ const MyPage = () => {
       />
       <ProfileCardSection>
         <span className="petSpan">반려동물</span>
+        {petData === null ? (
+          ''
+        ) : (
+          <AddPetPlusBox to={'/add_mypet'}>
+            <button className="addPetBtn">
+              추가등록
+              <img src="/images/miniPlusCircle.svg" alt="플러스" />
+            </button>
+          </AddPetPlusBox>
+        )}
 
         <ul>
           {petData === null ? (
