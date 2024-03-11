@@ -1,3 +1,4 @@
+import { UsersCreate } from '@/@types/database';
 import pb from '@/api/pocketbase';
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
 import BigPhoto from '@/components/atoms/BigPhoto/BigPhoto';
@@ -5,6 +6,7 @@ import Button from '@/components/atoms/Button/Button';
 import CheckBox from '@/components/atoms/CheckBox/CheckBox';
 import InputWrapper from '@/components/atoms/InputWrapper/InputWrapper';
 import InputTextArea from '@/components/molecules/InputTextArea/InputTextArea';
+import { useAuthStore } from '@/store/useAuthStore';
 import { useState, ChangeEvent, useId } from 'react';
 import { Form, redirect } from 'react-router-dom';
 import styled from 'styled-components';
@@ -67,6 +69,7 @@ const StyledInputBox = styled.div`
 `;
 
 let imageUrl: File[] = [];
+const user = useAuthStore.getState().user;
 
 const AddPet = () => {
   const [type, setType] = useState<'default' | 'link' | 'picture'>('default');
@@ -219,6 +222,7 @@ const AddPet = () => {
           requestCheck="선택"
           request="참고사항"
           placeholder="예) 우리 강아지는 생식만 먹여요. 남자를 무서워 하는 편이에요 또는 없음 기재"
+          name="contents"
         />
 
         <StyledPromiseBox>
@@ -267,11 +271,14 @@ export async function addPetFormAction({ request }: { request: any }) {
       formData.get('중성화') === '없음' ? '없음' : formData.get('중성화'),
     note: formData.get('contents'),
   };
+
   console.log(eventData);
 
   try {
-    await pb.collection('pet').create(eventData);
-
+    const newPetData = await pb.from('pet').create(eventData);
+    await pb.from('users').update(user?.id, {
+      'petId+': newPetData?.id,
+    });
     alert('반려동물 정보가 추가 되었습니다.');
   } catch (error) {
     console.log('Error while writing : ', error);

@@ -47,3 +47,9 @@ export function isPhone(value: string) {
   const reg = /^(01[016789]{1})[0-9]{3,4}[0-9]{4}$/;
   return reg.test(value);
 }
+
+//휴대폰 번호 검사 짝대기 추가 버전 
+export function isPhoneNum(value: string) {
+  const reg = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
+  return reg.test(value);
+}
