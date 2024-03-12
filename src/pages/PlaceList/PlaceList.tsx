@@ -158,7 +158,7 @@ export function Component() {
                 key={item.id}
                 id={item.id}
                 path={`/place_detail/${item.id}`}
-                src={item.photo[0]}
+                src={item.photo}
                 title={item.title}
                 rate={item.averageStar}
                 reviewNumber={item.reviewCount}
