@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { Link, useLoaderData, useNavigate } from 'react-router-dom';
-import { css } from 'styled-components';
-import { format } from 'date-fns';
+import { Link, useLoaderData } from 'react-router-dom';
 import { useInView } from 'framer-motion';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 

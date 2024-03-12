@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -68,9 +67,7 @@ function RootLayout() {
     <StyledRootLayout>
       {headerContents}
       <OutletLayout>
-        <Suspense fallback={<div>loading...</div>}>
-          <Outlet />
-        </Suspense>
+        <Outlet />
       </OutletLayout>
       <GlobalNavBar isShown={isShownGlobalNavBar} />
     </StyledRootLayout>

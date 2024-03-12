@@ -93,6 +93,7 @@ export function Component() {
   }, []);
 
   useEffect(() => {
+    console.log('리셋쿼리', queryKey);
     queryClient.resetQueries({ queryKey: queryKey });
   }, [queryKey]);
 
@@ -123,7 +124,10 @@ export function Component() {
         <button
           className="select-search-button"
           type="button"
-          onClick={handleClick}
+          onClick={() => {
+            setFilterOptions('range');
+            handleClick();
+          }}
         >
           검색
         </button>

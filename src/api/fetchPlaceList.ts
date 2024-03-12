@@ -11,6 +11,7 @@ export const fetchPlaceFullList = async () => {
     },
     // @ts-ignore : typed-pocketbase가 @random을 지원하지 않음
     sort: '@random',
+    requestKey: null,
   });
   // 필요한 데이터 추가 (별점, 리뷰갯수)
   const newResponse = [...response].map((item) => {
@@ -48,6 +49,7 @@ export const fetchPlaceList = async (
         },
       },
       ...options,
+      requestKey: null,
     });
 
   // 필요한 데이터 추가 (별점, 리뷰갯수)
