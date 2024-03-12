@@ -49,8 +49,8 @@ export function Component() {
 
   // 필터링 옵션마다 고유한 쿼리 키 할당
   const queryKey = useMemo(
-    () => ['places', 'search', filterOptions, sortOptions.id],
-    [filterOptions, sortOptions.id]
+    () => ['places', 'search', filterOptions, filterString, sortOptions.id],
+    [filterOptions, filterString, sortOptions.id]
   );
   const loadedPlacedata = useLoaderData() as any;
 
@@ -94,7 +94,7 @@ export function Component() {
 
   useEffect(() => {
     console.log('리셋쿼리', queryKey);
-    queryClient.resetQueries({ queryKey: queryKey });
+    // queryClient.resetQueries({ queryKey: queryKey });
   }, [queryKey]);
 
   useEffect(() => {
@@ -169,7 +169,6 @@ export function Component() {
                 reviewNumber={item.reviewCount}
                 address={item.address}
                 price={item.price.small}
-                heartFill={heartFill}
                 isActive={true}
               />
             );

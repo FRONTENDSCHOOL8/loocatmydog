@@ -1,7 +1,11 @@
 import pb from './pocketbase';
 
 // FullList로 가져오기
-export const fetchPlaceFullList = async () => {
+export const fetchPlaceFullList = async (
+  options: { sort?: string; filter?: string } = {}
+) => {
+  const sortString = options?.sort || '@random';
+  const filterString = options?.filter || '';
   const response = await pb.from('places').getFullList({
     select: {
       expand: {
@@ -10,7 +14,8 @@ export const fetchPlaceFullList = async () => {
       },
     },
     // @ts-ignore : typed-pocketbase가 @random을 지원하지 않음
-    sort: '@random',
+    sort: sortString,
+    filter: filterString,
     requestKey: null,
   });
   // 필요한 데이터 추가 (별점, 리뷰갯수)

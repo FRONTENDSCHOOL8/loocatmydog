@@ -129,7 +129,7 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
     },
     place: {
       center: <h1 className="text-title">플레이스</h1>,
-      right: <HeartButton fill={false} />,
+      right: '',
     },
     popup: {
       center: <h1 className="text-title">{title}</h1>,

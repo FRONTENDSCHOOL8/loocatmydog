@@ -69,6 +69,14 @@ export const navigationItems: NavigationRouteObject[] = [
     },
     headerType: ['back', '플레이스 찾기'],
   },
+  {
+    path: '/myplace_list',
+    async lazy() {
+      const { Component, loader } = await import('@/pages/MyPlaces');
+      return { Component, loader };
+    },
+    headerType: ['back', '나의 플레이스'],
+  },
 
   // 경화님
   {

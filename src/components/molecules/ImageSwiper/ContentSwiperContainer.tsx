@@ -31,9 +31,9 @@ const StyledContentSwiperContainer = styled.div<StyledContentSwiperContainerProp
 register();
 
 const componentContents = [
-  <HeartButton key={0} fill={true} />,
-  <HeartButton key={1} fill={true} />,
-  <HeartButton key={2} fill={true} />,
+  <HeartButton key="0" id="0" />,
+  <HeartButton key="1" id="1" />,
+  <HeartButton key="2" id="2" />,
 ];
 
 const defaultSwiperParams: SwiperParams = {

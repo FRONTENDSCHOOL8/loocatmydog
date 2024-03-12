@@ -68,7 +68,7 @@ function MyPlaceList({
   ...restProps
 }: MyPlaceListProps) {
   const isLike = like ? (
-    <HeartButton fill />
+    <HeartButton id="1" />
   ) : (
     <DateList
       mode={mode ? 'normal' : 'fill'}

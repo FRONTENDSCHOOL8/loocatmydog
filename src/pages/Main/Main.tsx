@@ -25,6 +25,21 @@ import { createPortal } from 'react-dom';
 import SideMenu from '@/components/organisms/SideMenu/SideMenu';
 import useModalControlStore from '@/store/useModalControl';
 
+const shortcutMenuObject = [
+  {
+    path: '/place_list',
+    title: '예약하기',
+    description: '필요한 공간을 찾아보세요.',
+    photo: '/images/sidemenu/sidebar_dog_small.png',
+  },
+  {
+    path: '/stories',
+    title: '스토리',
+    description: '다른 친구들의 이야기',
+    photo: '/images/place-ex.jpg',
+  },
+];
+
 export function Component() {
   const ref = useRef(null);
   const isInView = useInView(ref);
@@ -63,17 +78,20 @@ export function Component() {
     ? cachedPlacePopularData.slice(0, 6)
     : [];
 
-  const hotPlaceContents = placePopularData?.map((item) => (
-    <Link key={item.id} to={`/place_detail/${item.id}`}>
-      <HotPlace
-        src={item.photo[0]}
-        title={item.title}
-        rate={item.averageStar}
-        reviewNumber={item.reviewCount}
-        address={item.address}
-      />
-    </Link>
-  ));
+  const hotPlaceContents = placePopularData?.map((item) => {
+    const shortAddress = item.address.split(' ').slice(0, 2).join(' ');
+    return (
+      <Link key={item.id} to={`/place_detail/${item.id}`}>
+        <HotPlace
+          src={item.photo[0]}
+          title={item.title}
+          rate={item.averageStar}
+          reviewNumber={item.reviewCount}
+          address={shortAddress}
+        />
+      </Link>
+    );
+  });
   const handleChangeSortType = useCallback(({ id, label }: InitialSortType) => {
     setSortOptions({ id, label });
     setParams('sortType', id);
@@ -88,7 +106,7 @@ export function Component() {
 
   useEffect(() => {
     console.log('resetQueries');
-    queryClient.resetQueries({ queryKey: queryKey });
+    // queryClient.resetQueries({ queryKey: queryKey });
   }, [queryKey]);
 
   useEffect(() => {
@@ -107,18 +125,15 @@ export function Component() {
           <span>봐주개냥 서비스</span>
         </h2>
         <div className="section-content">
-          <ShortcutMenu
-            path="/place_list?filterType=range&sortType=popular"
-            title="예약하기"
-            description="필요한 공간을 찾아보세요."
-            photo="/images/sidemenu/sidebar_dog_small.png"
-          />
-          <ShortcutMenu
-            path="/stories"
-            title="스토리"
-            description="다른 친구들의 이야기"
-            photo="/images/place-ex.jpg"
-          />
+          {shortcutMenuObject.map((item) => (
+            <ShortcutMenu
+              key={item.path}
+              path={item.path}
+              title={item.title}
+              description={item.description}
+              photo={item.photo}
+            />
+          ))}
         </div>
       </S.MainSection>
 
@@ -150,6 +165,7 @@ export function Component() {
           {placeListData?.map((item) => {
             const myData = useAuthStore.getState().user;
             const heartFill = myData?.heart.includes(item.id);
+            const shortAddress = item.address.split(' ').slice(0, 2).join(' ');
             return (
               <Place
                 id={item.id}
@@ -159,9 +175,8 @@ export function Component() {
                 title={item.title}
                 rate={item.averageStar}
                 reviewNumber={item.reviewCount}
-                address={item.address}
+                address={shortAddress}
                 price={item.price.small}
-                heartFill={heartFill}
                 isActive={true}
               />
             );
