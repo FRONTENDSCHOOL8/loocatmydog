@@ -6,10 +6,14 @@ import React from 'react';
 import { comma, toggleBookmark } from '@/utils';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
+import ImageSwiperContainer from '../ImageSwiper/ImageSwiperContainer';
+import { register } from 'swiper/element/bundle';
+
+register();
 
 interface PlaceProps {
   id: string;
-  src: string;
+  src: string[];
   title: string;
   rate: number;
   reviewNumber: number;
@@ -20,42 +24,40 @@ interface PlaceProps {
 }
 const StylePlaceContainer = styled.div`
   position: relative;
+  inline-size: 100%;
+  aspect-ratio: 1.11/1;
+  border-radius: 8px;
+  padding: 3px;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.orangeBg};
+  }
+
   & > .heart-container {
     position: absolute;
     top: 10px;
     right: 9px;
+    z-index: 10;
   }
 `;
 const StyledPlace = styled(Link)`
   inline-size: 100%;
-  display: inline-block;
+  block-size: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  row-gap: 10px;
   &:hover {
     text-decoration: none;
   }
 
-  & figure img {
-    margin-block-end: 0.625rem;
-    aspect-ratio: 16 / 10;
-    border-radius: 8px;
-    object-fit: cover;
-    ${(props) => props.theme.fontStyles.textMediumBase}
-    color: ${(props) => props.theme.colors.textBlack};
-  }
-
-  & figcaption {
-    ${(props) => props.theme.fontStyles.textMediumBase}
-    color: ${(props) => props.theme.colors.textBlack};
-  }
-
-  & .imageWrapper {
-    position: relative;
+  & .title {
+    ${(props) => props.theme.fontStyles.textMediumBase};
   }
 
   & .reviewWrapper {
     display: flex;
     flex-flow: row;
     column-gap: 3px;
-    margin-block-end: 10px;
     align-items: center;
 
     & span {
@@ -91,21 +93,24 @@ const Place = ({
   return (
     <StylePlaceContainer>
       <StyledPlace to={path}>
-        <div className="imageWrapper">
-          <figure>
-            <img src={src} alt="플레이스 소개 이미지" />
-            <figcaption>{title}</figcaption>
-          </figure>
+        {/* 이미지 스와이퍼 */}
+        <ImageSwiper imageArray={src} />
+
+        {/* 플레이스 타이틀 & 리뷰 */}
+        <div className="title">
+          <p>{title}</p>
+          <div className="reviewWrapper">
+            {reviewNumber === 0 ? undefined : (
+              <StarRating fill={true} count={1} />
+            )}
+            {reviewNumber === 0 ? undefined : <span>{rate.toFixed(1)}</span>}
+            <span>
+              리뷰 {reviewNumber}개 · {address}
+            </span>
+          </div>
         </div>
-        <div className="reviewWrapper">
-          {reviewNumber === 0 ? undefined : (
-            <StarRating fill={true} count={1} />
-          )}
-          {reviewNumber === 0 ? undefined : <span>{rate.toFixed(1)}</span>}
-          <span>
-            리뷰 {reviewNumber}개 · {address}
-          </span>
-        </div>
+
+        {/* 플레이스 가격 */}
         <div className="priceWrapper">
           <StateBadge isActive={isActive} mode="normal" />
           <span className="span-price">{comma(price)}원</span>
@@ -115,5 +120,54 @@ const Place = ({
     </StylePlaceContainer>
   );
 };
-
 export default Place;
+
+const StyledSwiperWrapper = styled.div`
+  inline-size: 100%;
+  flex: 1;
+
+  & swiper-container {
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+
+    & swiper-slide {
+      inline-size: 100%;
+      block-size: 100%;
+
+      & img {
+        inline-size: 100%;
+        aspect-ratio: 1.4/1;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  & .swiper-image {
+  }
+`;
+
+const ImageSwiper = ({ imageArray = [] }: { imageArray: string[] }) => {
+  const swiperStyle = { '--swiper-pagination-color': '#fff' };
+  return (
+    <StyledSwiperWrapper>
+      <swiper-container
+        direction="horizontal"
+        slides-per-view="1"
+        pagination={true}
+        style={{ ...swiperStyle } as React.CSSProperties}
+      >
+        {imageArray.map((item, idx) => {
+          return (
+            <swiper-slide key={idx}>
+              <img className="swiper-image" src={item} alt="" />
+            </swiper-slide>
+          );
+        })}
+      </swiper-container>
+    </StyledSwiperWrapper>
+  );
+};
