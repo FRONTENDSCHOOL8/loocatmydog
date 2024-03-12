@@ -1,3 +1,4 @@
+import { PlacesResponse } from '@/@types/database';
 import pb from '@/api/pocketbase';
 import ButtonCheck from '@/components/atoms/ButtonCheck/ButtonCheck';
 import PlaceSection from '@/components/molecules/PlaceSection/PlaceSection';
@@ -19,18 +20,16 @@ const StyledServiceContainer = styled.div`
   gap: 10px;
 `;
 
-const ServiceCanUse = (placeData) => {
-  console.log(placeData.placeData.service);
+const ServiceCanUse = ({ placeData }: any) => {
   const [serviceList, setServiceList] = useState<Array<Object>>();
   const [isChecked, setIsChecked] = useState(false);
   useEffect(() => {
     const serviceCan: Array<Object> | undefined = [];
-    placeData.placeData.service.map((item: string) => {
+    placeData.service.map((item: string) => {
       serviceCan.push(service[0][item]);
     });
     setServiceList(serviceCan);
   }, []);
-  console.log(serviceList);
 
   return (
     <PlaceSection title={'이용 가능 서비스'}>

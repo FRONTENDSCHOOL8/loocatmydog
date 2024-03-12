@@ -1,5 +1,5 @@
 import Calendar, { CustomInput } from '@/components/atoms/Calendar/Calendar';
-import useReservationStore from '@/store/useCheckboxStore';
+import useReservationStore from '@/store/useReservationStore';
 import useDateRangeStore from '@/store/useDateRange';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';

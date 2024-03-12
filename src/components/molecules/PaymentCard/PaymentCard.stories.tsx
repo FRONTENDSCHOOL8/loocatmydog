@@ -1,8 +1,8 @@
-import Payment from './Payment';
+import PaymentCard from './PaymentCard';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: Payment,
+  component: PaymentCard,
 };
 
 /**@type{import('@storybook/react').StoryObj} */

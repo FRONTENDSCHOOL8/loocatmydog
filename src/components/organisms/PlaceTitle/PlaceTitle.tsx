@@ -27,7 +27,7 @@ const StyledPlaceTitle = styled.div`
     color: ${(props) => props.theme.colors.textBlack};
   }
   border-bottom: 1px solid ${(props) => props.theme.colors.lineColorGray};
-  padding: 20px 0;
+  padding: 0px 10px 20px;
 `;
 const StlyedPlaceUserInfo = styled.div`
   ${(props) => props.theme.fontStyles.textRegularMd};

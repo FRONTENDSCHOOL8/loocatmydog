@@ -4,7 +4,7 @@ import Button from '@/components/atoms/Button/Button';
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import InputTextArea from '@/components/molecules/InputTextArea/InputTextArea';
 import ProfileCard from '@/components/molecules/ProfileCard/ProfileCard';
-import useReservationStore from '@/store/useCheckboxStore';
+import useReservationStore from '@/store/useReservationStore';
 import useModalControlStore from '@/store/useModalControl';
 import { sizeWeight } from '@/utils';
 import getPbImageURL from '@/utils/getPbImageURL';

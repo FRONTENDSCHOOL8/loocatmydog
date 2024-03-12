@@ -20,6 +20,8 @@ import SignIn, { signInFormAction } from '@/pages/SignIn/SignIn';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
+import AddPlace from '@/pages/AddPlace/AddPlace';
+import Payment from '@/pages/Payment/Payment';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -73,7 +75,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 경화님
   {
     path: '/add_place',
-    element: '',
+    element: <AddPlace />,
     headerType: ['back', '플레이스 등록'],
   },
   {
@@ -88,7 +90,7 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/payment/:id',
-    element: '',
+    element: <Payment />,
   },
   {
     path: '/reservation_done',

@@ -1,5 +1,5 @@
 import pb from '@/api/pocketbase';
-import Payment from '@/components/molecules/Payment/Payment';
+import PaymentCard from '@/components/molecules/PaymentCard/PaymentCard';
 import ProfileCard from '@/components/molecules/ProfileCard/ProfileCard';
 import ProfileListLink from '@/components/molecules/ProfileListLink/ProfileListLink';
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
@@ -139,7 +139,7 @@ const MyPage = () => {
         accordion={true}
         accordionContent={
           <>
-            <Payment
+            <PaymentCard
               style={{
                 paddingInline: 20,
                 paddingBlockStart: 6,
