@@ -3,13 +3,14 @@ import { convertFilterString } from '@/utils';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export type InitialFilterType = 'mine' | 'bookmark' | 'all';
+export type InitialFilterType = 'mine' | 'bookmark' | 'range' | 'all';
 
 const initialState = 'all';
 
 const filterConfig = {
   bookmark: convertFilterString('id', '=', useAuthStore.getState().user?.heart),
   mine: convertFilterString('id', '=', useAuthStore.getState().user?.id),
+  range: null,
   all: null,
 };
 

@@ -16,7 +16,13 @@ const StyledUserProfileBox = styled.div`
 const StyledUserProfileSpanBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+
+  & .userNameContainer {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
 
   & .userName {
     color: ${(props) => props.theme.colors.textBlack};
@@ -29,12 +35,12 @@ const StyledUserProfileSpanBox = styled.div`
 `;
 
 const EditBtnLink = styled(Link)`
-  position: absolute;
+  /* position: absolute;
   top: 15px;
-  left: 60px;
+  left: 60px; */
   display: flex;
   flex-flow: row;
-  padding-inline-start: 15px;
+  column-gap: 5px;
   color: ${(props) => props.theme.colors.textBlack};
   ${(props) => props.theme.fontStyles.textRegularMd}
 `;
@@ -51,11 +57,11 @@ const UserProfile = ({
   return (
     <StyledUserProfileBox>
       <StyledUserProfileSpanBox>
-        <div>
+        <div className="userNameContainer">
           <span className="userName">{name} 님</span>
           <EditBtnLink to="/edit_my_profile">
             수정
-            <img src="/images/editPen.svg" alt="볼펜모양" />
+            <img src="/images/editPen.svg" alt="프로필 수정" />
           </EditBtnLink>
         </div>
         <span className="welcome">환영합니다!</span>
