@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface StateBadgeBoxProps {
@@ -24,17 +24,19 @@ interface StateBadgeProps {
   mode: 'normal' | 'fill';
   children?: ReactNode;
   [key: string]: any;
+  onClick?: React.MouseEventHandler<HTMLSpanElement> | undefined;
 }
 
 const StateBadge = ({
   isActive,
   mode,
   children = '당일가능',
+  onClick,
   ...restProps
 }: StateBadgeProps) => {
   if (isActive)
     return (
-      <StyledStateBadgeBox $mode={mode} {...restProps}>
+      <StyledStateBadgeBox $mode={mode} {...restProps} onClick={onClick}>
         {children}
       </StyledStateBadgeBox>
     );

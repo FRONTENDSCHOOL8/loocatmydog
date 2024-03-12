@@ -21,6 +21,10 @@ const StyledGlobalNavBar = styled.nav<StyledGlobalNavBarProps>`
     padding: 12px;
   }
 
+  & a:hover {
+    text-decoration: none;
+  }
+
   ${(props) => {
     if (props.$isShown) {
       return null;
