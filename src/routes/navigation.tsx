@@ -47,7 +47,10 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/main',
     async lazy() {
       const { loader, Component } = await import('@/pages/Main');
-      return { loader: loader(queryClient, ['places', 'main']), Component };
+      return {
+        loader: loader(queryClient, ['places', 'main', 'all']),
+        Component,
+      };
     },
     headerType: ['main', null],
   },
@@ -59,7 +62,10 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/place_list',
     async lazy() {
       const { Component, loader } = await import('@/pages/PlaceList');
-      return { loader: loader(queryClient, ['places', 'search']), Component };
+      return {
+        loader: loader(queryClient, ['places', 'search', 'all', 'all']),
+        Component,
+      };
     },
     headerType: ['back', '플레이스 찾기'],
   },

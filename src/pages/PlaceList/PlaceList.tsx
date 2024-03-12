@@ -1,22 +1,24 @@
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'framer-motion';
-import { useLoaderData, useLocation } from 'react-router-dom';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
 import A11yHidden from '@/components/A11yHidden/A11yHidden';
 import * as S from '@/pages/PlaceList/StyledPlaceList';
 import DropDown from '@/components/atoms/DropDown/DropDown';
 import FilterButton from '@/components/atoms/FilterButton/FilterButton';
-import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
 import Place from '@/components/molecules/Place/Place';
 import { useAuthStore } from '@/store/useAuthStore';
-import useDateRangeStore from '@/store/useDateRange';
-import useSearchDate from '@/hooks/useSearchDate.';
 import Calendar from '@/components/atoms/Calendar/Calendar';
-import { convertFilterString, getPlaceInfiniteQueryOptions } from '@/utils';
+import { getPlaceInfiniteQueryOptions } from '@/utils';
 import usePlaceFilter from '@/hooks/usePlaceFilter';
 import { queryClient } from '@/app/App';
+import usePlaceSort, {
+  InitialSortType,
+  initialState as initialSortItems,
+} from '@/hooks/usePlaceSort';
+import useDateRangeStore from '@/store/useDateRange';
 
 export function Component() {
   const ref = useRef(null);
@@ -24,24 +26,43 @@ export function Component() {
     amount: 0,
   });
 
+  const {
+    dateRange: [startDate, endDate],
+    resetDateRange,
+  } = useDateRangeStore();
   const { user } = useAuthStore();
-  useSearchDate();
   const { filterOptions, setFilterOptions, filterString } = usePlaceFilter();
+  const { sortOptions, setSortOptions, sortString } = usePlaceSort();
   const { state } = useLocation();
-  let selectedDate = '전체기간';
-  if (state) {
-    selectedDate = `${format(state[0], 'yy.MM.dd')} ~ ${format(state[1], 'yy.MM.dd')} `;
-  }
+  const navigate = useNavigate();
 
+  // 검색 기간 텍스트 설정
+  let selectedDate = '';
+  // 날짜 전역 상태가 설정되었을 경우 전역 상태 값 사용
+  if (startDate && endDate) {
+    selectedDate = `${format(startDate, 'yy.MM.dd')} ~ ${format(endDate, 'yy.MM.dd')} `;
+    // 날짜 전역 상태가 없으면 navigate 시, state로 받아온 값 사용
+  } else if (state) {
+    selectedDate = `${format(state[0], 'yy.MM.dd')} ~ ${format(state[1], 'yy.MM.dd')} `;
+    // 아무것도 없을 경우 선택 안함이라고 표시
+  } else selectedDate = '선택 안함 (전체 기간)';
+
+  // 필터링 옵션마다 고유한 쿼리 키 할당
+  const queryKey = useMemo(
+    () => ['places', 'search', filterOptions, sortOptions.id],
+    [filterOptions, sortOptions.id]
+  );
   const loadedPlacedata = useLoaderData() as any;
+
+  // useInfiniteQuery 훅에서 고유한 쿼리 키를 갖는 필터링된 데이터 캐싱
   const {
     data: cachedPlaceData,
     hasNextPage,
     fetchNextPage,
-    refetch,
   } = useInfiniteQuery({
-    ...getPlaceInfiniteQueryOptions(['places', 'search'], 3, {
+    ...getPlaceInfiniteQueryOptions(queryKey, 3, {
       filter: filterString,
+      sort: sortString,
     }),
     initialData: loadedPlacedata,
   });
@@ -49,13 +70,34 @@ export function Component() {
     ? cachedPlaceData.pages.flatMap((data) => data.items)
     : [];
 
+  const handleChangeSortType = useCallback(({ id, label }: InitialSortType) => {
+    setSortOptions({ id, label });
+  }, []);
+
+  const handleClick = useCallback(() => {
+    if (startDate && endDate)
+      return navigate(
+        `/place_list?startDate=${format(startDate, 'yyMMdd')}&endDate=${format(endDate, 'yyMMdd')}`,
+        { state: [startDate, endDate] }
+      );
+    if (state)
+      return navigate(
+        `/place_list?startDate=${format(state[0], 'yyMMdd')}&endDate=${format(state[1], 'yyMMdd')}`,
+        { state: [state[0], state[1]] }
+      );
+    return alert('날짜를 먼저 선택해주세요.');
+  }, [startDate, endDate, state, navigate]);
+
   useEffect(() => {
-    refetch();
-  }, [filterString, refetch]);
+    resetDateRange();
+  }, []);
+
+  useEffect(() => {
+    queryClient.resetQueries({ queryKey: queryKey });
+  }, [queryKey]);
 
   useEffect(() => {
     if (isInView) {
-      console.log(isInView);
       fetchNextPage();
     }
   }, [isInView, fetchNextPage]);
@@ -68,13 +110,23 @@ export function Component() {
           <span>{selectedDate}</span>
           <Calendar
             customInput={
-              <button className="select-date-button" type="button">
-                재설정
-              </button>
+              <button
+                className="select-date-button"
+                type="button"
+                aria-label="날짜 선택"
+              ></button>
             }
             isModal
           />
         </div>
+
+        <button
+          className="select-search-button"
+          type="button"
+          onClick={handleClick}
+        >
+          검색
+        </button>
       </S.MainOptions>
       <S.MainSection $flexDirection="column" $flexGap={20}>
         <h2 className="section-title">
@@ -90,7 +142,10 @@ export function Component() {
             >
               ❤ 찜 파트너
             </FilterButton>
-            <DropDown setCurrent={() => console.log('hi')} />
+            <DropDown
+              items={initialSortItems}
+              setCurrent={handleChangeSortType}
+            />
           </div>
         </h2>
         <div className="section-title">
@@ -117,7 +172,11 @@ export function Component() {
           })}
         </div>
       </S.MainSection>
-      {hasNextPage && <div ref={ref}>더보기</div>}
+      {hasNextPage ? (
+        <div ref={ref}>더보기</div>
+      ) : (
+        <div ref={ref} role="none"></div>
+      )}
     </S.MainContainer>
   );
 }

@@ -17,7 +17,7 @@ export const MainOptions = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  column-gap: 30px;
+  column-gap: 10px;
   & .section-options-title {
     ${(props) => props.theme.fontStyles.headingMd};
   }
@@ -25,24 +25,27 @@ export const MainOptions = styled.div`
   & .section-options-description {
     ${(props) => props.theme.fontStyles.textRegularMd};
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    column-gap: 10px;
+    column-gap: 5px;
     flex: 1;
-
     // Calendar 최외곽 컨테이너 스타일
-    & > div {
+    & > div:last-child {
       inline-size: auto;
     }
-
     & .select-date-button {
-      inline-size: 60px;
-      block-size: 26px;
-      border-radius: 13px;
-      background-color: ${(props) => props.theme.colors.primary};
-      padding: 4px 6px;
-      ${(props) => props.theme.fontStyles.textSemiboldMd}
+      inline-size: 20px;
+      block-size: 20px;
+      background: url('images/editPen.svg') no-repeat center / 16px 16px;
     }
+  }
+
+  & .select-search-button {
+    inline-size: 60px;
+    block-size: 26px;
+    border-radius: 13px;
+    background-color: ${(props) => props.theme.colors.primary};
+    padding: 4px 6px;
+    ${(props) => props.theme.fontStyles.textSemiboldMd}
   }
 `;
 

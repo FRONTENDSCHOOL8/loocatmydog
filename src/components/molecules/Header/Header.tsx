@@ -6,6 +6,7 @@ import Calendar from '@/components/atoms/Calendar/Calendar';
 import React from 'react';
 import SearchInput from '../SearchInput/SearchInput';
 import useModalControlStore from '@/store/useModalControl';
+import { useAuthStore } from '@/store/useAuthStore';
 
 // type = 'step' | 'main' | 'logo'  | 'place' | 'popup' | 'back'
 export interface HeaderProps {
@@ -66,6 +67,8 @@ const StyledHeader = styled.header<StyledHeaderProps>`
 `;
 
 function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
+  const { user } = useAuthStore();
+  const shortAddress = user && user.address.split(' ')[1];
   const { setModal } = useModalControlStore();
   const navigate = useNavigate();
   const handleClickLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -105,7 +108,10 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
     },
     main: {
       center: (
-        <Calendar customInput={<SearchInput address="마포구" />} isModal />
+        <Calendar
+          customInput={<SearchInput address={shortAddress} />}
+          isModal
+        />
       ),
       right: (
         <h1>
