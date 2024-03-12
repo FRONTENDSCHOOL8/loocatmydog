@@ -2,7 +2,11 @@ import Button from '@/components/atoms/Button/Button';
 import CheckBox from '@/components/atoms/CheckBox/CheckBox';
 import PaymentCard from '@/components/molecules/PaymentCard/PaymentCard';
 import ReservationInfo from '@/components/organisms/ReservationInfo/ReservationInfo';
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { RequestPayParams, RequestPayResponse } from 'iamport-typings';
+import { useAuthStore } from '@/store/useAuthStore';
+import pb from '@/api/pocketbase';
 //type 지정
 
 interface PaymentProps {
@@ -78,6 +82,75 @@ const Payment = ({
   info = '서울 구로구 김*경',
   totalPrice = 60000,
 }: PaymentProps) => {
+  useEffect(() => {
+    const jquery = document.createElement('script');
+    jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
+    const iamport = document.createElement('script');
+    iamport.src = 'https://cdn.iamport.kr/v1/iamport.js';
+    document.head.appendChild(jquery);
+    document.head.appendChild(iamport);
+    return () => {
+      document.head.removeChild(jquery);
+      document.head.removeChild(iamport);
+    };
+  }, []);
+
+  const onClickPayment = () => {
+    if (!window.IMP) return;
+
+    const { IMP } = window;
+    IMP.init(import.meta.env.VITE_PORTONE_STORE_CODE);
+    const InicisStoreId = import.meta.env.VITE_PORTONE_INICIS_STORE_ID;
+
+    const userData = useAuthStore.getState().user;
+
+    const data: RequestPayParams = {
+      pg: `html5_inicis.${InicisStoreId}`,
+      pay_method: 'card',
+      merchant_uid: `mid_${new Date().getTime()}`,
+      name: '플레이스 이름',
+      amount: 100, // 가격
+      buyer_name: userData?.name,
+      buyer_tel: userData?.phone,
+      buyer_email: userData?.email,
+      buyer_addr: `${userData?.address} ${userData?.addressDetail}`,
+    };
+
+    IMP.request_pay(data, callback);
+  };
+
+  const callback = async (response: RequestPayResponse) => {
+    const {
+      success,
+      error_msg,
+      imp_uid,
+      merchant_uid,
+      pay_method,
+      paid_amount,
+      status,
+    } = response;
+
+    if (success) {
+      const userData = useAuthStore.getState().user;
+      const reservationData = {
+        placeId: '8fbjkfh1jyvrsas',
+        userId: userData?.id,
+        // petId: '',
+        // date:,
+        reviewed: false,
+        price: 100,
+        required: '',
+        etc: '',
+      };
+
+      await pb.collection('reservation').create(reservationData);
+
+      alert('결제 성공');
+    } else {
+      alert(`결제 실패: ${error_msg}`);
+    }
+  };
+
   return (
     <StyledPaymentContainer>
       <StyledBanner />
@@ -145,7 +218,7 @@ const Payment = ({
           <li>예약 시작 24-72시간 전까지: 50% 환불</li>
           <li>예약 시작 24시간 이내: 환불 불가</li>
         </ul>
-        <Button size="100%" mode="normal">
+        <Button size="100%" mode="normal" onClick={onClickPayment}>
           결제하기
         </Button>
       </div>
