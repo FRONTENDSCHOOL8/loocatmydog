@@ -93,11 +93,6 @@ export function Component() {
   }, []);
 
   useEffect(() => {
-    console.log('리셋쿼리', queryKey);
-    // queryClient.resetQueries({ queryKey: queryKey });
-  }, [queryKey]);
-
-  useEffect(() => {
     if (isInView) {
       fetchNextPage();
     }

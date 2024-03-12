@@ -181,7 +181,10 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/bookmark',
-    element: <HeartList />,
+    async lazy() {
+      const { Component, loader } = await import('@/pages/HeartPlaces');
+      return { Component, loader };
+    },
     headerType: ['logo', null],
     withAuthorization: true,
   },

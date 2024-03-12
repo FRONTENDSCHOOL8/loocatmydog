@@ -16,6 +16,7 @@ import useReservationStore from '@/store/useReservationStore';
 import { useEffect } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
+import createChatRoom from '@/pages/ChatRoom/createChatRoom';
 
 const PlaceDetail = () => {
   const { resetDateRange } = useDateRangeStore();
@@ -32,10 +33,21 @@ const PlaceDetail = () => {
     justify-content: space-between;
   `;
   //userId를 통한 validation 확인 아직 안됨
+
+  // 문의하기
+  const handleInquire = (e: MouseEvent) => {
+    createChatRoom(
+      placeData.id,
+      (userData as { [key: string]: any }).id,
+      placeData.userId,
+      '안녕하세요.'
+    );
+  };
+
   const ButtonContainer = () => {
     return (
       <StyledButtonContainer>
-        <Button size={'30%'} mode="chat">
+        <Button size={'30%'} mode="chat" onClick={handleInquire}>
           문의
         </Button>
         <Button
