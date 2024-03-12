@@ -39,6 +39,8 @@ const StyledStoryWrite = styled.div`
       inline-size: 87.25%;
       block-size: 100%;
       padding: 10px 0px;
+      display: flex;
+      flex-flow: column nowrap;
     }
 
     & textarea {
@@ -62,7 +64,6 @@ const StyledStoryWrite = styled.div`
   .starContainer {
     block-size: 30px;
     margin-block-start: 4px;
-    border: 1px solid black;
     display: inline-flex;
     align-items: center;
   }
@@ -89,15 +90,46 @@ const StoryWrite = () => {
   // 게시물 작성 유형
   const type = getFirstPathName();
 
+  // 리뷰 별
+  const [stars, setStars] = useState<boolean[]>([
+    true,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  const handleStar = (e: ChangeEvent<HTMLInputElement>) => {
+    const index = Number(e.currentTarget.dataset.index);
+    const newStars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i <= index) {
+        newStars.push(true);
+      } else {
+        newStars.push(false);
+      }
+    }
+    setStars(newStars);
+  };
+
   const rateTemplate = (
     <>
-      <span>{'별점 입력 [ 별 갯수만큼 입력됩니다. ]'}</span>
+      <span>{'별점 입력'}</span>
       <div className="starContainer">
-        <input type="checkbox" name="star" id="star1" className="rateCheck" />
-        <input type="checkbox" name="star" id="star2" className="rateCheck" />
-        <input type="checkbox" name="star" id="star3" className="rateCheck" />
-        <input type="checkbox" name="star" id="star4" className="rateCheck" />
-        <input type="checkbox" name="star" id="star5" className="rateCheck" />
+        {stars.map((star, index) => {
+          return (
+            <input
+              key={index}
+              type="checkbox"
+              name="star"
+              id={String(index)}
+              data-index={index}
+              className="rateCheck"
+              checked={star}
+              onChange={handleStar}
+            />
+          );
+        })}
       </div>
     </>
   );

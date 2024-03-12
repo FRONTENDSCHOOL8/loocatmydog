@@ -10,6 +10,7 @@ export const getChatRoomData = async (roomId: string, userId: string) => {
   const responseData = await pb.from('chatRooms').getFullList({
     select: {
       expand: {
+        placeId: true,
         members: true,
       },
     },
