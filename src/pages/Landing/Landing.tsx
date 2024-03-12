@@ -61,6 +61,7 @@ const Landing = () => {
   const navigate = useNavigate();
 
   async function handleClickSocialLogin(provider: string) {
+    await useAuthStore.getState().signOut();
     let data;
     if (provider === 'kakao') {
       data = await kakaoLogin();
@@ -69,7 +70,8 @@ const Landing = () => {
     if (provider === 'google') {
       data = await googleLogin();
     }
-    useAuthStore.getState().update();
+
+    await useAuthStore.getState().update();
 
     if (data?.record.isEdited) {
       navigate('/main');

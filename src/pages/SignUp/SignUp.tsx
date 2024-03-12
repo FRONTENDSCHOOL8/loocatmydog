@@ -108,11 +108,11 @@ const SignUp = () => {
         await pb
           .collection('users')
           .update(socialLoginData.record.id, userData);
-        useAuthStore.getState().update();
+        await useAuthStore.getState().update();
         alert('회원가입을 완료했습니다.');
       } else {
         await pb.collection('users').create(userData);
-        useAuthStore.getState().signIn(data.email, data.password);
+        await useAuthStore.getState().signIn(data.email, data.password);
         alert('회원가입을 완료했습니다.');
       }
       navigate('/main');
