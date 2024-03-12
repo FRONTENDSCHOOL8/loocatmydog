@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 //type 선언
 interface MyPlaceListProps {
+  id?: string;
   title: string;
   children: string;
   dDay?: string;
@@ -26,26 +27,27 @@ const StyledMyPlaceListContainer = styled.div<{ $dDay: string | undefined }>`
     props.$dDay === 'D-day' ? props.theme.colors.orangeBg : 'none'};
   justify-content: space-between;
   align-items: center;
+  column-gap: 7.5%;
   padding: 8px 10px;
 
-  .inner {
-    display: flex;
-    gap: 10%;
-    inline-size: 70%;
-    align-items: center;
-  }
-  figure {
-    inline-size: 28%;
-    block-size: 60px;
+  & .placeImage {
+    inline-size: 24%;
+    aspect-ratio: 1.26/1;
     border-radius: 4px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    & > img {
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
   }
   .textWrap {
     ${(props) => props.theme.colors.textDarkGray};
     ${(props) => props.theme.fontStyles.textRegularSm};
+    flex: 1;
   }
   .textWrap p {
     margin-bottom: 0.325rem;
@@ -55,6 +57,7 @@ const StyledMyPlaceListContainer = styled.div<{ $dDay: string | undefined }>`
 `;
 
 function MyPlaceList({
+  id: placeId = '',
   title = '테스트',
   children = '테스트입니다',
   like = false,
@@ -68,7 +71,7 @@ function MyPlaceList({
   ...restProps
 }: MyPlaceListProps) {
   const isLike = like ? (
-    <HeartButton id="1" />
+    <HeartButton id={placeId} />
   ) : (
     <DateList
       mode={mode ? 'normal' : 'fill'}
@@ -81,15 +84,15 @@ function MyPlaceList({
   );
   return (
     <StyledMyPlaceListContainer $dDay={dDay} {...restProps}>
-      <div className="inner">
-        <figure>
-          <img src={src} alt="플레이스사진" />
-        </figure>
-        <div className="textWrap">
-          <p>{title}</p>
-          <span>{children}</span>
-        </div>
+      <figure className="placeImage">
+        <img src={src} alt="플레이스사진" />
+      </figure>
+
+      <div className="textWrap">
+        <p>{title}</p>
+        <span>{children}</span>
       </div>
+
       {isLike}
     </StyledMyPlaceListContainer>
   );
