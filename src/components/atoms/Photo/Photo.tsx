@@ -103,7 +103,9 @@ const Photo = ({
             type="file"
             name="addPhoto"
             id="addPhoto"
+            accept="image/*"
             onChange={onChange}
+            multiple
           />
         </div>
       );

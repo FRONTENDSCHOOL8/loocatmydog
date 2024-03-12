@@ -86,7 +86,14 @@ const BigPhoto = ({
           <label htmlFor="addImg">
             <img src="/images/plusButton.svg" alt="+" />
           </label>
-          <input type="file" name="addImg" id="addImg" onChange={onChange} />
+          <input
+            type="file"
+            name="addImg"
+            id="addImg"
+            accept="image/*"
+            onChange={onChange}
+            multiple
+          />
         </div>
       );
       break;

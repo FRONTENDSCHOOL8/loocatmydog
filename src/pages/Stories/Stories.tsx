@@ -39,6 +39,7 @@ const readStory = async () => {
         filter: `type = "stories"`,
         expand: 'userId',
       });
+    console.log(record);
 
     const storyList = record.map((data, index) => {
       const { id, userId, collectionId, expand, content, image, created } =
@@ -123,11 +124,13 @@ const Stories = () => {
       case 'after':
         {
           const currentList = serverStoryList.current;
-          const filteringList = currentList.filter((element) => {
-            const elementUserId = element.props.userId;
-            return elementUserId === currentUserId;
-          });
-          setStoryList(filteringList);
+          if (currentList) {
+            const filteringList = currentList.filter((element) => {
+              const elementUserId = element.props.userId;
+              return elementUserId === currentUserId;
+            });
+            setStoryList(filteringList);
+          }
         }
         break;
     }
