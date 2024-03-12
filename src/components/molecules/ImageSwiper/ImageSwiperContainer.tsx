@@ -18,6 +18,7 @@ import { PaginationOptions } from 'swiper/types';
 interface ImageSwiperContainerProps {
   type: 'default' | 'picture' | 'link';
   link?: string;
+  input?: boolean;
   imageUrls?: string[];
   onChange?: ChangeEventHandler<HTMLInputElement>;
   [key: string]: any;
@@ -42,15 +43,15 @@ const ImageSwiperContainer = ({
   imageUrls = TestImageUrls,
   link = '/events',
   type = 'picture',
+  input = false,
   onChange,
   ...restProps
 }: ImageSwiperContainerProps) => {
-  const ImageAddSlide =
-    type === 'default' ? (
-      <swiper-slide>
-        <ImageSwiperSlide type={type} />
-      </swiper-slide>
-    ) : null;
+  const ImageAddSlide = input ? (
+    <swiper-slide>
+      <ImageSwiperSlide type="default" />
+    </swiper-slide>
+  ) : null;
 
   const swiperStyle = { '--swiper-pagination-color': 'brown' };
 

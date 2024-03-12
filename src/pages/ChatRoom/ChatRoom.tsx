@@ -1,7 +1,7 @@
 import { Form, Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useChatRoomData } from './useChatRoomData';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import pb from '@/api/pocketbase';
 import { useAuthStore } from '@/store/useAuthStore';
 
@@ -36,6 +36,13 @@ const StyledChatRoom = styled.div`
     flex-flow: column nowrap;
     gap: 15px;
     overflow: auto;
+
+    -ms-overflow-style: none;
+    scollbar-width: none;
+  }
+
+  .chatArea::-webkit-scrollbar {
+    display: none;
   }
 
   .addImage {
@@ -158,10 +165,23 @@ const ChatRoom = () => {
     (textInput as HTMLInputElement).value = '';
   };
 
+  // 스크롤 아래로
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatItems]);
+
   return (
     <StyledChatRoom>
       <Link to={`/place_detail/${placeId}`}>바로가기</Link>
-      <div className="chatArea">{chatItems}</div>
+      <div className="chatArea" ref={scrollRef}>
+        {chatItems}
+      </div>
       <Form
         id="chatroomForm"
         method="post"
