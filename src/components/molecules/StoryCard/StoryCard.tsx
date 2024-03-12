@@ -6,6 +6,7 @@ import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import StarRating from '@/components/atoms/StarRating/StarRating';
 import { convertTime } from '@/utils';
 import pb from '@/api/pocketbase';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface StoryCardProps {
   id: string;
@@ -165,8 +166,6 @@ const StyledMoreViewButton = styled.button.attrs({
   }
 `;
 
-const currentUserId = 'qx6lpgtzmsdy3id';
-
 const StoryCard = ({
   id,
   type,
@@ -186,6 +185,10 @@ const StoryCard = ({
   const [isExpandText, setIsExpandText] = useState<boolean>(text.length > 150);
 
   const textContents = isExpandText ? text.slice(0, 150) + '...' : text;
+
+  // 로그인 유저 정보
+  const currentUserData = useAuthStore.getState().user;
+  const currentUserId = currentUserData?.id;
 
   const isActive = userId === currentUserId;
 

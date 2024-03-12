@@ -36,13 +36,6 @@ const StyledChatRoom = styled.div`
     flex-flow: column nowrap;
     gap: 15px;
     overflow: auto;
-
-    -ms-overflow-style: none;
-    scollbar-width: none;
-  }
-
-  .chatArea::-webkit-scrollbar {
-    display: none;
   }
 
   .addImage {

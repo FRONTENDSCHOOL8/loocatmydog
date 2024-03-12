@@ -19,15 +19,21 @@ interface Boards {
   created: string;
   updated: string;
   type: string;
-  content: string;
-  image: string[];
+  textContent: string;
+  photo: string[];
   productId: string;
   rate: number;
   expand: Expand;
 }
 
 const StyledStories = styled.div`
+  inline-size: 100%;
+  block-size: 100%;
   position: relative;
+
+  & ul {
+    block-size: 100%;
+  }
 `;
 
 // 서버 통신으로 모든 스토리 읽어오기
@@ -42,19 +48,23 @@ const readStory = async () => {
     console.log(record);
 
     const storyList = record.map((data, index) => {
-      const { id, userId, collectionId, expand, content, image, created } =
+      const { id, userId, collectionId, expand, textContent, photo, created } =
         data;
 
       const expandUserData = (expand as Expand).userId;
 
       const date = new Date(created);
       const time = date.getTime();
-      const profileImage = getPbImageURL(
-        expandUserData.collectionId,
-        expandUserData.id,
-        expandUserData.avatar
-      );
-      const imageUrls = image.map((url: string) =>
+      let profileImage = '/images/profileNone.svg';
+      if (expandUserData.avatar !== '') {
+        profileImage = getPbImageURL(
+          expandUserData.collectionId,
+          expandUserData.id,
+          expandUserData.avatar
+        );
+      }
+
+      const imageUrls = photo.map((url: string) =>
         getPbImageURL(collectionId, id, url)
       );
 
@@ -66,7 +76,7 @@ const readStory = async () => {
           username={expandUserData.name}
           profileImageUrl={profileImage}
           type={'story'}
-          text={content}
+          text={textContent}
           attachImageUrl={imageUrls}
           createdDate={time}
         />
@@ -144,7 +154,7 @@ const Stories = () => {
         after={'내가 쓴 글'}
         onClick={handleMode}
       />
-      {storyList}
+      <div className="storyContainer">{storyList}</div>
       <ButtonPlus path={'/stories/post'} />
     </StyledStories>
   );
