@@ -49,7 +49,7 @@ const ImageSwiperContainer = ({
 }: ImageSwiperContainerProps) => {
   const ImageAddSlide = input ? (
     <swiper-slide>
-      <ImageSwiperSlide type="default" />
+      <ImageSwiperSlide type="default" onChange={onChange} />
     </swiper-slide>
   ) : null;
 
