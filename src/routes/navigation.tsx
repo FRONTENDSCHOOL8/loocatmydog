@@ -8,12 +8,10 @@ import ModifyProfile, {
   edit,
 } from '@/components/organisms/ModifyProfile/ModifyProfile';
 import MyPage from '@/components/organisms/MyPage/MyPage';
-import Reservations from '@/components/organisms/Reservations/Reservations';
+import Reservations from '@/pages/Reservations/Reservations';
 import Settings from '@/components/organisms/Settings/Settings';
-import Stories from '@/components/organisms/Stories/Stories';
-import StoryWrite, {
-  storyFormAction,
-} from '@/components/organisms/Stories/StoryWrite';
+import Stories from '@/pages/Stories/Stories';
+import StoryWrite, { storyFormAction } from '@/pages/StoriesWrite/StoryWrite';
 import ChatList from '@/pages/ChatList/ChatList';
 import Landing from '@/pages/Landing/Landing';
 import PlaceDetail from '@/pages/PlaceDetail/PlaceDetail';
@@ -80,6 +78,7 @@ export const navigationItems: NavigationRouteObject[] = [
   {
     path: '/reservation_list/:id',
     element: '',
+    headerType: ['logo', null],
   },
   {
     path: '/reservation_done',
@@ -95,6 +94,12 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/stories/post',
+    element: <StoryWrite />,
+    headerType: ['popup', null],
+    action: storyFormAction,
+  },
+  {
+    path: '/review/post/:id',
     element: <StoryWrite />,
     headerType: ['popup', null],
     action: storyFormAction,

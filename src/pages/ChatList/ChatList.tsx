@@ -3,6 +3,7 @@ import { useChatListData } from './useChatListData';
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import pb from '@/api/pocketbase';
+import { useNavigate } from 'react-router-dom';
 
 const StyledChatList = styled.div`
   display: flex;
@@ -17,6 +18,15 @@ const ChatList = () => {
   // 로그인 유저 정보
   const currentUserData = useAuthStore.getState().user;
   const currentUserId = currentUserData?.id;
+
+  // 로그인 여부 랜딩으로 보내기
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentUserId) {
+      navigate('/');
+    }
+  }, []);
 
   const [observer, setObserver] = useState<boolean>(false);
 

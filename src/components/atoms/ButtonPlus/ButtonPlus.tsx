@@ -13,9 +13,9 @@ const StyledButtonPlus = styled(Link).attrs({
   width: 45px;
   height: 45px;
   border: none;
-  position: fixed;
+  position: absolute;
   right: 10%;
-  bottom: 20%;
+  top: 1100%;
 `;
 
 const ButtonPlus = ({ path = '/' }: ButtonPlusProps) => {

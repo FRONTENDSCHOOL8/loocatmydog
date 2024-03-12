@@ -21,6 +21,7 @@ const StyledBigPhoto = styled.div<StyledBigPhotoProps>`
   overflow: hidden;
 
   inline-size: 100%;
+  aspect-ratio: 2 / 1;
 
   ${(props) => {
     if (props.$type === 'picture' || props.$type === 'link') {

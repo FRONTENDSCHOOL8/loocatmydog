@@ -2,15 +2,21 @@ import { UsersResponse } from '@/@types/database';
 import pb from '@/api/pocketbase';
 import ChatItem from '@/components/molecules/ChatItem/ChatItem';
 import setChatRead from './setChatRead';
+import { and } from 'typed-pocketbase';
+import compareDate from './compareDate';
+import DateDivider from '@/components/atoms/DateDivider/DateDivider';
 
 export const getChatRoomData = async (roomId: string, userId: string) => {
-  const response = await pb.from('chatRooms').getOne(roomId, {
+  const responseData = await pb.from('chatRooms').getFullList({
     select: {
       expand: {
         members: true,
       },
     },
+    filter: and(['id', '=', roomId], ['members', '~', userId]),
   });
+
+  const response = responseData[0];
 
   setChatRead(roomId, userId, response);
 
@@ -42,17 +48,21 @@ export const getChatRoomData = async (roomId: string, userId: string) => {
       const message = data.message;
       const username = sender.name;
       const date = new Date(data.sendDate);
+      const isDivide = compareDate(date);
       const sendDate = date.getTime();
 
       return (
-        <ChatItem
-          key={index}
-          id={String(index)}
-          isOwn={isOwn}
-          message={message}
-          username={username}
-          sendDate={sendDate}
-        />
+        <>
+          {!isDivide ? <DateDivider date={date} /> : null}
+          <ChatItem
+            key={index}
+            id={String(index)}
+            isOwn={isOwn}
+            message={message}
+            username={username}
+            sendDate={sendDate}
+          />
+        </>
       );
     }
   );
