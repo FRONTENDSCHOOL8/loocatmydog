@@ -10,13 +10,18 @@ export const getChatListData = async (userId: string) => {
     filter: `members ~ "${userId}"`,
     select: {
       expand: {
+        placeId: true,
         members: true,
       },
     },
   });
 
   const newResponse = response.map((data, index) => {
-    const userDatas = data.expand as { members: UsersResponse[] };
+    const userDatas = data.expand as any;
+    let placeName = userDatas.placeId.title;
+    if (placeName.length > 8) {
+      placeName = `${placeName.substr(0, 8)}...`;
+    }
 
     let sender;
 
@@ -74,7 +79,7 @@ export const getChatListData = async (userId: string) => {
     return (
       <Link key={index} to={`/chat_room/${id}`}>
         <ChatRoomList
-          name={sender.name}
+          name={`${sender.name} [${placeName}]`}
           recentMessage={lastMessage}
           createdDate={time}
           chatCount={count}

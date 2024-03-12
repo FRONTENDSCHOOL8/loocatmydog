@@ -101,6 +101,7 @@ const ChatRoom = () => {
   // 채팅방 id 값
   const roomId = useParams().id as string;
   const [chatItems, setChatItems] = useState<React.JSX.Element[]>([]);
+  const [placeId, setPlaceId] = useState<string>('');
   const [observer, setObserver] = useState<boolean>(false);
 
   useEffect(() => {
@@ -123,6 +124,8 @@ const ChatRoom = () => {
 
     if (data) {
       setChatItems(data.chatItem);
+      const defaultData = data.default;
+      setPlaceId(defaultData.placeId);
     }
   }, [data, isLoading]);
 
@@ -153,13 +156,11 @@ const ChatRoom = () => {
       .update(roomId, { messageBox: messageBox });
 
     (textInput as HTMLInputElement).value = '';
-
-    // location.reload();
   };
 
   return (
     <StyledChatRoom>
-      <Link to={'/'}>바로가기</Link>
+      <Link to={`/place_detail/${placeId}`}>바로가기</Link>
       <div className="chatArea">{chatItems}</div>
       <Form
         id="chatroomForm"
