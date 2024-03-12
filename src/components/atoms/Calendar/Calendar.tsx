@@ -10,7 +10,7 @@ import DatePicker, {
   CalendarContainer,
   ReactDatePickerCustomHeaderProps,
 } from 'react-datepicker';
-import { getMonth, getYear, lightFormat } from 'date-fns';
+import { differenceInDays, getMonth, getYear, lightFormat } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { getDayOfTheWeek } from '@/utils';
 
@@ -110,6 +110,7 @@ export const CustomInput = forwardRef<any, CustomInputProps>(
 CustomInput.displayName = 'CustomInput';
 
 const DatePickerContainer = (
+  isShowHeader: boolean = true,
   [startDate, endDate]: (Date | null)[],
   handleCloseCalendar: any
 ) => {
@@ -124,20 +125,28 @@ const DatePickerContainer = (
       date: endDateText,
       options: 'short',
     });
+    const difference =
+      startDate && endDate ? differenceInDays(endDate, startDate) : null;
+    let differenceText = '';
+    if (difference && difference === 0) differenceText = '당일';
+    if (difference && difference > 0) differenceText = difference + '박';
+
     return (
       <div>
         <CalendarContainer className={className}>
-          <StyledDatePickerContainerHeader>
-            <button
-              type="button"
-              aria-label="닫기"
-              onClick={() => handleCloseCalendar()}
-            ></button>
-            <span>날짜선택</span>
-          </StyledDatePickerContainerHeader>
+          {isShowHeader && (
+            <StyledDatePickerContainerHeader>
+              <button
+                type="button"
+                aria-label="닫기"
+                onClick={() => handleCloseCalendar()}
+              ></button>
+              <span>날짜선택</span>
+            </StyledDatePickerContainerHeader>
+          )}
           <div>{children}</div>
           <StyledDatePickerContainerFooter>
-            <StyledCustomInput>{`${startDateText}(${startDayOfTheWeek}) ~ ${endDateText}(${endDayOfTheWeek})`}</StyledCustomInput>
+            <StyledCustomInput>{`${startDateText}(${startDayOfTheWeek}) ~ ${endDateText}(${endDayOfTheWeek}) -  ${differenceText}`}</StyledCustomInput>
           </StyledDatePickerContainerFooter>
         </CalendarContainer>
       </div>
@@ -149,18 +158,21 @@ const DatePickerContainer = (
 interface CalenderProps {
   minMaxDateRange?: (Date | null)[];
   isModal?: boolean;
+  isShowHeader?: boolean;
   customInput?: ReactNode;
 }
 
 const Calendar = ({
   minMaxDateRange = [null, null],
   isModal = false,
+  isShowHeader = true,
   customInput = <CustomInput />,
 }: CalenderProps) => {
   const { dateRange, setDateRange } = useDateRangeStore();
   const [minDate, maxDate] = minMaxDateRange;
   const [startDate, endDate] = dateRange;
   const datePickerRef = useRef<any>(null);
+
   const handleCloseCalendar = () => {
     datePickerRef.current?.setOpen(false);
     if (!startDate || !endDate) setDateRange([minDate, minDate]);
@@ -207,6 +219,7 @@ const Calendar = ({
       inline={!isModal}
       withPortal={isModal}
       calendarContainer={DatePickerContainer(
+        isShowHeader,
         [startDate, endDate],
         handleCloseCalendar
       )}

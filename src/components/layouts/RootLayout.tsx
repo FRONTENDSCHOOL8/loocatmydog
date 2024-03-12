@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import GlobalNavBar from '@/components/molecules/GlobalNavBar/GlobalNavBar';
-import OutletLayout from './OutletLayout';
-import Header from '../molecules/Header/Header';
-import { navigationItems } from '@/routes/navigation';
-import SideMenu from '../organisms/SideMenu/SideMenu';
-import useFirstPathName from '@/hooks/useFirstPathName';
 import { queryClient } from '@/app/App';
+import GlobalNavBar from '@/components/molecules/GlobalNavBar/GlobalNavBar';
+import useFirstPathName from '@/hooks/useFirstPathName';
+import Authorization from '@/routes/Authorization';
+import { navigationItems } from '@/routes/navigation';
+import Header from '../molecules/Header/Header';
+import OutletLayout from './OutletLayout';
 
 const StyledRootLayout = styled.div`
   position: relative;
@@ -63,7 +63,19 @@ function RootLayout() {
     queryClient.resetQueries({ queryKey: searchQueryKey });
   }
 
-  return (
+  const withAuthorization = currentRouteObject?.withAuthorization;
+
+  return withAuthorization ? (
+    <Authorization redirectTo="/">
+      <StyledRootLayout>
+        {headerContents}
+        <OutletLayout>
+          <Outlet />
+        </OutletLayout>
+        <GlobalNavBar isShown={isShownGlobalNavBar} />
+      </StyledRootLayout>
+    </Authorization>
+  ) : (
     <StyledRootLayout>
       {headerContents}
       <OutletLayout>
