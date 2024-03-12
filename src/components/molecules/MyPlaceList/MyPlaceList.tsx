@@ -1,15 +1,19 @@
 import DateList from '@/components/atoms/DateList/DateList';
 import HeartButton from '@/components/atoms/HeartButton/HeartButton';
+import React from 'react';
 import styled from 'styled-components';
 //type 선언
 interface MyPlaceListProps {
   title: string;
   children: string;
   dDay?: string;
+  date?: string;
   src?: string;
   like?: boolean;
   state?: string;
   review?: boolean;
+  mode?: boolean;
+  onClick?: React.MouseEventHandler<HTMLSpanElement> | undefined;
 }
 
 //styled 컴포넌트
@@ -55,20 +59,24 @@ function MyPlaceList({
   children = '테스트입니다',
   like = false,
   review = false,
+  mode = true,
+  date = 'yyyy.mm.dd',
   dDay,
   state = '당일가능',
   src = '/images/story_sample3.jpg',
+  onClick,
   ...restProps
 }: MyPlaceListProps) {
   const isLike = like ? (
     <HeartButton fill />
   ) : (
     <DateList
-      mode="normal"
-      date={'yyyy.mm.dd'}
+      mode={mode ? 'normal' : 'fill'}
+      date={date}
       dDay={dDay}
       review={review}
       state={state}
+      onClick={onClick}
     />
   );
   return (

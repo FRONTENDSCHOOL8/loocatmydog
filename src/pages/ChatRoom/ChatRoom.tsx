@@ -1,4 +1,4 @@
-import { Form, Link, useParams } from 'react-router-dom';
+import { Form, Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useChatRoomData } from './useChatRoomData';
 import React, { FormEvent, useEffect, useState } from 'react';
@@ -89,6 +89,15 @@ const ChatRoom = () => {
   const currentUserData = useAuthStore.getState().user;
   const currentUserId = currentUserData?.id;
 
+  // 로그인 여부 랜딩으로 보내기
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentUserId) {
+      navigate('/');
+    }
+  }, []);
+
   // 채팅방 id 값
   const roomId = useParams().id as string;
   const [chatItems, setChatItems] = useState<React.JSX.Element[]>([]);
@@ -133,7 +142,7 @@ const ChatRoom = () => {
     const messageData = {
       message: message,
       read: false,
-      sendDate: currentTime,
+      sendDate: currentDate,
       userId: currentUserId,
     };
 

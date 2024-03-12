@@ -2,6 +2,7 @@ import styled, { CSSProperties } from 'styled-components';
 import { register } from 'swiper/element/bundle';
 import ImageSwiperSlide from './ImageSwiperSlide';
 import React, { ChangeEventHandler } from 'react';
+import { PaginationOptions } from 'swiper/types';
 
 /*
   type
@@ -23,11 +24,6 @@ interface ImageSwiperContainerProps {
 }
 
 const StyledImageSwiperContainer = styled.div`
-  .swiper-container {
-    inline-size: 100%;
-    aspect-ratio: 2/1;
-  }
-
   & div {
     inline-size: 100%;
   }
@@ -61,7 +57,6 @@ const ImageSwiperContainer = ({
   return (
     <StyledImageSwiperContainer {...restProps}>
       <swiper-container
-        className="swiper-container"
         direction="horizontal"
         slides-per-view="1"
         pagination={{ clickable: true }}

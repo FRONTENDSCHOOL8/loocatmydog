@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import StateBadge from '../StateBadge/StateBadge';
+import React from 'react';
 
 //type 정의
 interface DateListProps {
@@ -8,6 +9,7 @@ interface DateListProps {
   mode: 'normal' | 'fill';
   review?: boolean;
   state?: string;
+  onClick?: React.MouseEventHandler<HTMLSpanElement> | undefined;
 }
 
 //style 컴포넌트
@@ -43,6 +45,7 @@ const DateList = ({
   review,
   mode,
   state = '당일가능',
+  onClick,
   ...restProps
 }: DateListProps) => {
   return (
@@ -52,7 +55,7 @@ const DateList = ({
         {date.slice(5, 7)}/{date.slice(8)}
       </span>
       {review ? (
-        <StateBadge mode={mode} isActive>
+        <StateBadge mode={mode} isActive onClick={onClick}>
           {state}
         </StateBadge>
       ) : (

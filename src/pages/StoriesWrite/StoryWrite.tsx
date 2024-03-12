@@ -2,9 +2,11 @@ import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import styled from 'styled-components';
 import { Form, redirect } from 'react-router-dom';
 import Photo from '@/components/atoms/Photo/Photo';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useRef, useState } from 'react';
 import pb from '@/api/pocketbase';
 import getFirstPathName from '@/utils/getFirstPathName';
+import { useAuthStore } from '@/store/useAuthStore';
+import { and, eq } from 'typed-pocketbase';
 
 const StyledStoryWrite = styled.div`
   inline-size: 100%;
@@ -35,13 +37,14 @@ const StyledStoryWrite = styled.div`
 
     & Form {
       inline-size: 87.25%;
+      block-size: 100%;
       padding: 10px 0px;
     }
 
     & textarea {
       border: 0px;
       inline-size: 100%;
-      block-size: 100%;
+      block-size: 90%;
       resize: none;
     }
 
@@ -55,15 +58,54 @@ const StyledStoryWrite = styled.div`
     gap: 10px;
     padding: 0px 20px;
   }
+
+  .starContainer {
+    block-size: 30px;
+    margin-block-start: 4px;
+    border: 1px solid black;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .rateCheck {
+    inline-size: 30px;
+    block-size: 30px;
+    background-image: url('/images/star.svg');
+    background-position: center;
+    background-size: contain;
+    appearance: none;
+  }
+
+  .rateCheck:checked {
+    appearance: none;
+    background-image: url('/images/star-fill.svg');
+  }
 `;
 
 // multi imageFiles container
 const imageFiles: File[] = [];
 
-// dummy userId
-const currentUserId = 'qx6lpgtzmsdy3id';
-
 const StoryWrite = () => {
+  // 게시물 작성 유형
+  const type = getFirstPathName();
+
+  const rateTemplate = (
+    <>
+      <span>{'별점 입력 [ 별 갯수만큼 입력됩니다. ]'}</span>
+      <div className="starContainer">
+        <input type="checkbox" name="star" id="star1" className="rateCheck" />
+        <input type="checkbox" name="star" id="star2" className="rateCheck" />
+        <input type="checkbox" name="star" id="star3" className="rateCheck" />
+        <input type="checkbox" name="star" id="star4" className="rateCheck" />
+        <input type="checkbox" name="star" id="star5" className="rateCheck" />
+      </div>
+    </>
+  );
+
+  // 로그인 유저 정보
+  const currentUserData = useAuthStore.getState().user;
+  const currentUserId = currentUserData?.id;
+
   // 화면에 이미지 렌더링을 위한 상태
   const [imageURLs, setImageURLs] = useState<string[]>([]);
 
@@ -128,6 +170,8 @@ const StoryWrite = () => {
             onChange={handleTextArea}
             required
           />
+          <input type="hidden" name="userId" value={currentUserId} />
+          {type === 'review' ? rateTemplate : null}
         </Form>
       </div>
       <div className="photoAdd-wrapper">
@@ -154,17 +198,36 @@ export async function storyFormAction({ request }: { request: any }) {
 
   const formData = await request.formData();
 
+  const productId = type === 'review' ? getIdFromPath() : null;
+  const userId = formData.get('userId');
+
+  const starInput = formData.getAll('star');
+
+  let rateCount = 0;
+  for (let i = 0; i < starInput.length; i++) {
+    if (starInput[i] === 'on') {
+      rateCount += 1;
+    }
+  }
+
   const eventData = {
-    userId: currentUserId,
+    userId: userId,
     type: type,
-    content: formData.get('textArea'),
-    image: imageFiles,
-    productId: null,
-    rate: null,
+    textContent: formData.get('textArea'),
+    photo: imageFiles,
+    placeId: productId,
+    rate: rateCount,
   };
+
+  console.log(eventData);
 
   try {
     await pb.collection('boards').create(eventData);
+    console.log(productId);
+    console.log(userId);
+    if (productId) {
+      updateReviewed(productId, userId);
+    }
 
     // 메모리 비우기
     imageFiles.splice(0, imageFiles.length);
@@ -174,5 +237,27 @@ export async function storyFormAction({ request }: { request: any }) {
     console.log('Error while writing : ', error);
   }
 
-  return redirect('/stories/post');
+  return redirect('/main');
 }
+
+const getIdFromPath = () => {
+  const pathName = window.location.pathname;
+  const type = pathName.split('/')[3];
+  console.log(type);
+
+  return type;
+};
+
+const updateReviewed = async (productId: string, userId: string) => {
+  const records = await pb.from('reservation').getFullList({
+    filter: and(eq('placeId', productId), eq('userId', userId)),
+  });
+
+  const recordID = records[0].id;
+  const data = {
+    ...records[0],
+    reviewed: true,
+  };
+
+  await pb.from('reservation').update(recordID, data);
+};

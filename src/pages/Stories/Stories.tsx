@@ -2,6 +2,7 @@ import pb from '@/api/pocketbase';
 import ButtonPlus from '@/components/atoms/ButtonPlus/ButtonPlus';
 import StoryCard from '@/components/molecules/StoryCard/StoryCard';
 import Tab from '@/components/molecules/Tab/Tab';
+import { useAuthStore } from '@/store/useAuthStore';
 import getPbImageURL from '@/utils/getPbImageURL';
 import { RecordModel } from 'pocketbase';
 import React, { useEffect, useRef, useState } from 'react';
@@ -78,6 +79,10 @@ const readStory = async () => {
 };
 
 const Stories = () => {
+  // 로그인 유저 정보
+  const currentUserData = useAuthStore.getState().user;
+  const currentUserId = currentUserData?.id;
+
   // 렌더링 모드 상태
   const [modeState, setModeState] = useState<'front' | 'after'>('front');
 
@@ -95,7 +100,6 @@ const Stories = () => {
       setModeState('front');
     }
   };
-  const currentUserId = 'qx6lpgtzmsdy3id123';
 
   // 첫번째 렌더링 storyList에 저장
   useEffect(() => {
