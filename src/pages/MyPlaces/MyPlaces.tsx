@@ -27,13 +27,12 @@ export function Component() {
     );
   else {
     placeContents = myPlaceData.map((item: any) => {
-      const heartFill = user?.heart.includes(item.id);
       return (
         <Place
           key={item.id}
           id={item.id}
           path={`/place_detail/${item.id}`}
-          src={item.photo[0]}
+          src={item.photo}
           title={item.title}
           rate={item.averageStar}
           reviewNumber={item.reviewCount}

@@ -105,11 +105,6 @@ export function Component() {
   }, []);
 
   useEffect(() => {
-    console.log('resetQueries');
-    // queryClient.resetQueries({ queryKey: queryKey });
-  }, [queryKey]);
-
-  useEffect(() => {
     if (isInView) fetchNextPage();
   }, [isInView]);
 
@@ -153,7 +148,7 @@ export function Component() {
         />
       </S.MainSection>
 
-      <S.MainSection $flexDirection="column" $flexGap={20}>
+      <S.MainSection $flexDirection="column" $flexGap={40}>
         <h2 className="section-title">
           <span>플레이스 찾기</span>
           <DropDown
@@ -171,7 +166,7 @@ export function Component() {
                 id={item.id}
                 key={item.id}
                 path={`/place_detail/${item.id}`}
-                src={item.photo[0]}
+                src={item.photo}
                 title={item.title}
                 rate={item.averageStar}
                 reviewNumber={item.reviewCount}
