@@ -1,11 +1,15 @@
+import A11yHidden from '@/components/A11yHidden/A11yHidden';
+import { useAuthStore } from '@/store/useAuthStore';
+import { toggleBookmark } from '@/utils';
+import React, { useId, useState } from 'react';
 import styled from 'styled-components';
 
 interface HeartButtonProps {
-  fill: boolean;
+  id: string;
   [key: string]: any;
 }
 
-const StyledHeartButton = styled.button.attrs({ type: 'button' })`
+const StyledHeartLabel = styled.label`
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -19,19 +23,37 @@ const StyledHeartButton = styled.button.attrs({ type: 'button' })`
   &:hover {
     background-color: ${(props) => props.theme.colors.orange};
     transform: scale(1.2);
-    box-shadow:
-      0 20px 25px -5px rgb(0 0 0 / 0.8),
-      0 8px 10px -6px rgb(0 0 0 / 0.8);
   }
 `;
 
-const HeartButton = ({ fill = false, ...restProps }: HeartButtonProps) => {
-  const heartIcon = fill ? 'heart_fill.svg' : 'heart.svg';
-  const heartAlt = fill ? '찜했음' : '찜하기';
+const HeartButton = ({ id: placeId, ...restProps }: HeartButtonProps) => {
+  const { user, update } = useAuthStore();
+  const initialState = user?.heart.includes(placeId);
+  const [isChecked, setIsChecked] = useState<boolean>(initialState);
+  const checkboxId = useId();
+  const heartIcon = isChecked ? 'heart_fill.svg' : 'heart.svg';
+  const heartAlt = isChecked ? '찜했음' : '찜하기';
+  const handleCheck = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('체크!', e.currentTarget.checked);
+    e.stopPropagation();
+    await toggleBookmark(user?.id, placeId, e.currentTarget.checked);
+    await update();
+    setIsChecked((prev) => !prev);
+  };
   return (
-    <StyledHeartButton {...restProps}>
-      <img src={`/images/${heartIcon}`} alt={heartAlt} />
-    </StyledHeartButton>
+    <div className="heart-container" {...restProps}>
+      <A11yHidden
+        as="input"
+        type="checkbox"
+        name="heart"
+        id={checkboxId}
+        checked={isChecked}
+        onChange={handleCheck}
+      />
+      <StyledHeartLabel htmlFor={checkboxId}>
+        <img src={`/images/${heartIcon}`} alt={heartAlt} />
+      </StyledHeartLabel>
+    </div>
   );
 };
 

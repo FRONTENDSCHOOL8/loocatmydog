@@ -109,16 +109,39 @@ const StyledSideMenuNavigationItem = styled.li<StyledSideMenuNavigationItemProps
       translate: 0 -50%;
       inline-size: 15px;
       aspect-ratio: 1/1;
-      background: ${(props) =>
-        `url(/images/sidemenu/${props.$icon}.svg) no-repeat`};
+      background: ${(props) => `url(${props.$icon}) no-repeat`};
     }
   }
 `;
+
+const sideMenuObject = [
+  {
+    path: '/myplace_list',
+    icon: '/images/sidemenu/myplace.svg',
+    label: '나의 플레이스 목록',
+  },
+  {
+    path: '/stories',
+    icon: '/images/sidemenu/story.svg',
+    label: '봐주개냥 스토리',
+  },
+  {
+    path: '/bookmark',
+    icon: '/images/sidemenu/heart.svg',
+    label: '내가 찜한 플레이스',
+  },
+  {
+    path: '/events',
+    icon: '/images/sidemenu/events.svg',
+    label: '이벤트',
+  },
+];
 
 const SideMenu = () => {
   const { setModal } = useModalControlStore();
   const { user } = useAuthStore();
   const myAvatarUrl = user && pb.files.getUrl(user, user.avatar);
+  console.log(myAvatarUrl);
   const handleCloseModal = (
     e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
   ) => {
@@ -156,20 +179,11 @@ const SideMenu = () => {
         <StyledSideMenuInnerContainer>
           <StyledSideMenuNavigation>
             <ul className="navigation-list">
-              <StyledSideMenuNavigationItem $icon="myplace">
-                <Link to={'/place_list?filterType=mine'}>
-                  나의 플레이스 목록
-                </Link>
-              </StyledSideMenuNavigationItem>
-              <StyledSideMenuNavigationItem $icon="story">
-                <Link to={'/stories'}>봐주개냥 스토리</Link>
-              </StyledSideMenuNavigationItem>
-              <StyledSideMenuNavigationItem $icon="heart">
-                <Link to={'/bookmark'}>찜 목록</Link>
-              </StyledSideMenuNavigationItem>
-              <StyledSideMenuNavigationItem $icon="events">
-                <Link to={'/events'}>이벤트</Link>
-              </StyledSideMenuNavigationItem>
+              {sideMenuObject?.map((item) => (
+                <StyledSideMenuNavigationItem key={item.path} $icon={item.icon}>
+                  <Link to={item.path}>{item.label}</Link>
+                </StyledSideMenuNavigationItem>
+              ))}
             </ul>
           </StyledSideMenuNavigation>
         </StyledSideMenuInnerContainer>

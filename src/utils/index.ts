@@ -6,4 +6,5 @@ export { default as sizeWeight } from './sizeWeight';
 export { default as getRandomNumber } from './getRandomNumber';
 export { default as typeOf } from './typeOf';
 export { default as convertFilterString } from './convertFilterString';
+export { default as toggleBookmark } from './toggleBookmark';
 export * from './getQueryOptions';

@@ -2,10 +2,9 @@ import StarRating from '@/components/atoms/StarRating/StarRating';
 import styled from 'styled-components';
 import StateBadge from './../../atoms/StateBadge/StateBadge';
 import HeartButton from '@/components/atoms/HeartButton/HeartButton';
-import React, { MouseEventHandler } from 'react';
-import { comma } from '@/utils';
+import React from 'react';
+import { comma, toggleBookmark } from '@/utils';
 import { Link } from 'react-router-dom';
-import addBookmark from '@/utils/addBookmark';
 import { useAuthStore } from '@/store/useAuthStore';
 
 interface PlaceProps {
@@ -17,12 +16,11 @@ interface PlaceProps {
   address: string;
   price: number;
   isActive: boolean;
-  heartFill: boolean;
   path: string;
 }
 const StylePlaceContainer = styled.div`
   position: relative;
-  & > button {
+  & > .heart-container {
     position: absolute;
     top: 10px;
     right: 9px;
@@ -88,14 +86,8 @@ const Place = ({
   address,
   price,
   isActive,
-  heartFill,
   path,
 }: PlaceProps) => {
-  const { user: myUserInfo } = useAuthStore();
-  const handleClickHeartButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    addBookmark(myUserInfo?.id, id);
-  };
   return (
     <StylePlaceContainer>
       <StyledPlace to={path}>
@@ -119,7 +111,7 @@ const Place = ({
           <span className="span-price">{comma(price)}원</span>
         </div>
       </StyledPlace>
-      <HeartButton fill={heartFill} onClick={handleClickHeartButton} />
+      <HeartButton id={id} />
     </StylePlaceContainer>
   );
 };

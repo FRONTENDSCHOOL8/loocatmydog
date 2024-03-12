@@ -33,13 +33,14 @@ const ProfileImage = ({
   src = '/images/profileNone.svg',
   ...restProps
 }: ProfileImageProps) => {
+  const avatarUrl = src || '/images/profileNone.svg';
   return (
     <StyledProfileWrapper
       $blockSize={blockSize}
       $inlineSize={inlineSize}
       {...restProps}
     >
-      <StyledProfileImg src={src} alt="프로필" />
+      <StyledProfileImg src={avatarUrl} alt="프로필" />
     </StyledProfileWrapper>
   );
 };

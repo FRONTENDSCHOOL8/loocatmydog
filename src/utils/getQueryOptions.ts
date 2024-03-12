@@ -22,7 +22,7 @@ export const getPlaceInfiniteQueryOptions = (
 export const getPlaceQueryOptions = (queryKey: string[]) => {
   return queryOptions({
     queryKey,
-    queryFn: fetchPlaceFullList,
+    queryFn: () => fetchPlaceFullList(),
     staleTime: 1 * 1000 * 60,
   });
 };
