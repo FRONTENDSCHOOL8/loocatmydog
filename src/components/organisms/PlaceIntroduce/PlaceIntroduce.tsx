@@ -50,17 +50,15 @@ const MorePButton = ({ ...restProps }) => {
   );
 };
 
-const PlaceIntroduce = () => {
+const PlaceIntroduce = ({ introduce }: { introduce: string }) => {
   const [introPage, setIntroPage] = useState('10.5em');
-  const [introduce, setIntroduce] = useState();
+  const [introduceState, setIntroduceState] = useState('');
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    fetchPlaceRecords().then((Place) => {
-      setIntroduce(Place.introduce);
-      const intro = document.getElementById('beforeIntro');
-      intro?.insertAdjacentHTML('afterend', `${introduce}`);
-    });
+    setIntroduceState(introduce);
+    const intro = document.getElementById('beforeIntro');
+    intro?.insertAdjacentHTML('afterend', `${introduce}`);
   }, [introduce]);
 
   const showMorePage = () => {

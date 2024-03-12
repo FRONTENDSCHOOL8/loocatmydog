@@ -1,6 +1,9 @@
 import Button from '@/components/atoms/Button/Button';
 import LogoInline from '@/components/atoms/Logo/LogoInline';
-import { Link } from 'react-router-dom';
+import { useAuthStore } from '@/store/useAuthStore';
+import { googleLogin } from '@/utils/googleLogin';
+import { kakaoLogin } from '@/utils/kakaoLogin';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledLanding = styled.div`
@@ -55,6 +58,31 @@ const StyledLanding = styled.div`
 `;
 
 const Landing = () => {
+  const navigate = useNavigate();
+
+  async function handleClickSocialLogin(provider: string) {
+    let data;
+    if (provider === 'kakao') {
+      data = await kakaoLogin();
+    }
+
+    if (provider === 'google') {
+      data = await googleLogin();
+    }
+    useAuthStore.getState().update();
+
+    if (data?.record.isEdited) {
+      navigate('/main');
+    } else {
+      alert('서비스 이용을 위한 회원정보를 추가로 입력해주세요.');
+      navigate('/signup', {
+        state: {
+          data: data,
+        },
+      });
+    }
+  }
+
   return (
     <StyledLanding>
       <div className="div-logo">
@@ -62,10 +90,18 @@ const Landing = () => {
       </div>
       <div className="div-img">
         <div className="buttonWrapper">
-          <Button size={'100%'} mode={'kakao'}>
+          <Button
+            size={'100%'}
+            mode={'kakao'}
+            onClick={() => handleClickSocialLogin('kakao')}
+          >
             카카오톡으로 로그인
           </Button>
-          <Button size={'100%'} mode={'google'}>
+          <Button
+            size={'100%'}
+            mode={'google'}
+            onClick={() => handleClickSocialLogin('google')}
+          >
             구글로 로그인
           </Button>
         </div>

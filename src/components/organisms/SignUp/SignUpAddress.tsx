@@ -118,18 +118,21 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
 
   async function handleSearchAddress(data: any) {
     setIsModalOpen(false);
-    setAddress(data.roadAddress);
+    setAddress(data.address);
 
     const geolocationData = await getGeolocation(data.address);
 
-    setAddressData({
+    const address = {
       address: data.address,
       addressDetail: addressDetail,
       zonecode: data.zonecode,
       sigungu: data.sigungu,
       latitude: geolocationData.latitude,
       longitude: geolocationData.longitude,
-    });
+    };
+
+    setAddressData(address);
+    updateFields(address);
   }
 
   function handleInputAddressDetailChange(
@@ -138,24 +141,13 @@ const SignUpAddress = ({ updateFields, next, back }: SignUpAddressProps) => {
     setAddressDetail(e.target.value);
     updateFields({
       address,
-      addressDetail,
+      addressDetail: e.target.value,
       zonecode: addressData.zonecode,
       sigungu: addressData.sigungu,
       latitude: addressData.latitude,
       longitude: addressData.longitude,
     });
   }
-
-  // function handleClickSignupButton() {
-  //   updateFields({
-  //     address,
-  //     addressDetail,
-  //     zonecode: addressData.zonecode,
-  //     sigungu: addressData.sigungu,
-  //     latitude: addressData.latitude,
-  //     longitude: addressData.longitude,
-  //   });
-  // }
 
   return (
     <>

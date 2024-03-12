@@ -3,13 +3,6 @@ import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  &:hover {
-    text-decoration: none;
-  }
-`;
-
 const StyledUserProfileBox = styled.div`
   display: flex;
   justify-content: space-between;
@@ -17,6 +10,7 @@ const StyledUserProfileBox = styled.div`
   inline-size: 100%;
   block-size: 63px;
   padding: 10px 20px;
+  position: relative;
 `;
 
 const StyledUserProfileSpanBox = styled.div`
@@ -34,25 +28,40 @@ const StyledUserProfileSpanBox = styled.div`
   }
 `;
 
+const EditBtnLink = styled(Link)`
+  position: absolute;
+  top: 15px;
+  left: 60px;
+  display: flex;
+  flex-flow: row;
+  padding-inline-start: 15px;
+  color: ${(props) => props.theme.colors.textBlack};
+  ${(props) => props.theme.fontStyles.textRegularMd}
+`;
+
 const UserProfile = ({
   name,
-  src,
+  src = '/images/profileNone.svg',
   ...restProps
 }: {
   name: string | ReactNode;
-  src: string;
+  src?: string;
   [key: string]: any;
 }) => {
   return (
-    <StyledLink to="/edit_my_profile">
-      <StyledUserProfileBox>
-        <StyledUserProfileSpanBox>
+    <StyledUserProfileBox>
+      <StyledUserProfileSpanBox>
+        <div>
           <span className="userName">{name} 님</span>
-          <span className="welcome">환영합니다!</span>
-        </StyledUserProfileSpanBox>
-        <ProfileImage blockSize={43} inlineSize={43} src={src} {...restProps} />
-      </StyledUserProfileBox>
-    </StyledLink>
+          <EditBtnLink to="/edit_my_profile">
+            수정
+            <img src="/images/editPen.svg" alt="볼펜모양" />
+          </EditBtnLink>
+        </div>
+        <span className="welcome">환영합니다!</span>
+      </StyledUserProfileSpanBox>
+      <ProfileImage blockSize={43} inlineSize={43} src={src} {...restProps} />
+    </StyledUserProfileBox>
   );
 };
 

@@ -4,7 +4,7 @@ import Button from '@/components/atoms/Button/Button';
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
 import InputTextArea from '@/components/molecules/InputTextArea/InputTextArea';
 import ProfileCard from '@/components/molecules/ProfileCard/ProfileCard';
-import useReservationStore from '@/store/useCheckboxStore';
+import useReservationStore from '@/store/useReservationStore';
 import useModalControlStore from '@/store/useModalControl';
 import { sizeWeight } from '@/utils';
 import getPbImageURL from '@/utils/getPbImageURL';
@@ -116,8 +116,8 @@ const AnimalPick = () => {
   });
   const { setReservation, reservation } = useReservationStore();
   useEffect(() => {
-    setPetList(userData.expand?.petId);
-  }, []);
+    setPetList(userData?.expand?.petId);
+  }, [userData?.expand?.petId]);
   useEffect(() => {
     function petValidation() {
       if (isChecked && inputTextValue.require) {
@@ -137,7 +137,7 @@ const AnimalPick = () => {
     require: '',
     etc: '',
   };
-  function handleTextChange(e: React.ChangeEvent) {
+  function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setInputTextValue((prevState) => ({
       ...prevState,
@@ -150,7 +150,6 @@ const AnimalPick = () => {
     setReservation(inputTextValue, petId.id);
     modalRef.current?.close();
   }
-  console.log(userData.petId);
 
   return (
     <>
@@ -210,7 +209,7 @@ const AnimalPick = () => {
           }}
         >
           <StyledPetListContainer>
-            {userData.petId?.length === 0 ? (
+            {userData?.petId?.length === 0 ? (
               <>
                 <p className="info">반려동물을 추가해주세요</p>
                 <StyledPlusButton></StyledPlusButton>

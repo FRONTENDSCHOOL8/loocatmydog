@@ -1,17 +1,15 @@
 import { queryClient } from '@/app/App';
 import { HeaderProps } from '@/components/molecules/Header/Header';
-import AddPet, { addPetFormAction } from '@/components/organisms/AddPet/AddPet';
+import AddPet, { addPetFormAction } from '@/pages/AddPet/AddPet';
 import ChatRoom from '@/pages/ChatRoom/ChatRoom';
-import DatePick from '@/components/organisms/DatePick/DatePick';
 import HeartList from '@/components/organisms/HeartList/HeartList';
-import ModifyProfile, {
-  edit,
-} from '@/components/organisms/ModifyProfile/ModifyProfile';
-import MyPage from '@/components/organisms/MyPage/MyPage';
 import Reservations from '@/pages/Reservations/Reservations';
-import Settings from '@/components/organisms/Settings/Settings';
 import Stories from '@/pages/Stories/Stories';
 import StoryWrite, { storyFormAction } from '@/pages/StoriesWrite/StoryWrite';
+import ModifyProfile, { edit } from '@/pages/ModifyProfile/ModifyProfile';
+import MyPage from '@/pages/MyPage/MyPage';
+import Settings from '@/pages/Settings/Settings';
+
 import ChatList from '@/pages/ChatList/ChatList';
 import Landing from '@/pages/Landing/Landing';
 import PlaceDetail from '@/pages/PlaceDetail/PlaceDetail';
@@ -19,6 +17,9 @@ import { loader as detail } from '@/pages/PlaceDetail/loader';
 import SignIn, { signInFormAction } from '@/pages/SignIn/SignIn';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
+import AddPlace from '@/pages/AddPlace/AddPlace';
+import Payment from '@/pages/Payment/Payment';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -46,7 +47,10 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/main',
     async lazy() {
       const { loader, Component } = await import('@/pages/Main');
-      return { loader: loader(queryClient, ['places', 'main']), Component };
+      return {
+        loader: loader(queryClient, ['places', 'main', 'all']),
+        Component,
+      };
     },
     headerType: ['main', null],
   },
@@ -58,7 +62,10 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/place_list',
     async lazy() {
       const { Component, loader } = await import('@/pages/PlaceList');
-      return { loader: loader(queryClient, ['places', 'search']), Component };
+      return {
+        loader: loader(queryClient, ['places', 'search', 'all', 'all']),
+        Component,
+      };
     },
     headerType: ['back', '플레이스 찾기'],
   },
@@ -66,7 +73,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 경화님
   {
     path: '/add_place',
-    element: '',
+    element: <AddPlace />,
     headerType: ['back', '플레이스 등록'],
   },
   {
@@ -79,6 +86,10 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/reservation_list/:id',
     element: '',
     headerType: ['logo', null],
+  },
+  {
+    path: '/payment/:id',
+    element: <Payment />,
   },
   {
     path: '/reservation_done',
@@ -124,11 +135,7 @@ export const navigationItems: NavigationRouteObject[] = [
   // 다영님
   {
     path: '/mypage',
-    element: (
-      <>
-        <MyPage />
-      </>
-    ),
+    element: <MyPage />,
     headerType: ['popup', '마이 페이지'],
   },
   {
@@ -150,14 +157,13 @@ export const navigationItems: NavigationRouteObject[] = [
   },
   {
     path: '/settings',
-    element: (
-      <>
-        <Settings />
-      </>
-    ),
+    element: <Settings />,
     headerType: ['logo', null],
   },
-
+  {
+    path: '/*',
+    element: <NotFoundPage />,
+  },
   // 미할당
   {
     path: '/events',

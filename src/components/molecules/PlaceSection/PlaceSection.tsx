@@ -7,6 +7,7 @@ interface PlaceSectionProps {
   [key: string]: any;
 }
 const StyledPlaceSection = styled.div`
+  background: #fff;
   padding: 0 20px;
   margin-bottom: 20px;
   & .sectionTitle {

@@ -34,7 +34,7 @@ const StyledP = styled.p`
   ${(props) => props.theme.colors.textGray}
 `;
 
-function Payment({
+function PaymentCard({
   src = '/images/card.svg',
   userPay = false,
   name = 'test',
@@ -64,4 +64,4 @@ function Payment({
   );
 }
 
-export default Payment;
+export default PaymentCard;

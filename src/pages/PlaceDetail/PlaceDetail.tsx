@@ -1,21 +1,64 @@
+import { PlacesResponse } from '@/@types/database';
+import Button from '@/components/atoms/Button/Button';
 import PlaceSection from '@/components/molecules/PlaceSection/PlaceSection';
 import AnimalPick from '@/components/organisms/AnimalPick/AnimalPick';
 import DatePick from '@/components/organisms/DatePick/DatePick';
 import PlaceIntroduce from '@/components/organisms/PlaceIntroduce/PlaceIntroduce';
 import PlaceLocation from '@/components/organisms/PlaceLocation/PlaceLocation';
+import PlaceReview from '@/components/organisms/PlaceReview/PlaceReview';
 import PlaceTitleSection from '@/components/organisms/PlaceTitle/PlaceTitle';
 import ServiceCanUse from '@/components/organisms/ServiceCanUse/ServiceCanUse';
 import ServicePrice from '@/components/organisms/ServicePrice/ServicePrice';
+import SwiperProfile from '@/components/organisms/SwiperProfile/SwiperProfile';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useLoaderData } from 'react-router-dom';
+import useDateRangeStore from '@/store/useDateRange';
+import useReservationStore from '@/store/useReservationStore';
+import { useEffect } from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
+import styled from 'styled-components';
 
 const PlaceDetail = () => {
-  const placeData = useLoaderData();
+  const { resetDateRange } = useDateRangeStore();
+  useEffect(() => {
+    return () => resetDateRange();
+  }, []);
+  const { reservation } = useReservationStore();
+  const placeData = useLoaderData() as any;
+  console.log(placeData.expand['boards(placeId)']);
   const userData = useAuthStore.getState().user;
+  const StyledButtonContainer = styled.div`
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+  `;
+  //userId를 통한 validation 확인 아직 안됨
+  const ButtonContainer = () => {
+    return (
+      <StyledButtonContainer>
+        <Button size={'30%'} mode="chat">
+          문의
+        </Button>
+        <Button
+          as={Link}
+          size="65%"
+          mode={reservation ? 'normal' : 'disabled'}
+          to={`/payment/${placeData.id}`}
+          style={{ textAlign: 'center' }}
+        >
+          예약하기
+        </Button>
+      </StyledButtonContainer>
+    );
+  };
   return (
     <>
+      <SwiperProfile data={placeData} />
       <PlaceTitleSection
-        review={2}
+        review={
+          placeData.expand['boards(placeId)']
+            ? placeData.expand['boards(placeId)'].length
+            : ''
+        }
         address={placeData.address}
         title={placeData.title}
         tagList={placeData.tag}
@@ -26,9 +69,11 @@ const PlaceDetail = () => {
         <AnimalPick />
         <ServicePrice />
       </PlaceSection>
-      <PlaceLocation />
-      <PlaceIntroduce />
+      <PlaceLocation address={placeData.address} />
+      <PlaceIntroduce introduce={placeData.introduce} />
       <ServiceCanUse placeData={placeData} />
+      <PlaceReview data={placeData} />
+      <ButtonContainer></ButtonContainer>
     </>
   );
 };

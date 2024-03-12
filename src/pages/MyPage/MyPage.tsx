@@ -1,7 +1,5 @@
-import { PetCreate, UsersCreate } from '@/@types/database';
 import pb from '@/api/pocketbase';
-import ContentSwiperContainer from '@/components/molecules/ImageSwiper/ContentSwiperContainer';
-import Payment from '@/components/molecules/Payment/Payment';
+import PaymentCard from '@/components/molecules/PaymentCard/PaymentCard';
 import ProfileCard from '@/components/molecules/ProfileCard/ProfileCard';
 import ProfileListLink from '@/components/molecules/ProfileListLink/ProfileListLink';
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
@@ -98,7 +96,7 @@ const MyPage = () => {
       />
       <ProfileCardSection>
         <span className="petSpan">반려동물</span>
-        {petData === null ? (
+        {!petData ? (
           ''
         ) : (
           <AddPetPlusBox to={'/add_mypet'}>
@@ -110,7 +108,7 @@ const MyPage = () => {
         )}
 
         <ul>
-          {petData === null ? (
+          {!petData ? (
             <li>
               <ProfileCard
                 onClick={handleProfileCardClick}
@@ -141,7 +139,7 @@ const MyPage = () => {
         accordion={true}
         accordionContent={
           <>
-            <Payment
+            <PaymentCard
               style={{
                 paddingInline: 20,
                 paddingBlockStart: 6,

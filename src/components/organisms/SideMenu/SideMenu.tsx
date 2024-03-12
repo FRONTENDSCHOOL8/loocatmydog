@@ -1,20 +1,26 @@
+import pb from '@/api/pocketbase';
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
+import { useAuthStore } from '@/store/useAuthStore';
 import useModalControlStore from '@/store/useModalControl';
+import { motion } from 'framer-motion';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const StyledDimmed = styled.div`
+const StyledDimmed = styled(motion.div)`
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  translate: -50% 0%;
   inline-size: 100%;
-  block-size: 100%;
+  min-inline-size: 280px;
+  max-inline-size: 420px;
+  block-size: 100dvh;
   background-color: rgba(0, 0, 0, 0.35);
   z-index: 9999;
 `;
 
-const StyledSideMenuContainer = styled.div`
+const StyledSideMenuContainer = styled(motion.div)`
   position: absolute;
   top: 0;
   left: 0;
@@ -22,6 +28,7 @@ const StyledSideMenuContainer = styled.div`
   block-size: 100dvh;
   background-color: ${(props) => props.theme.colors.white};
   z-index: 9999;
+  overflow: hidden;
 
   &::before {
     content: '';
@@ -60,13 +67,15 @@ const StyledSideMenuInnerContainer = styled.div<StyledSideMenuInnerContainerProp
   padding: 20px;
   display: flex;
   flex-flow: column nowrap;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   row-gap: ${(props) => (props.$gap ? `${props.$gap}px` : null)};
 `;
 
 const StyledLinkButton = styled(Link)`
+  align-self: flex-start;
   ${(props) => props.theme.fontStyles.textSemiboldSm};
   color: ${(props) => props.theme.colors.white};
+  margin-inline-start: 10px;
   padding: 4px 8px;
   background-color: ${(props) => props.theme.colors.orange};
   border-radius: 2px;
@@ -106,21 +115,27 @@ const StyledSideMenuNavigationItem = styled.li<StyledSideMenuNavigationItemProps
   }
 `;
 
-const profileMockData = {
-  name: '홍길동',
-  src: '/images/starDog.svg',
-};
-
 const SideMenu = () => {
   const { setModal } = useModalControlStore();
+  const { user } = useAuthStore();
+  const myAvatarUrl = user && pb.files.getUrl(user, user.avatar);
   const handleCloseModal = (
     e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
   ) => {
     if (e.target === e.currentTarget) setModal(false);
   };
   return (
-    <StyledDimmed onClick={handleCloseModal}>
-      <StyledSideMenuContainer>
+    <StyledDimmed
+      initial="hidden"
+      animate="visible"
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+      onClick={handleCloseModal}
+    >
+      <StyledSideMenuContainer
+        initial={{ x: -100 }}
+        animate={{ x: 0 }}
+        transition={{ ease: 'easeOut' }}
+      >
         <div className="header">
           <button
             type="button"
@@ -132,11 +147,12 @@ const SideMenu = () => {
         <StyledSideMenuInnerContainer $gap={5}>
           <UserProfile
             style={{ padding: 0 }}
-            name={profileMockData.name}
-            src={profileMockData.src}
+            name={user?.name}
+            src={myAvatarUrl as string}
           />
           <StyledLinkButton to={'/add_place'}>플레이스 등록</StyledLinkButton>
         </StyledSideMenuInnerContainer>
+
         <StyledSideMenuInnerContainer>
           <StyledSideMenuNavigation>
             <ul className="navigation-list">

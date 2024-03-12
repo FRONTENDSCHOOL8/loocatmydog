@@ -1,18 +1,14 @@
 import UserProfile from '@/components/molecules/UserProfile/UserProfile';
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
-
 import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-// 명령어로 자동 생성된 타입 정의 파일에서 Schema를 가져옵니다.
 import { useAuthStore } from '@/store/useAuthStore';
-import { Form, redirect, useNavigate } from 'react-router-dom';
+import { Form, redirect } from 'react-router-dom';
 import { isPhoneNum } from '@/utils/signUpValidation';
 import pb from '@/api/pocketbase';
 import { UsersCreate } from '@/@types/database';
 import Button from '@/components/atoms/Button/Button';
-import getPbImageURL from '@/utils/getPbImageURL';
 
 const StyledModifyProfileBox = styled.div`
   padding-block-start: 23px;
@@ -149,7 +145,7 @@ const ModifyProfile = () => {
   };
 
   const user = useAuthStore.getState().user;
-  const navigate = useNavigate();
+
   //데이터 불러오는 훅
   useEffect(() => {
     const login = async () => {
@@ -161,11 +157,8 @@ const ModifyProfile = () => {
         setAddress(record?.address);
         setChangeImg(record?.avatar);
         setDetailAddress(record?.addressDetail);
-        console.log(record);
       } catch (error) {
         console.error('Error Logging:', error);
-        // alert('로그인이 되어있어야 열람이 가능합니다.');
-        //navigate('/signin');
       }
     };
 
@@ -289,7 +282,7 @@ const ModifyProfile = () => {
                 type="text"
                 value={phone}
                 onChange={handleChangePhone}
-                disabled={!isEditingPhone}
+                readOnly={!isEditingPhone}
               />
               <button
                 className="orangeButton"
@@ -308,7 +301,7 @@ const ModifyProfile = () => {
                 value={address}
                 name="address"
                 onChange={handleChangeAddress}
-                disabled={!isEditingAddress}
+                readOnly={!isEditingAddress}
               />
               <button
                 className="orangeButton"
@@ -358,14 +351,21 @@ export async function edit({ request }: { request: any }) {
   const data = await request.formData();
   const record = await pb.from('users').getOne(user?.id);
 
-  for (const [key, value] of data.entries()) console.log(key, value);
+  const formData = Object.fromEntries(data.entries());
 
-  await pb.from('users').update(user?.id, {
-    addressDetail: data.get('detailAddress'),
-    address: data.get('address'),
-    phone: data.get('phone'),
-    avatar: data.get(`${record.name}`),
+  const { address, detailAddress, modifyCamera, phone } = formData;
+
+  const updatedUser = await pb.from('users').update(user?.id, {
+    addressDetail: detailAddress,
+    address: address,
+    phone: phone,
+    avatar: modifyCamera,
   });
+
+  useAuthStore.getState().update();
+
+  // 업데이트 된 사용자 정보 출력
+  console.table(updatedUser);
 
   return redirect(`/edit_my_profile`);
 }

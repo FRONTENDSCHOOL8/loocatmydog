@@ -17,6 +17,7 @@ interface AuthStore {
   user: { [key: string]: any } | null;
   token: string;
   signIn: (userNameOrEmail: string, password: string) => Promise<void>;
+  update: () => Promise<void>;
   signOut: () => Promise<void>;
   withDrawal: (recordId: string) => Promise<boolean>;
 }
@@ -48,7 +49,25 @@ const createStore: CreateStore<AuthStore> = (set) => ({
         expand: 'petId, heart',
       });
 
-    console.log(authData);
+    const { record, token } = authData;
+
+    set(
+      (state: AuthState) => ({
+        ...state,
+        isAuth: !!record,
+        user: record,
+        token,
+      }),
+      false,
+      'auth/signin'
+    );
+  },
+
+  update: async () => {
+    const authData = await pb.collection(USER_COLLECTION).authRefresh({
+      expand: 'petId, heart',
+    });
+
     const { record, token } = authData;
 
     set(

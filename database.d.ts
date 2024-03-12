@@ -136,54 +136,54 @@ type MaybeArray<T> = T | T[];
 // ===== users =====
 
 export interface UsersResponse extends AuthCollectionResponse {
-  collectionName: 'users';
-  name: string;
-  birthday: number;
-  genderNo: number;
-  address: string;
-  addressDetail: string;
-  phone: string;
-  avatar: string;
-  petId: Array<string>;
-  addressInfo: any;
-  heart: Array<string>;
-  isEdited: boolean;
+	collectionName: 'users';
+	name: string;
+	birthday: number;
+	genderNo: number;
+	address: string;
+	addressDetail: string;
+	phone: string;
+	avatar: string;
+	petId: Array<string>;
+	addressInfo: any;
+	heart: Array<string>;
+	isEdited: boolean;
 }
 
 export interface UsersCreate extends AuthCollectionCreate {
-  name?: string;
-  birthday?: number;
-  genderNo?: number;
-  address?: string;
-  addressDetail?: string;
-  phone?: string;
-  avatar?: File | null;
-  petId?: MaybeArray<string>;
-  addressInfo?: any;
-  heart?: MaybeArray<string>;
-  isEdited?: boolean;
+	name?: string;
+	birthday?: number;
+	genderNo?: number;
+	address?: string;
+	addressDetail?: string;
+	phone?: string;
+	avatar?: File | null;
+	petId?: MaybeArray<string>;
+	addressInfo?: any;
+	heart?: MaybeArray<string>;
+	isEdited?: boolean;
 }
 
 export interface UsersUpdate extends AuthCollectionUpdate {
-  name?: string;
-  birthday?: number;
-  'birthday+'?: number;
-  'birthday-'?: number;
-  genderNo?: number;
-  'genderNo+'?: number;
-  'genderNo-'?: number;
-  address?: string;
-  addressDetail?: string;
-  phone?: string;
-  avatar?: File | null;
-  petId?: MaybeArray<string>;
-  'petId+'?: MaybeArray<string>;
-  'petId-'?: MaybeArray<string>;
-  addressInfo?: any;
-  heart?: MaybeArray<string>;
-  'heart+'?: MaybeArray<string>;
-  'heart-'?: MaybeArray<string>;
-  isEdited?: boolean;
+	name?: string;
+	birthday?: number;
+	'birthday+'?: number;
+	'birthday-'?: number;
+	genderNo?: number;
+	'genderNo+'?: number;
+	'genderNo-'?: number;
+	address?: string;
+	addressDetail?: string;
+	phone?: string;
+	avatar?: File | null;
+	petId?: MaybeArray<string>;
+	'petId+'?: MaybeArray<string>;
+	'petId-'?: MaybeArray<string>;
+	addressInfo?: any;
+	heart?: MaybeArray<string>;
+	'heart+'?: MaybeArray<string>;
+	'heart-'?: MaybeArray<string>;
+	isEdited?: boolean;
 }
 
 export interface UsersCollection {
