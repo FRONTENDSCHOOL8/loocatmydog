@@ -116,7 +116,7 @@ const StoryWrite = () => {
     <>
       <span>{'별점 입력'}</span>
       <div className="starContainer">
-        {stars.map((star, index) => {
+        {stars.map((star: boolean, index: number) => {
           return (
             <input
               key={index}
