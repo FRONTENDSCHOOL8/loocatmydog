@@ -1,6 +1,6 @@
 import BigPhoto from '@/components/atoms/BigPhoto/BigPhoto';
 import InputWrapper from '@/components/atoms/InputWrapper/InputWrapper';
-import { Form } from 'react-router-dom';
+import { Form, redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@/components/atoms/Button/Button';
 import Calendar from '@/components/atoms/Calendar/Calendar';
@@ -77,6 +77,7 @@ const StyledAddSection = styled.div`
 const customStyles = {
   overlay: {
     backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: '1',
   },
   content: {
     left: '0',
@@ -123,7 +124,7 @@ const StyledMultiplePhotoInputContainer = styled.div`
 // multi imageFiles container
 const imageFiles: FileList[] = [];
 //service container
-const serviceListData: Array<string> = [];
+let serviceListData: Array<string> = [];
 //date container
 let dateData: Array<Date | null> = [];
 
@@ -135,13 +136,31 @@ const AddPlace = () => {
   dateContainer();
   const [showImages, setShowImages] = useState<string[]>([]);
   const serviceList = Object.values(service[0]);
+  const servicekeys = Object.keys(service[0]);
   const [isOpen, setIsOpen] = useState(false);
   const [roadAddress, setRoadAddress] = useState('');
   const [isEditingAddress, setIsEditingAddress] = useState(false);
-  const [detailAddress, setDetailAddress] = useState('');
+  // const [isChecked, setIsChecked] = useState(false);
+  let isChecked = false;
 
-  const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setDetailAddress(e.target.value);
+  //serviceList select 생성
+  const addServiceList = (e: React.ChangeEvent<HTMLInputElement>) => {
+    !isChecked;
+    serviceListData = [];
+
+    console.log(isChecked);
+    if (isChecked) {
+      e.target.checked = isChecked;
+      !isChecked;
+    }
+    const data = new FormData();
+    const form = document.getElementById('placeForm');
+    const services = form?.querySelectorAll('input[type="checkbox"]');
+    services?.forEach((item: Element, key: number) => {
+      if (item instanceof HTMLInputElement && item.checked) {
+        serviceListData.push(item.value);
+      }
+    });
   };
 
   // 이미지 상대경로 저장
@@ -250,9 +269,15 @@ const AddPlace = () => {
       </StyledAddSection>
       <StyledAddSection>
         <div className="buttonWrapper">
-          {serviceList.map((item) => {
+          {serviceList.map((item, index) => {
             return (
-              <ButtonCheck key={item.name} name={item.name}>
+              <ButtonCheck
+                key={item.name}
+                name="service"
+                title={item.name}
+                value={servicekeys[index]}
+                onChange={addServiceList}
+              >
                 {item.text}
               </ButtonCheck>
             );
@@ -286,28 +311,30 @@ export async function placeFormAction({ request }: { request: any }) {
   const formData = await request.formData();
 
   const userId = useAuthStore.getState().user?.id;
-  const imgData = [];
-  for (let i = 0; i < imageFiles[0].length; i++) {
-    imgData.push(imageFiles[0][i]);
-  }
+
   const priceSmall = formData.get('small');
   const priceMiddle = formData.get('middle');
   const priceLarge = formData.get('large');
   const price = { large: priceLarge, middle: priceMiddle, small: priceSmall };
-  console.log(typeof JSON.stringify(price));
+  const tag = formData.get('tag').match(/[^,]+/g);
+  const service = serviceListData;
   const minDate = dateData[0];
   const maxDate = dateData[1];
-  console.log(imageFiles);
+  const imgData = [];
+  for (let i = 0; i < imageFiles[0]?.length; i++) {
+    imgData.push(imageFiles[0][i]);
+  }
 
   const eventData: any = {
-    photo: imgData,
     title: formData.get('title'),
-    tag: formData.get('tag'),
+    tag: JSON.stringify(tag),
     address: formData.get('address'),
     userId: userId,
-    minDate: minDate,
-    maxDate: maxDate,
+    minDate: minDate?.toISOString(),
+    maxDate: maxDate?.toISOString(),
+    service: service,
     price: JSON.stringify(price),
+    photo: imgData,
     introduce: formData.get('introduce'),
   };
 
@@ -323,5 +350,5 @@ export async function placeFormAction({ request }: { request: any }) {
     console.log('Error while writing : ', error);
   }
 
-  return null;
+  return redirect('/main');
 }
