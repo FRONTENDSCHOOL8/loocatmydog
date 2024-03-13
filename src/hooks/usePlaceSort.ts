@@ -12,10 +12,6 @@ export const initialState: InitialSortType[] = [
     label: '전체',
   },
   {
-    id: 'distance',
-    label: '가까운순',
-  },
-  {
     id: 'price',
     label: '가격순',
   },

@@ -197,7 +197,6 @@ const StoryCard = ({
   };
 
   const handleDeleteStory = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('story deleted');
     deleteStory(id).then(() => {
       location.reload();
     });
@@ -210,7 +209,6 @@ const StoryCard = ({
         aria-haspopup={true}
         onClick={(e) => {
           e.stopPropagation();
-          console.log('popup open clicked');
           setIsPopUpMenuOpen(true);
         }}
       >

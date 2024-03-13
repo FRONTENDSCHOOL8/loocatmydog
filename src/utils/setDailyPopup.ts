@@ -1,23 +1,21 @@
 import useModalControlStore from '@/store/useModalControl';
 
 const setDailyPopup = () => {
-  const TIMEOUT = 1000;
-  const DAYTOMS = 86_400_000;
+  const TIME_OUT = 1000;
+  const DAY_TO_MS = 86_400_000;
   const lastHideTime = JSON.parse(
     localStorage?.getItem('lastPopupHideTime') as string
   );
   if (!lastHideTime) {
-    console.log('로컬스토리지에 없음');
     setTimeout(() => {
       useModalControlStore.getState().setModal('popup', true);
-    }, TIMEOUT);
+    }, TIME_OUT);
   }
-  const isOver24Hours = new Date().getTime() - lastHideTime > DAYTOMS;
+  const isOver24Hours = new Date().getTime() - lastHideTime > DAY_TO_MS;
   if (isOver24Hours) {
-    console.log('24시간 지남');
     setTimeout(() => {
       useModalControlStore.getState().setModal('popup', true);
-    }, TIMEOUT);
+    }, TIME_OUT);
     return;
   }
   return;

@@ -9,6 +9,7 @@ import { isPhoneNum } from '@/utils/signUpValidation';
 import pb from '@/api/pocketbase';
 import { UsersCreate } from '@/@types/database';
 import Button from '@/components/atoms/Button/Button';
+import getPbImageURL from '@/utils/getPbImageURL';
 
 const StyledModifyProfileBox = styled.div`
   padding-block-start: 23px;
@@ -145,17 +146,25 @@ const ModifyProfile = () => {
   };
 
   const user = useAuthStore.getState().user;
+  const avatarUrl = user
+    ? getPbImageURL(user?.collectionId, user.id, user.avatar)
+    : '/images/profileNone.svg';
 
   //데이터 불러오는 훅
   useEffect(() => {
     const login = async () => {
       try {
         const record = await pb.from('users').getOne(user?.id);
+        const avatarUrl = getPbImageURL(
+          record.collectionId,
+          record.id,
+          record.avatar
+        );
         // 로그인 후 사용자 정보 가져오기
         setRecord(record);
         setPhone(record?.phone);
         setAddress(record?.address);
-        setChangeImg(record?.avatar);
+        setChangeImg(avatarUrl);
         setDetailAddress(record?.addressDetail);
       } catch (error) {
         console.error('Error Logging:', error);
@@ -254,7 +263,7 @@ const ModifyProfile = () => {
       <StyledModifyProfileBox>
         <UserProfile
           name={(record as UsersCreate).name}
-          src={changeImg === '' ? '/images/profileNone.svg' : changeImg}
+          src={changeImg === '' ? avatarUrl : changeImg}
         />
         <StyledProfileBox>
           <label htmlFor="modifyCamera">

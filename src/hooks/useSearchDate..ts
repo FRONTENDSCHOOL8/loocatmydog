@@ -9,7 +9,6 @@ const useSearchDate = () => {
 
   useEffect(() => {
     const [startDate, endDate] = dateRange;
-    console.log('useSearchDate', [startDate, endDate]);
     if (startDate && endDate) {
       navigate(
         `/place_list?startDate=${format(startDate, 'yyMMdd')}&endDate=${format(endDate, 'yyMMdd')}`,
