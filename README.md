@@ -83,11 +83,11 @@
 
 - **마이 페이지**
   - 마이 페이지 (`/mypage`)
-  - 반려동물 등록 (3) (`/add_mypet`)
-  - 내 프로필 변경 (1) `(/edit_my_profile)`
-  - 찜 목록 (2) `(/bookmark)`
+  - 반려동물 등록  (`/add_mypet`)
+  - 내 프로필 변경  `(/edit_my_profile)`
+  - 찜 목록 `(/bookmark)`
   - 환경설정 `(/settings)`
-  - 나의 플레이스 (4) (`/place_list`)
+  - 나의 플레이스 (`/place_list`)
 
 <br>
 
@@ -137,9 +137,6 @@
 </div>
 <div align=center> 
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-</div>
-<div align=center> 
-<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
 </div>
 <div align=center> 
 <img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
@@ -226,7 +223,9 @@
 김다영
 
 ```
-
+파이널 프로젝트에서 내가 아는 게 정말 없구나 싶어서 비참한 기분도 들기도 했지만
+나보다 정말 많이 아는 사람들을 팀원으로 만나서 프로젝트를 하기 전의 나보다 성장한 것 같아서
+조금은 뿌듯하고 마치며 후련하다 
 ```
 
 <br>
