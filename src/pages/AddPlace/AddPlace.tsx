@@ -7,7 +7,7 @@ import Calendar from '@/components/atoms/Calendar/Calendar';
 import AnimalRateInput from '@/components/molecules/AnimalRateInput/AnimalRateInput';
 import ButtonCheck from '@/components/atoms/ButtonCheck/ButtonCheck';
 import { service } from '@/data/service';
-import { ChangeEvent, useId, useState, React } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
 import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
@@ -133,7 +133,7 @@ const AddPlace = () => {
     dateData = [dateRange[0], dateRange[1]];
   }
   dateContainer();
-  const [showImages, setShowImages] = useState([]);
+  const [showImages, setShowImages] = useState<string[]>([]);
   const serviceList = Object.values(service[0]);
   const [isOpen, setIsOpen] = useState(false);
   const [roadAddress, setRoadAddress] = useState('');
@@ -157,7 +157,7 @@ const AddPlace = () => {
 
     if (imageLists) {
       for (let i = 0; i < imageLists.length; i++) {
-        const currentImageUrl: string[] = URL.createObjectURL(imageLists[i]);
+        const currentImageUrl = URL.createObjectURL(imageLists[i]);
         imageUrlLists.push(currentImageUrl);
       }
     }
