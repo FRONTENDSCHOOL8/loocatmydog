@@ -32,7 +32,6 @@ export function Component() {
   } = useDateRangeStore();
   const { user } = useAuthStore();
   const { filterOptions, setFilterOptions, filterString } = usePlaceFilter();
-  console.log('filterOptions', filterOptions);
   const { sortOptions, setSortOptions, sortString } = usePlaceSort();
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -63,7 +62,10 @@ export function Component() {
   } = useInfiniteQuery({
     ...getPlaceInfiniteQueryOptions(queryKey, 3, {
       filter: filterString,
-      sort: sortString,
+      sort:
+        sortString === '+distance' || sortString === '+popular'
+          ? ''
+          : sortString,
     }),
     initialData: loadedPlacedata,
   });

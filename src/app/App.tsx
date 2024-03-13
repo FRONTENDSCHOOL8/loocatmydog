@@ -1,11 +1,11 @@
 import './App.css';
-import { Suspense } from 'react';
+import { useState } from 'react';
 import { router } from '@/routes';
 import { HelmetProvider } from 'react-helmet-async';
 import { RouterProvider } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import LoadingSpinner from '@/components/molecules/LoadingSpinner/LoadingSpinner';
+import Splash from '@/components/organisms/Splash/Splash';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,6 +17,14 @@ export const queryClient = new QueryClient({
 });
 
 function App() {
+  const TIME_OUT = 1300;
+  const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
+  if (isFirstLoading) {
+    setTimeout(() => {
+      setIsFirstLoading(false);
+    }, TIME_OUT);
+    return <Splash />;
+  }
   return (
     <>
       <HelmetProvider>

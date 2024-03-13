@@ -17,7 +17,7 @@ const StyledShortcutMenuContainer = styled(Link)`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.gray300};
+    background-color: ${(props) => props.theme.colors.orangeBg};
     text-decoration: none;
   }
 

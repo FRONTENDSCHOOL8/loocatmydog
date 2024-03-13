@@ -1,4 +1,6 @@
+import { useAuthStore } from '@/store/useAuthStore';
 import pb from './pocketbase';
+import getDistanceByAddress from '@/utils/getDistanceByAddress';
 
 // FullList로 가져오기
 export const fetchPlaceFullList = async (
@@ -44,6 +46,8 @@ export const fetchPlaceList = async (
   perPage = 1,
   options = {}
 ) => {
+  const myData = useAuthStore.getState().user;
+
   const response = await pb
     .from('places')
     .getList(pageInfo.pageParam, perPage, {
@@ -58,21 +62,34 @@ export const fetchPlaceList = async (
     });
 
   // 필요한 데이터 추가 (별점, 리뷰갯수)
-  const newResponseItems = response.items.map((item) => {
-    const newPhoto = item.photo.map((photo: string) => {
-      const url = pb.files.getUrl(item, photo, { thumb: '500x0' });
-      return url;
-    });
-    const reviewCount = item.expand?.['boards(placeId)']?.length || 0;
-    const totalStar =
-      item.expand?.['boards(placeId)']?.reduce(
-        (acc, cur) => (acc += cur.rate),
-        0
-      ) || 0;
-    const averageStar = isNaN(totalStar / reviewCount)
-      ? 0
-      : totalStar / reviewCount;
-    return { ...item, photo: newPhoto, averageStar, reviewCount };
-  });
+  const newResponseItems = await Promise.all(
+    response.items.map(async (item) => {
+      // 이미지 url로 변환 후 삽입
+      const newPhoto = item.photo.map((photo: string) => {
+        const url = pb.files.getUrl(item, photo, { thumb: '500x0' });
+        return url;
+      });
+
+      // 리뷰 갯수와 별점평균 삽입
+      const reviewCount = item.expand?.['boards(placeId)']?.length || 0;
+      const totalStar =
+        item.expand?.['boards(placeId)']?.reduce(
+          (acc, cur) => (acc += cur.rate),
+          0
+        ) || 0;
+      const averageStar = isNaN(totalStar / reviewCount)
+        ? 0
+        : totalStar / reviewCount;
+
+      // 거리 구하고 삽입
+
+      const distance = myData
+        ? +(await getDistanceByAddress(myData.address, item.address)).toFixed(3)
+        : 9999;
+      // 최종 삽입
+      return { ...item, photo: newPhoto, averageStar, reviewCount, distance };
+    })
+  );
+
   return { ...response, items: newResponseItems };
 };

@@ -327,13 +327,13 @@ export interface PlacesResponse extends BaseCollectionResponse {
 }
 
 export interface PlacesCreate extends BaseCollectionCreate {
-	photo?: MaybeArray<File>;
-	title?: string;
+	photo: MaybeArray<File>;
+	title: string;
 	tag?: any;
-	address?: string;
-	minDate?: string | Date;
-	maxDate?: string | Date;
-	price?: any;
+	address: string;
+	minDate: string | Date;
+	maxDate: string | Date;
+	price: any;
 	service?: MaybeArray<'daily' | 'young' | 'old' | 'medicine' | 'hair' | 'pickup' | 'emergency' | 'play' | 'long'>;
 	introduce?: string;
 	userId: string;

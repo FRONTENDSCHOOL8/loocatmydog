@@ -19,7 +19,17 @@ body {
     'Segoe UI Emoji',
     'Segoe UI Symbol',
     sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
+}
+
+/* CSS 이미지 프리로드 */
+body::after {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+  overflow: hidden;
+  z-index: -1;  
+  content: url('/images/navigation/home-active.svg') url('/images/navigation/reservationList-active.svg') url('/images/navigation/stories-active.svg') url('/images/navigation/chatList-active.svg') url('/images/navigation/profile-active.svg');
 }
 
 img {
