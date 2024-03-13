@@ -58,7 +58,6 @@ const StyledStoryWrite = styled.div`
   .photoAdd-wrapper {
     display: flex;
     gap: 10px;
-    padding: 0px 20px;
   }
 
   .starContainer {
@@ -82,9 +81,6 @@ const StyledStoryWrite = styled.div`
     background-image: url('/images/star-fill.svg');
   }
 `;
-
-// multi imageFiles container
-const imageFiles: File[] = [];
 
 const StoryWrite = () => {
   // 게시물 작성 유형
@@ -150,23 +146,21 @@ const StoryWrite = () => {
 
   // 이미지 파일 업로드 이벤트
   const handleImageInput = (e: ChangeEvent<HTMLInputElement>) => {
-    let file;
+    const { files } = e.target;
 
-    if (e.target.files && e.target.files[0]) {
-      file = e.target.files[0];
-      imageFiles.push(file);
-    }
+    if (files) {
+      if (files.length > 4 || imageURLs.length === 4) {
+        alert('이미지 등록은 4개까지만 가능합니다.');
+        return;
+      }
 
-    if (imageURLs.length === 4) {
-      alert('이미지 등록은 4개까지만 가능합니다');
-      return;
-    }
+      const nextImageURLs = [...imageURLs];
 
-    const fileURL = URL.createObjectURL(file as Blob);
+      Array.from(files).forEach((file) => {
+        nextImageURLs.push(URL.createObjectURL(file as Blob));
+      });
 
-    if (fileURL) {
-      setImageURLs([...imageURLs, fileURL]);
-      e.target.value = '';
+      setImageURLs(nextImageURLs);
     }
   };
 
@@ -175,7 +169,6 @@ const StoryWrite = () => {
     const currentSource = e.currentTarget.dataset.src;
     setImageURLs(
       imageURLs.filter((url, index) => {
-        imageFiles.splice(index, 1);
         return url !== currentSource;
       })
     );
@@ -193,7 +186,7 @@ const StoryWrite = () => {
       </button>
       <div className="textArea-wrapper">
         <ProfileImage />
-        <Form id="storyForm" method="post" action="/stories/post">
+        <Form id="storyForm" method="post" encType="multipart/form-data">
           <label htmlFor="textArea"></label>
           <textarea
             name="textArea"
@@ -204,19 +197,19 @@ const StoryWrite = () => {
           />
           <input type="hidden" name="userId" value={currentUserId} />
           {type === 'review' ? rateTemplate : null}
+          <div className="photoAdd-wrapper">
+            <Photo type={'default'} onChange={handleImageInput} />
+            {imageURLs.map((url, index) => (
+              <Photo
+                key={index}
+                type={'picture'}
+                imgSrc={url}
+                onClick={handleImageDelete}
+              />
+            ))}
+            <Photo type={'total'} currentImageNum={imageURLs.length} />
+          </div>
         </Form>
-      </div>
-      <div className="photoAdd-wrapper">
-        <Photo type={'default'} onChange={handleImageInput} />
-        {imageURLs.map((url, index) => (
-          <Photo
-            key={index}
-            type={'picture'}
-            imgSrc={url}
-            onClick={handleImageDelete}
-          />
-        ))}
-        <Photo type={'total'} currentImageNum={imageURLs.length} />
       </div>
     </StyledStoryWrite>
   );
@@ -226,14 +219,14 @@ export default StoryWrite;
 
 // submit action 함수
 export async function storyFormAction({ request }: { request: any }) {
-  const type = getFirstPathName();
-
   const formData = await request.formData();
 
-  const productId = type === 'review' ? getIdFromPath() : null;
+  const type = getFirstPathName();
+  const placeId = type === 'review' ? getIdFromPath() : '';
   const userId = formData.get('userId');
-
+  const textContent = formData.get('textArea');
   const starInput = formData.getAll('star');
+  const photoFiles: File[] = formData.getAll('addPhoto');
 
   let rateCount = 0;
   for (let i = 0; i < starInput.length; i++) {
@@ -242,27 +235,22 @@ export async function storyFormAction({ request }: { request: any }) {
     }
   }
 
-  const eventData = {
-    userId: userId,
-    type: type,
-    textContent: formData.get('textArea'),
-    photo: imageFiles,
-    placeId: productId,
-    rate: rateCount,
-  };
+  const newFormData = new FormData();
 
-  console.log(eventData);
+  newFormData.append('userId', userId);
+  newFormData.append('type', type);
+  newFormData.append('textContent', textContent);
+  newFormData.append('placeId', placeId);
+  newFormData.append('rate', String(rateCount));
+  photoFiles.forEach((file) => newFormData.append('photo', file));
 
   try {
-    await pb.collection('boards').create(eventData);
-    console.log(productId);
+    await pb.collection('boards').create(newFormData);
+    console.log(placeId);
     console.log(userId);
-    if (productId) {
-      updateReviewed(productId, userId);
+    if (placeId) {
+      updateReviewed(placeId, userId);
     }
-
-    // 메모리 비우기
-    imageFiles.splice(0, imageFiles.length);
 
     alert('스토리 작성이 완료됐습니다.');
   } catch (error) {
