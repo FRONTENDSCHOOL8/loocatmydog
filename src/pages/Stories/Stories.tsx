@@ -42,6 +42,7 @@ const readStory = async () => {
     const record: RecordModel[] = await pb
       .collection('boards')
       .getFullList<Boards>({
+        sort: '-created',
         filter: `type = "stories"`,
         expand: 'userId',
       });
