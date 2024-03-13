@@ -19,6 +19,7 @@ body {
     'Segoe UI Emoji',
     'Segoe UI Symbol',
     sans-serif;
+    overflow: hidden;
 }
 
 img {

@@ -85,7 +85,7 @@ const StyledDropDownTest = styled.div<StyledDropDownTestProps>`
     background-color: ${(props) => props.theme.colors.white};
     border-radius: 0 0 5px 5px;
     overflow: hidden;
-    z-index: 10;
+    z-index: 20;
 
     & li {
       padding: 3px 10px 3px 10px;

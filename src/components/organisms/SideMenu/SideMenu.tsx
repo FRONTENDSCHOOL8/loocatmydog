@@ -141,11 +141,10 @@ const SideMenu = () => {
   const { setModal } = useModalControlStore();
   const { user } = useAuthStore();
   const myAvatarUrl = user && pb.files.getUrl(user, user.avatar);
-  console.log(myAvatarUrl);
   const handleCloseModal = (
     e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
   ) => {
-    if (e.target === e.currentTarget) setModal(false);
+    if (e.target === e.currentTarget) setModal('sideMenu', false);
   };
   return (
     <StyledDimmed
