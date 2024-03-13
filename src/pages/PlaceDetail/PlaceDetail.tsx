@@ -17,6 +17,7 @@ import { useEffect } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import createChatRoom from '@/pages/ChatRoom/createChatRoom';
+import getPbImageURL from '@/utils/getPbImageURL';
 
 const PlaceDetail = () => {
   const { resetDateRange } = useDateRangeStore();
@@ -25,7 +26,7 @@ const PlaceDetail = () => {
   }, []);
   const { reservation } = useReservationStore();
   const placeData = useLoaderData() as any;
-  console.log(placeData.expand['boards(placeId)']);
+
   const userData = useAuthStore.getState().user;
   const StyledButtonContainer = styled.div`
     padding: 0 20px;
@@ -36,6 +37,8 @@ const PlaceDetail = () => {
 
   // 문의하기
   const handleInquire = (e: MouseEvent) => {
+    alert('정말 문의하시겠습니까?');
+
     createChatRoom(
       placeData.id,
       (userData as { [key: string]: any }).id,
