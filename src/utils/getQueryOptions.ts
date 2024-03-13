@@ -16,6 +16,7 @@ export const getPlaceInfiniteQueryOptions = (
       return lastPage.page < lastPage.totalPages ? allPages.length + 1 : null;
     },
     staleTime: 1 * 1000 * 60,
+    gcTime: 1 * 1000 * 60,
   });
 };
 

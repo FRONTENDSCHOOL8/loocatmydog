@@ -10,9 +10,9 @@ export const loader =
     if (cachedPlaceData) {
       placeData = cachedPlaceData;
     } else {
-      placeData = queryClient.fetchInfiniteQuery(
-        getPlaceInfiniteQueryOptions(queryKey, 3)
-      );
+      placeData = queryClient.fetchInfiniteQuery({
+        ...getPlaceInfiniteQueryOptions(queryKey, 3),
+      });
     }
     return placeData;
   };

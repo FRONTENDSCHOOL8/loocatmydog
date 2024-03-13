@@ -68,7 +68,7 @@ export const navigationItems: NavigationRouteObject[] = [
     async lazy() {
       const { Component, loader } = await import('@/pages/PlaceList');
       return {
-        loader: loader(queryClient, ['places', 'search', 'all', 'all']),
+        loader: loader(queryClient, ['places', 'search', 'all', '', 'all']),
         Component,
       };
     },

@@ -136,54 +136,54 @@ type MaybeArray<T> = T | T[];
 // ===== users =====
 
 export interface UsersResponse extends AuthCollectionResponse {
-  collectionName: 'users';
-  name: string;
-  birthday: number;
-  genderNo: number;
-  address: string;
-  addressDetail: string;
-  phone: string;
-  avatar: string;
-  petId: Array<string>;
-  addressInfo: any;
-  heart: Array<string>;
-  isEdited: boolean;
+	collectionName: 'users';
+	name: string;
+	birthday: number;
+	genderNo: number;
+	address: string;
+	addressDetail: string;
+	phone: string;
+	avatar: string;
+	petId: Array<string>;
+	addressInfo: any;
+	heart: Array<string>;
+	isEdited: boolean;
 }
 
 export interface UsersCreate extends AuthCollectionCreate {
-  name?: string;
-  birthday?: number;
-  genderNo?: number;
-  address?: string;
-  addressDetail?: string;
-  phone?: string;
-  avatar?: File | null;
-  petId?: MaybeArray<string>;
-  addressInfo?: any;
-  heart?: MaybeArray<string>;
-  isEdited?: boolean;
+	name?: string;
+	birthday?: number;
+	genderNo?: number;
+	address?: string;
+	addressDetail?: string;
+	phone?: string;
+	avatar?: File | null;
+	petId?: MaybeArray<string>;
+	addressInfo?: any;
+	heart?: MaybeArray<string>;
+	isEdited?: boolean;
 }
 
 export interface UsersUpdate extends AuthCollectionUpdate {
-  name?: string;
-  birthday?: number;
-  'birthday+'?: number;
-  'birthday-'?: number;
-  genderNo?: number;
-  'genderNo+'?: number;
-  'genderNo-'?: number;
-  address?: string;
-  addressDetail?: string;
-  phone?: string;
-  avatar?: File | null;
-  petId?: MaybeArray<string>;
-  'petId+'?: MaybeArray<string>;
-  'petId-'?: MaybeArray<string>;
-  addressInfo?: any;
-  heart?: MaybeArray<string>;
-  'heart+'?: MaybeArray<string>;
-  'heart-'?: MaybeArray<string>;
-  isEdited?: boolean;
+	name?: string;
+	birthday?: number;
+	'birthday+'?: number;
+	'birthday-'?: number;
+	genderNo?: number;
+	'genderNo+'?: number;
+	'genderNo-'?: number;
+	address?: string;
+	addressDetail?: string;
+	phone?: string;
+	avatar?: File | null;
+	petId?: MaybeArray<string>;
+	'petId+'?: MaybeArray<string>;
+	'petId-'?: MaybeArray<string>;
+	addressInfo?: any;
+	heart?: MaybeArray<string>;
+	'heart+'?: MaybeArray<string>;
+	'heart-'?: MaybeArray<string>;
+	isEdited?: boolean;
 }
 
 export interface UsersCollection {
@@ -269,7 +269,7 @@ export interface PetCollection {
 export interface BoardsResponse extends BaseCollectionResponse {
 	collectionName: 'boards';
 	userId: string;
-	type: 'story' | 'review';
+	type: 'stories' | 'review';
 	textContent: string;
 	photo: Array<string>;
 	rate: number;
@@ -278,7 +278,7 @@ export interface BoardsResponse extends BaseCollectionResponse {
 
 export interface BoardsCreate extends BaseCollectionCreate {
 	userId: string;
-	type: 'story' | 'review';
+	type: 'stories' | 'review';
 	textContent: string;
 	photo?: MaybeArray<File>;
 	rate?: number;
@@ -287,7 +287,7 @@ export interface BoardsCreate extends BaseCollectionCreate {
 
 export interface BoardsUpdate extends BaseCollectionUpdate {
 	userId?: string;
-	type?: 'story' | 'review';
+	type?: 'stories' | 'review';
 	textContent?: string;
 	photo?: MaybeArray<File>;
 	'photo-'?: string;
@@ -327,13 +327,13 @@ export interface PlacesResponse extends BaseCollectionResponse {
 }
 
 export interface PlacesCreate extends BaseCollectionCreate {
-	photo: MaybeArray<File>;
-	title: string;
+	photo?: MaybeArray<File>;
+	title?: string;
 	tag?: any;
-	address: string;
-	minDate: string | Date;
-	maxDate: string | Date;
-	price: any;
+	address?: string;
+	minDate?: string | Date;
+	maxDate?: string | Date;
+	price?: any;
 	service?: MaybeArray<'daily' | 'young' | 'old' | 'medicine' | 'hair' | 'pickup' | 'emergency' | 'play' | 'long'>;
 	introduce?: string;
 	userId: string;
@@ -366,6 +366,7 @@ export interface PlacesCollection {
 		'users(heart)': UsersCollection[];
 		'boards(placeId)': BoardsCollection[];
 		userId: UsersCollection;
+		'chatRooms(placeId)': ChatRoomsCollection[];
 		'reservation(placeId)': ReservationCollection[];
 	};
 }
@@ -374,22 +375,22 @@ export interface PlacesCollection {
 
 export interface ChatRoomsResponse extends BaseCollectionResponse {
 	collectionName: 'chatRooms';
-	placeId: string;
 	members: Array<string>;
+	placeId: string;
 	messageBox: any;
 }
 
 export interface ChatRoomsCreate extends BaseCollectionCreate {
-	placeId?: string;
 	members?: MaybeArray<string>;
+	placeId?: string;
 	messageBox?: any;
 }
 
 export interface ChatRoomsUpdate extends BaseCollectionUpdate {
-	placeId?: string;
 	members?: MaybeArray<string>;
 	'members+'?: MaybeArray<string>;
 	'members-'?: MaybeArray<string>;
+	placeId?: string;
 	messageBox?: any;
 }
 
@@ -402,6 +403,7 @@ export interface ChatRoomsCollection {
 	update: ChatRoomsUpdate;
 	relations: {
 		members: UsersCollection[];
+		placeId: PlacesCollection;
 	};
 }
 
@@ -459,6 +461,36 @@ export interface ReservationCollection {
 	};
 }
 
+// ===== events =====
+
+export interface EventsResponse extends BaseCollectionResponse {
+	collectionName: 'events';
+	carouselImages: Array<string>;
+	popupImages: Array<string>;
+}
+
+export interface EventsCreate extends BaseCollectionCreate {
+	carouselImages?: MaybeArray<File>;
+	popupImages?: MaybeArray<File>;
+}
+
+export interface EventsUpdate extends BaseCollectionUpdate {
+	carouselImages?: MaybeArray<File>;
+	'carouselImages-'?: string;
+	popupImages?: MaybeArray<File>;
+	'popupImages-'?: string;
+}
+
+export interface EventsCollection {
+	type: 'base';
+	collectionId: string;
+	collectionName: 'events';
+	response: EventsResponse;
+	create: EventsCreate;
+	update: EventsUpdate;
+	relations: Record<string, never>;
+}
+
 // ===== Schema =====
 
 export type Schema = {
@@ -468,4 +500,5 @@ export type Schema = {
 	places: PlacesCollection;
 	chatRooms: ChatRoomsCollection;
 	reservation: ReservationCollection;
+	events: EventsCollection;
 };

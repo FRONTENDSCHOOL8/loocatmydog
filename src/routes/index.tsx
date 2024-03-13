@@ -12,7 +12,7 @@ const routes: RouteObject[] = [
     path: '/',
     element: <RootLayout />,
     children: navigationItems,
-    // errorElement: <ErrorBoundary />,
+    errorElement: <ErrorBoundary />,
   },
 ];
 

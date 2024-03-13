@@ -1,3 +1,4 @@
+import pb from '@/api/pocketbase';
 import { getPlaceInfiniteQueryOptions } from '@/utils';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -5,16 +6,23 @@ export const loader =
   (queryClient: QueryClient, queryKey: string[]) => async () => {
     let placeData = null;
 
+    // 플레이스 데이터 수신
     const cachedPlaceData = queryClient.getQueryData(queryKey);
-    console.log('Main loader 호출');
     if (cachedPlaceData) {
       placeData = cachedPlaceData;
-      console.log('캐시 데이터 있음');
     } else {
       placeData = queryClient.fetchInfiniteQuery({
         ...getPlaceInfiniteQueryOptions(queryKey, 3),
       });
-      console.log('캐시 데이터 없음 fetch했음');
     }
-    return placeData;
+
+    // 스와이퍼 이미지 데이터 수신
+    const response = await pb
+      .from('events')
+      .getOne('xa406ln74v45u9v', { requestKey: null });
+    const imageUrlArray = response.carouselImages?.map((filename) =>
+      pb.files.getUrl(response, filename, { thumb: '500x0' })
+    );
+
+    return { placeData, imageUrlArray };
   };

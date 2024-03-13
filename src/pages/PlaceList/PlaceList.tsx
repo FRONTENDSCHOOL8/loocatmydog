@@ -32,6 +32,7 @@ export function Component() {
   } = useDateRangeStore();
   const { user } = useAuthStore();
   const { filterOptions, setFilterOptions, filterString } = usePlaceFilter();
+  console.log('filterOptions', filterOptions);
   const { sortOptions, setSortOptions, sortString } = usePlaceSort();
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -91,6 +92,10 @@ export function Component() {
   useEffect(() => {
     resetDateRange();
   }, []);
+
+  useEffect(() => {
+    queryClient.resetQueries({ queryKey: queryKey });
+  }, [queryKey]);
 
   useEffect(() => {
     if (isInView) {

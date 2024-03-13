@@ -1,6 +1,7 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { Suspense, useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import LoadingSpinner from '../molecules/LoadingSpinner/LoadingSpinner';
 
 const StyledOutletLayout = styled.main`
   flex: 1;
@@ -17,7 +18,11 @@ function OutletLayout({ children }: { children: React.ReactNode }) {
   useLayoutEffect(() => {
     mainRef.current?.scrollTo(0, 0);
   }, [pathname]);
-  return <StyledOutletLayout ref={mainRef}>{children}</StyledOutletLayout>;
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <StyledOutletLayout ref={mainRef}>{children}</StyledOutletLayout>
+    </Suspense>
+  );
 }
 
 export default OutletLayout;
