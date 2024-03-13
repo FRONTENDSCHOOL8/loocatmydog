@@ -1,4 +1,5 @@
 import ProfileImage from '@/components/atoms/ProfileImage/ProfileImage';
+import ImageSwiperContainer from '@/components/molecules/ImageSwiper/ImageSwiperContainer';
 import ImageSwiperSlide from '@/components/molecules/ImageSwiper/ImageSwiperSlide';
 import getPbImageURL from '@/utils/getPbImageURL';
 import styled from 'styled-components';
@@ -6,6 +7,7 @@ import styled from 'styled-components';
 const StyledSwiperProfileContainer = styled.div`
   position: relative;
   & .profileBox {
+    z-index: 1;
     position: relative;
     top: -20px;
     left: 10px;
@@ -14,9 +16,18 @@ const StyledSwiperProfileContainer = styled.div`
 const StyleUserProfileIcon = styled.div``;
 const SwiperProfile = ({ data }: { data: any }) => {
   const placeUser = data.expand.userId;
+
+  // 플레이스 상세 이미지
+  const collectionId = data.collectionId;
+  const id = data.id;
+  const photoData = data.photo;
+  const imageUrlContainer = photoData.map((data: string) =>
+    getPbImageURL(collectionId, id, data)
+  );
+
   return (
     <StyledSwiperProfileContainer>
-      <ImageSwiperSlide url={'/images/story_sample1.jpg'} type="picture" />
+      <ImageSwiperContainer type={'picture'} imageUrls={imageUrlContainer} />
       <div className="profileBox">
         {placeUser.avatar ? (
           <ProfileImage
