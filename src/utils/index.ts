@@ -7,4 +7,5 @@ export { default as getRandomNumber } from './getRandomNumber';
 export { default as typeOf } from './typeOf';
 export { default as convertFilterString } from './convertFilterString';
 export { default as toggleBookmark } from './toggleBookmark';
+export { default as setDailyPopup } from './setDailyPopup';
 export * from './getQueryOptions';

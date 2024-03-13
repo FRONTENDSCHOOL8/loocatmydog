@@ -9,6 +9,9 @@ import { navigationItems } from '@/routes/navigation';
 import Header from '../molecules/Header/Header';
 import OutletLayout from './OutletLayout';
 import { useAuthStore } from '@/store/useAuthStore';
+import { createPortal } from 'react-dom';
+import EventPopup from '../molecules/EventPopup/EventPopup';
+import useModalControlStore from '@/store/useModalControl';
 
 const StyledRootLayout = styled.div`
   position: relative;
@@ -25,6 +28,7 @@ const StyledRootLayout = styled.div`
 type PlacesData = { pageParams: number[] } | undefined;
 
 function RootLayout() {
+  const { isShowModal } = useModalControlStore();
   // 현재 path의 첫번째 depth의 이름 구하기
   const firstPathName = useFirstPathName();
   // 헤더와 사이드바 컨텐츠 초기화
@@ -52,15 +56,13 @@ function RootLayout() {
 
   // 페이지 이동할 때마다 인피니트 쿼리 초기화
   const mainQueryKey = ['places', 'main', 'all'];
-  const searchQueryKey = ['places', 'search', 'all', 'all'];
+  const searchQueryKey = ['places', 'search', 'all', '', 'all'];
   const placesMainData: PlacesData = queryClient.getQueryData(mainQueryKey);
   const placesSearchData: PlacesData = queryClient.getQueryData(searchQueryKey);
   if (placesMainData?.pageParams.length !== 1) {
-    console.log('main 쿼리 초기화');
     queryClient.resetQueries({ queryKey: mainQueryKey });
   }
   if (placesSearchData?.pageParams.length !== 1) {
-    console.log('search 쿼리 초기화');
     queryClient.resetQueries({ queryKey: searchQueryKey });
   }
 
@@ -79,6 +81,8 @@ function RootLayout() {
         <Outlet />
       </OutletLayout>
       <GlobalNavBar isShown={isShownGlobalNavBar} />
+      {isShowModal.popup &&
+        createPortal(<EventPopup />, document.getElementById('modal') as any)}
     </StyledRootLayout>
   );
 

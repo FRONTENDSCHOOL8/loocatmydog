@@ -88,7 +88,7 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
         type="button"
         className="left-side"
         aria-label="사이드메뉴 열기"
-        onClick={() => setModal(true)}
+        onClick={() => setModal('sideMenu', true)}
       ></button>
     );
   else

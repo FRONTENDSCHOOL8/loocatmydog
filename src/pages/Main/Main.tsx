@@ -11,11 +11,14 @@ import ContentSwiperContainer from '@/components/molecules/ImageSwiper/ContentSw
 import MoreButton from '@/components/atoms/MoreButton/MoreButton';
 import DropDown from '@/components/atoms/DropDown/DropDown';
 import Place from '@/components/molecules/Place/Place';
-import useGetAllSearchParams from '@/hooks/useGetAllSearchParams';
 import ShortcutMenu from '@/components/molecules/ShortcutMenu/ShortcutMenu';
 import * as S from './StyledMain';
 import { useAuthStore } from '@/store/useAuthStore';
-import { getPlaceInfiniteQueryOptions, getPlaceQueryOptions } from '@/utils';
+import {
+  getPlaceInfiniteQueryOptions,
+  getPlaceQueryOptions,
+  setDailyPopup,
+} from '@/utils';
 import usePlaceSort, {
   InitialSortType,
   initialState as initialSortItems,
@@ -45,10 +48,10 @@ export function Component() {
   const isInView = useInView(ref);
   const { resetDateRange } = useDateRangeStore();
   const { isShowModal, resetModal } = useModalControlStore();
-  const { setParams } = useGetAllSearchParams();
   const { sortOptions, setSortOptions, sortString } = usePlaceSort();
   // loader 데이터 불러오기
-  const loadedPlaceData = useLoaderData() as any;
+  const { placeData: loadedPlaceData, imageUrlArray: loadedSwiperImageUrl } =
+    useLoaderData() as any;
   // sortOptions에 따라 변하는 쿼리 키
   const queryKey = useMemo(
     () => ['places', 'main', sortOptions.id],
@@ -94,10 +97,10 @@ export function Component() {
   });
   const handleChangeSortType = useCallback(({ id, label }: InitialSortType) => {
     setSortOptions({ id, label });
-    setParams('sortType', id);
   }, []);
 
   useEffect(() => {
+    setDailyPopup();
     return () => {
       resetDateRange();
       resetModal();
@@ -108,12 +111,16 @@ export function Component() {
     if (isInView) fetchNextPage();
   }, [isInView]);
 
+  useEffect(() => {
+    queryClient.resetQueries({ queryKey: queryKey });
+  }, [queryKey]);
+
   return (
     <S.MainContainer>
       <A11yHidden as="h2" className="section-title">
         이벤트 배너
       </A11yHidden>
-      <ImageSwiperContainer type="link" />
+      <ImageSwiperContainer imageUrls={loadedSwiperImageUrl} type="link" />
 
       <S.MainSection $flexDirection="row" $flexGap={10}>
         <h2 className="section-title">
@@ -183,7 +190,7 @@ export function Component() {
       ) : (
         <div ref={ref} role="none"></div>
       )}
-      {isShowModal &&
+      {isShowModal.sideMenu &&
         createPortal(<SideMenu />, document.getElementById('modal')!)}
     </S.MainContainer>
   );

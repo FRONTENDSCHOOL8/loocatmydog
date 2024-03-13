@@ -16,6 +16,7 @@ const filterConfig = {
 
 const usePlaceFilter = () => {
   const { state } = useLocation();
+  console.log('state', state);
   const [filterOptions, setFilterOptions] =
     useState<InitialFilterType>(initialState);
   const filterArray = [];
