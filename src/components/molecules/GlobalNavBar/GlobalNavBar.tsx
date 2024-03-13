@@ -13,8 +13,7 @@ const StyledGlobalNavBar = styled.nav<StyledGlobalNavBarProps>`
   inline-size: 100%;
   block-size: 70px;
   background: linear-gradient(to bottom, #fff0b8 70%, #ffe587);
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+
   & ul {
     display: flex;
     flex-flow: row nowrap;

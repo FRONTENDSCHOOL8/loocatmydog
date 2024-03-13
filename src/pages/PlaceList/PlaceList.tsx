@@ -65,7 +65,6 @@ export function Component() {
       filter: filterString,
       sort: sortString,
     }),
-    initialData: loadedPlacedata,
   });
   let placeListData = cachedPlaceData
     ? cachedPlaceData.pages.flatMap((data) => data.items)
@@ -168,7 +167,7 @@ export function Component() {
                 rate={item.averageStar}
                 reviewNumber={item.reviewCount}
                 address={item.address}
-                price={item.price.small}
+                price={item.priceSmall}
                 isActive={true}
               />
             );
@@ -178,7 +177,8 @@ export function Component() {
       {hasNextPage ? (
         <PetSpinner ref={ref} />
       ) : (
-        <div ref={ref} role="none"></div>
+        // <div ref={ref} role="none"></div>
+        ''
       )}
     </S.MainContainer>
   );

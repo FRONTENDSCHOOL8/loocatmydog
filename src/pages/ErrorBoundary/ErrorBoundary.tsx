@@ -24,7 +24,7 @@ const StyledErrorBoundaryContainer = styled.div`
 
 const ErrorBoundary = () => {
   const error = useRouteError();
-  const timeoutSeconds = 1;
+  const timeoutSeconds = 5;
   const navigate = useNavigate();
   console.error(error);
   useEffect(() => {
