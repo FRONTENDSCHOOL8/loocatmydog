@@ -37,7 +37,11 @@ const ServiceCanUse = ({ placeData }: any) => {
         {serviceList
           ? serviceList.map((item: any, index: number, array: Object[]) => {
               return (
-                <ButtonCheck key={item.name} name={item.name} isChecked={false}>
+                <ButtonCheck
+                  key={item.name}
+                  title={item.name}
+                  isChecked={false}
+                >
                   {item.text}
                 </ButtonCheck>
               );

@@ -1,10 +1,4 @@
-import {
-  ChangeEventHandler,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useId,
-} from 'react';
+import { ChangeEventHandler, ReactNode, useId } from 'react';
 import styled from 'styled-components';
 
 // type 지정
