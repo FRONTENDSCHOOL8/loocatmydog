@@ -4,17 +4,32 @@ import { Navigate } from 'react-router-dom';
 
 interface AuthorizationProps {
   redirectTo: string;
+  withAuthorization: boolean | undefined;
   children: React.ReactNode;
 }
 
-const Authorization = ({ redirectTo, children }: AuthorizationProps) => {
+const Authorization = ({
+  redirectTo,
+  withAuthorization,
+  children,
+}: AuthorizationProps) => {
   const userData = useAuthStore.getState().user;
   const isEdited = userData?.isEdited;
 
-  if (userData && isEdited) {
-    return <>{children}</>;
+  // withAuthorization true : landing, signup, signin 페이지 접근
+  // withAuthorization false : landing, signup, signin 이외의 페이지 접근
+  if (withAuthorization) {
+    if (userData && isEdited) {
+      return <>{children}</>;
+    } else {
+      return <Navigate to={redirectTo} />;
+    }
   } else {
-    return <Navigate to={redirectTo} />;
+    if (userData && isEdited) {
+      return <Navigate to={redirectTo} />;
+    } else {
+      return <>{children}</>;
+    }
   }
 };
 
