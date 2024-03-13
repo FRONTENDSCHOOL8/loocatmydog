@@ -9,10 +9,11 @@ import styled from 'styled-components';
 
 // type 지정
 interface ButtonCheckProps {
-  name: string;
+  title: string;
   children: string | ReactNode;
   isChecked?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  [key: string]: any;
 }
 
 //styled component 작성
@@ -61,10 +62,11 @@ const StyledButtonCheck = styled.input`
 `;
 
 const ButtonCheck = ({
-  name,
+  title,
   children,
   isChecked,
   onChange,
+  ...restPorps
 }: ButtonCheckProps) => {
   const id = useId();
   return (
@@ -73,11 +75,12 @@ const ButtonCheck = ({
         id={id}
         type="checkbox"
         checked={isChecked}
-        value={name}
+        value={title}
         onChange={onChange}
+        {...restPorps}
       />
       <StyledButtonCheckLabel htmlFor={id}>
-        <StyledButtonCheckP>{name}</StyledButtonCheckP>
+        <StyledButtonCheckP>{title}</StyledButtonCheckP>
         <p>{children}</p>
       </StyledButtonCheckLabel>
     </StyledButtonCheckContainer>
