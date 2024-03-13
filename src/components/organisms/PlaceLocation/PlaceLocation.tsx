@@ -8,7 +8,7 @@ const { kakao } = window;
 
 const StyledKakaoMap = styled.div`
   inline-size: 100%;
-  block-size: 110px;
+  block-size: 165px;
 `;
 
 const KakaoMap = ({

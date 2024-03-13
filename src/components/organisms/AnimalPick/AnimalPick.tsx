@@ -149,6 +149,8 @@ const AnimalPick = () => {
     e.preventDefault();
     setReservation(inputTextValue, petId.id);
     modalRef.current?.close();
+    setIsChecked(false);
+    setInputTextValue(prevState);
   }
 
   return (

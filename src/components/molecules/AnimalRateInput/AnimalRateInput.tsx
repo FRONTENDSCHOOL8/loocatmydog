@@ -34,7 +34,7 @@ const AnimalRateInput = ({
   size,
   ...restProps
 }: AnimalRateInputProps) => {
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const [price, setPrice] = useState<undefined | string>();
 
   const handleChange = () => setIsChecked(!isChecked);

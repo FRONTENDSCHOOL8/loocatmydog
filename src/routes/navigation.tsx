@@ -18,7 +18,7 @@ import SignIn, { signInFormAction } from '@/pages/SignIn/SignIn';
 import SignUp from '@/pages/SignUp/SignUp';
 import { RouteObject } from 'react-router-dom';
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
-import AddPlace from '@/pages/AddPlace/AddPlace';
+import AddPlace, { placeFormAction } from '@/pages/AddPlace/AddPlace';
 import Payment from '@/pages/Payment/Payment';
 
 type NavigationRouteObject = RouteObject & {
@@ -75,6 +75,7 @@ export const navigationItems: NavigationRouteObject[] = [
     headerType: ['back', '플레이스 찾기'],
     withAuthorization: true,
   },
+
   {
     path: '/myplace_list',
     async lazy() {
@@ -90,6 +91,7 @@ export const navigationItems: NavigationRouteObject[] = [
     path: '/add_place',
     element: <AddPlace />,
     headerType: ['back', '플레이스 등록'],
+    action: placeFormAction,
     withAuthorization: true,
   },
   {
