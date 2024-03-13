@@ -13,6 +13,7 @@ export const getPlaceInfiniteQueryOptions = (
     queryFn: (pageInfo) => fetchPlaceList(pageInfo, perPage, options),
     initialPageParam: INITIAL_PAGE,
     getNextPageParam: (lastPage, allPages) => {
+      console.log(lastPage, allPages);
       return lastPage.page < lastPage.totalPages ? allPages.length + 1 : null;
     },
     staleTime: 1 * 1000 * 60,

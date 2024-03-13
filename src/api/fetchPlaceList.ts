@@ -62,34 +62,31 @@ export const fetchPlaceList = async (
     });
 
   // 필요한 데이터 추가 (별점, 리뷰갯수)
-  const newResponseItems = await Promise.all(
-    response.items.map(async (item) => {
-      // 이미지 url로 변환 후 삽입
-      const newPhoto = item.photo.map((photo: string) => {
-        const url = pb.files.getUrl(item, photo, { thumb: '500x0' });
-        return url;
-      });
+  const newResponseItems = response.items.map((item) => {
+    // 이미지 url로 변환 후 삽입
+    const newPhoto = item.photo.map((photo: string) => {
+      const url = pb.files.getUrl(item, photo, { thumb: '500x0' });
+      return url;
+    });
 
-      // 리뷰 갯수와 별점평균 삽입
-      const reviewCount = item.expand?.['boards(placeId)']?.length || 0;
-      const totalStar =
-        item.expand?.['boards(placeId)']?.reduce(
-          (acc, cur) => (acc += cur.rate),
-          0
-        ) || 0;
-      const averageStar = isNaN(totalStar / reviewCount)
-        ? 0
-        : totalStar / reviewCount;
+    // 리뷰 갯수와 별점평균 삽입
+    const reviewCount = item.expand?.['boards(placeId)']?.length || 0;
+    const totalStar =
+      item.expand?.['boards(placeId)']?.reduce(
+        (acc, cur) => (acc += cur.rate),
+        0
+      ) || 0;
+    const averageStar = isNaN(totalStar / reviewCount)
+      ? 0
+      : totalStar / reviewCount;
 
-      // 거리 구하고 삽입
-
-      const distance = myData
-        ? +(await getDistanceByAddress(myData.address, item.address)).toFixed(3)
-        : 9999;
-      // 최종 삽입
-      return { ...item, photo: newPhoto, averageStar, reviewCount, distance };
-    })
-  );
+    // 거리 구하고 삽입
+    // const distance = myData
+    //   ? +(await getDistanceByAddress(myData.address, item.address)).toFixed(3)
+    //   : 9999;
+    // 최종 삽입
+    return { ...item, photo: newPhoto, averageStar, reviewCount };
+  });
 
   return { ...response, items: newResponseItems };
 };

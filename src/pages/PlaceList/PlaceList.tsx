@@ -19,6 +19,7 @@ import usePlaceSort, {
   initialState as initialSortItems,
 } from '@/hooks/usePlaceSort';
 import useDateRangeStore from '@/store/useDateRange';
+import PetSpinner from '@/components/molecules/LoadingSpinner/PetSpinner';
 
 export function Component() {
   const ref = useRef(null);
@@ -62,10 +63,7 @@ export function Component() {
   } = useInfiniteQuery({
     ...getPlaceInfiniteQueryOptions(queryKey, 3, {
       filter: filterString,
-      sort:
-        sortString === '+distance' || sortString === '+popular'
-          ? ''
-          : sortString,
+      sort: sortString,
     }),
     initialData: loadedPlacedata,
   });
@@ -178,7 +176,7 @@ export function Component() {
         </div>
       </S.MainSection>
       {hasNextPage ? (
-        <div ref={ref}>더보기</div>
+        <PetSpinner ref={ref} />
       ) : (
         <div ref={ref} role="none"></div>
       )}

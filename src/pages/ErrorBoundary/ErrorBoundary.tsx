@@ -6,6 +6,7 @@ const StyledErrorBoundaryContainer = styled.div`
   min-inline-size: 280px;
   max-inline-size: 420px;
   block-size: 100dvh;
+  margin: 0 auto;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;

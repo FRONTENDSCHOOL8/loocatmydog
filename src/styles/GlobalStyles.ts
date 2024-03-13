@@ -29,7 +29,7 @@ body::after {
   block-size: 0;
   overflow: hidden;
   z-index: -1;  
-  content: url('/images/navigation/home-active.svg') url('/images/navigation/reservationList-active.svg') url('/images/navigation/stories-active.svg') url('/images/navigation/chatList-active.svg') url('/images/navigation/profile-active.svg');
+  content: url('/images/navigation/home-active.svg') url('/images/navigation/reservationList-active.svg') url('/images/navigation/stories-active.svg') url('/images/navigation/chatList-active.svg') url('/images/navigation/profile-active.svg') url('/images/loading/loading_spinner_1.svg') url('/images/loading/loading_spinner_2.svg') url('/images/loading/loading_spinner_3.svg');
 }
 
 img {
