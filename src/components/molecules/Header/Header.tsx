@@ -27,10 +27,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   justify-content: space-between;
   align-items: center;
   column-gap: 10px;
-  border-bottom: 1px solid ${(props) => props.theme.colors.gray300};
   background: linear-gradient(to bottom, #ffe587 70%, #fff0b8);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
 
   & > .left-side {
     inline-size: 23px;

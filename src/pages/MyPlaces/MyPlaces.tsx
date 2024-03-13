@@ -37,7 +37,7 @@ export function Component() {
           rate={item.averageStar}
           reviewNumber={item.reviewCount}
           address={item.address}
-          price={item.price.small}
+          price={item.priceSmall}
           isActive={true}
         />
       );
