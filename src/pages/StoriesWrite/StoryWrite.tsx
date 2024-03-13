@@ -81,6 +81,8 @@ const StyledStoryWrite = styled.div`
     background-image: url('/images/star-fill.svg');
   }
 `;
+// multi imageFiles container
+const imageFiles: File[] = [];
 
 const StoryWrite = () => {
   // 게시물 작성 유형
@@ -158,6 +160,7 @@ const StoryWrite = () => {
 
       Array.from(files).forEach((file) => {
         nextImageURLs.push(URL.createObjectURL(file as Blob));
+        imageFiles.push(file);
       });
 
       setImageURLs(nextImageURLs);
@@ -169,6 +172,9 @@ const StoryWrite = () => {
     const currentSource = e.currentTarget.dataset.src;
     setImageURLs(
       imageURLs.filter((url, index) => {
+        if (url === currentSource) {
+          imageFiles.splice(index, 1);
+        }
         return url !== currentSource;
       })
     );
@@ -226,7 +232,7 @@ export async function storyFormAction({ request }: { request: any }) {
   const userId = formData.get('userId');
   const textContent = formData.get('textArea');
   const starInput = formData.getAll('star');
-  const photoFiles: File[] = formData.getAll('addPhoto');
+  const photoFiles: File[] = imageFiles;
 
   let rateCount = 0;
   for (let i = 0; i < starInput.length; i++) {
