@@ -46,7 +46,6 @@ const readStory = async () => {
         filter: `type = "stories"`,
         expand: 'userId',
       });
-    console.log(record);
 
     const storyList = record.map((data, index) => {
       const { id, userId, collectionId, expand, textContent, photo, created } =
@@ -118,7 +117,6 @@ const Stories = () => {
     readStory()
       .then((list) => {
         serverStoryList.current = list as React.JSX.Element[];
-        console.log(serverStoryList.current[0].props.userId);
         setStoryList([...storyList, ...serverStoryList.current]);
       })
       .catch((error) => {
@@ -145,7 +143,7 @@ const Stories = () => {
         }
         break;
     }
-  }, [modeState]);
+  }, [modeState, currentUserId]);
 
   return (
     <StyledStories>
