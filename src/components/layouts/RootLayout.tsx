@@ -8,6 +8,7 @@ import Authorization from '@/routes/Authorization';
 import { navigationItems } from '@/routes/navigation';
 import Header from '../molecules/Header/Header';
 import OutletLayout from './OutletLayout';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const StyledRootLayout = styled.div`
   position: relative;
@@ -63,19 +64,15 @@ function RootLayout() {
     queryClient.resetQueries({ queryKey: searchQueryKey });
   }
 
+  // withAuthorization true : 로그인 하지 않은 사용자, 추가 정보 입력하지 않은 사용자의 경우 접근 불가
+  // withAuthorization false : 모든 사용자가 접근 가능
+  // userData : 로그인 사용자의 정보
+  // isEdited : 사용자의 추가 정보 입력 여부
   const withAuthorization = currentRouteObject?.withAuthorization;
+  const userData = useAuthStore.getState().user;
+  const isEdited = userData?.isEdited;
 
-  return withAuthorization ? (
-    <Authorization redirectTo="/">
-      <StyledRootLayout>
-        {headerContents}
-        <OutletLayout>
-          <Outlet />
-        </OutletLayout>
-        <GlobalNavBar isShown={isShownGlobalNavBar} />
-      </StyledRootLayout>
-    </Authorization>
-  ) : (
+  const contents = (
     <StyledRootLayout>
       {headerContents}
       <OutletLayout>
@@ -84,6 +81,26 @@ function RootLayout() {
       <GlobalNavBar isShown={isShownGlobalNavBar} />
     </StyledRootLayout>
   );
+
+  // 추가 정보 입력을 완료한 사용자가 접근한 경우 landing, signup, signin 페이지 접근 시 main페이지로 이동
+  if (userData && isEdited) {
+    return withAuthorization ? (
+      <>{contents}</>
+    ) : (
+      <Authorization redirectTo="/main" withAuthorization={withAuthorization}>
+        {contents}
+      </Authorization>
+    );
+  } else {
+    // 로그인 하지 않은 사용자 또는 추가 정보를 입력하지 않은 사용자의 경우 landing, signup, signin 이외의 페이지 접근 시 landing 페이지로 이동
+    return withAuthorization ? (
+      <Authorization redirectTo="/" withAuthorization={withAuthorization}>
+        {contents}
+      </Authorization>
+    ) : (
+      <>{contents}</>
+    );
+  }
 }
 
 export default RootLayout;
