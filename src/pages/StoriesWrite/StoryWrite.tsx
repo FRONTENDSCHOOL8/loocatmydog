@@ -145,13 +145,13 @@ const StoryWrite = () => {
   const handleTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTextArea(e.target.value);
   };
-
+  // files.length > 4 || imageURLs.length === 4
   // 이미지 파일 업로드 이벤트
   const handleImageInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
 
     if (files) {
-      if (files.length > 4 || imageURLs.length === 4) {
+      if (files.length + imageFiles.length > 4) {
         alert('이미지 등록은 4개까지만 가능합니다.');
         return;
       }
@@ -252,11 +252,12 @@ export async function storyFormAction({ request }: { request: any }) {
 
   try {
     await pb.collection('boards').create(newFormData);
-    console.log(placeId);
-    console.log(userId);
     if (placeId) {
       updateReviewed(placeId, userId);
     }
+
+    // 메모리 비우기
+    imageFiles.splice(0, imageFiles.length);
 
     alert('스토리 작성이 완료됐습니다.');
   } catch (error) {

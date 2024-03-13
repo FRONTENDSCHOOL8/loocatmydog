@@ -95,7 +95,6 @@ const Reservations = () => {
     if (isLoading) return;
     if (data) {
       setItems(data.response);
-      console.log(data);
     }
   }, [data, isLoading]);
 
