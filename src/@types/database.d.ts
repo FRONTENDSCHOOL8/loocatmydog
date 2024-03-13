@@ -327,13 +327,13 @@ export interface PlacesResponse extends BaseCollectionResponse {
 }
 
 export interface PlacesCreate extends BaseCollectionCreate {
-	photo?: MaybeArray<File>;
-	title?: string;
+	photo: MaybeArray<File>;
+	title: string;
 	tag?: any;
-	address?: string;
-	minDate?: string | Date;
-	maxDate?: string | Date;
-	price?: any;
+	address: string;
+	minDate: string | Date;
+	maxDate: string | Date;
+	price: any;
 	service?: MaybeArray<'daily' | 'young' | 'old' | 'medicine' | 'hair' | 'pickup' | 'emergency' | 'play' | 'long'>;
 	introduce?: string;
 	userId: string;
@@ -414,7 +414,8 @@ export interface ReservationResponse extends BaseCollectionResponse {
 	placeId: string;
 	userId: string;
 	petId: Array<string>;
-	date: string;
+	minDate: string;
+	maxDate: string;
 	reviewed: boolean;
 	price: number;
 	required: string;
@@ -425,7 +426,8 @@ export interface ReservationCreate extends BaseCollectionCreate {
 	placeId?: string;
 	userId?: string;
 	petId?: MaybeArray<string>;
-	date?: string | Date;
+	minDate?: string | Date;
+	maxDate?: string | Date;
 	reviewed?: boolean;
 	price?: number;
 	required?: string;
@@ -438,7 +440,8 @@ export interface ReservationUpdate extends BaseCollectionUpdate {
 	petId?: MaybeArray<string>;
 	'petId+'?: MaybeArray<string>;
 	'petId-'?: MaybeArray<string>;
-	date?: string | Date;
+	minDate?: string | Date;
+	maxDate?: string | Date;
 	reviewed?: boolean;
 	price?: number;
 	'price+'?: number;

@@ -4,8 +4,8 @@ import MyPlaceList from '@/components/molecules/MyPlaceList/MyPlaceList';
 import convertDate from '@/utils/convertDate';
 import getDateDiff from '@/utils/getDateDiff';
 import getPbImageURL from '@/utils/getPbImageURL';
-import { MouseEvent, MouseEventHandler } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { MouseEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { eq } from 'typed-pocketbase';
 
 const getReservations = async (userId: string) => {
@@ -32,10 +32,11 @@ const getReservations = async (userId: string) => {
 
     // 날짜
     const currentDay = new Date();
-    const dDay = new Date(data.date);
+    const minDate = new Date(data.minDate);
+    const maxDate = new Date(data.maxDate);
 
-    const reservationDate = convertDate(dDay);
-    let leftDay = getDateDiff(dDay, currentDay);
+    const reservationDate = convertDate(minDate);
+    const leftDay = getDateDiff(minDate, maxDate, currentDay);
 
     return leftDay === 'past' ? null : (
       <li key={index}>
@@ -43,7 +44,7 @@ const getReservations = async (userId: string) => {
           <MyPlaceList
             title={placeData.title}
             date={reservationDate}
-            dDay={`D-${leftDay}`}
+            dDay={leftDay}
             src={photoSrc}
           >
             {placeData.address}
@@ -64,14 +65,14 @@ const getReservations = async (userId: string) => {
       placeData.id,
       placeData.photo[0]
     );
-    console.log(data);
 
     // 날짜
     const currentDay = new Date();
-    const dDay = new Date(data.date);
+    const minDate = new Date(data.minDate);
+    const maxDate = new Date(data.maxDate);
 
-    const reservationDate = convertDate(dDay);
-    let leftDay = getDateDiff(dDay, currentDay);
+    const reservationDate = convertDate(minDate);
+    const leftDay = getDateDiff(minDate, maxDate, currentDay);
 
     // 리뷰 여부
     const reviewed = data.reviewed;

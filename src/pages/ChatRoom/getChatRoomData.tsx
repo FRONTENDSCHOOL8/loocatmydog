@@ -53,17 +53,16 @@ export const getChatRoomData = async (roomId: string, userId: string) => {
       const sendDate = date.getTime();
 
       return (
-        <>
+        <li key={index}>
           {!isDivide ? <DateDivider date={date} /> : null}
           <ChatItem
-            key={index}
             id={String(index)}
             isOwn={isOwn}
             message={message}
             username={username}
             sendDate={sendDate}
           />
-        </>
+        </li>
       );
     }
   );

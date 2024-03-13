@@ -24,7 +24,9 @@ const StyledMyPlaceListContainer = styled.div<{ $dDay: string | undefined }>`
   max-inline-size: 420px;
   display: flex;
   background: ${(props) =>
-    props.$dDay === 'D-day' ? props.theme.colors.orangeBg : 'none'};
+    props.$dDay === 'D-day' || props.$dDay === '이용중'
+      ? props.theme.colors.orangeBg
+      : 'none'};
   justify-content: space-between;
   align-items: center;
   column-gap: 7.5%;

@@ -159,7 +159,7 @@ const ChatRoom = () => {
   };
 
   // 스크롤 아래로
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLUListElement>(null);
   const scrollToBottom = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -172,9 +172,9 @@ const ChatRoom = () => {
   return (
     <StyledChatRoom>
       <Link to={`/place_detail/${placeId}`}>바로가기</Link>
-      <div className="chatArea" ref={scrollRef}>
+      <ul className="chatArea" ref={scrollRef}>
         {chatItems}
-      </div>
+      </ul>
       <Form
         id="chatroomForm"
         method="post"
