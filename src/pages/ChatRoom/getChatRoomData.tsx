@@ -19,8 +19,6 @@ export const getChatRoomData = async (roomId: string, userId: string) => {
 
   const response = responseData[0];
 
-  setChatRead(roomId, userId, response);
-
   const userDatas = response?.expand as { members: UsersResponse[] };
 
   // 발신자 정보
