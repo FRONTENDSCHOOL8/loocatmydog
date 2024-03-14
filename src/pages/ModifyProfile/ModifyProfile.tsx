@@ -373,8 +373,5 @@ export async function edit({ request }: { request: any }) {
 
   useAuthStore.getState().update();
 
-  // 업데이트 된 사용자 정보 출력
-  console.table(updatedUser);
-
   return redirect(`/edit_my_profile`);
 }
