@@ -148,7 +148,6 @@ const AddPlace = () => {
     !isChecked;
     serviceListData = [];
 
-    console.log(isChecked);
     if (isChecked) {
       e.target.checked = isChecked;
       !isChecked;
@@ -312,10 +311,6 @@ export async function placeFormAction({ request }: { request: any }) {
 
   const userId = useAuthStore.getState().user?.id;
 
-  const priceSmall = formData.get('small');
-  const priceMiddle = formData.get('middle');
-  const priceLarge = formData.get('large');
-  const price = { large: priceLarge, middle: priceMiddle, small: priceSmall };
   const tag = formData.get('tag').match(/[^,]+/g);
   const service = serviceListData;
   const minDate = dateData[0];
@@ -333,12 +328,12 @@ export async function placeFormAction({ request }: { request: any }) {
     minDate: minDate?.toISOString(),
     maxDate: maxDate?.toISOString(),
     service: service,
-    price: JSON.stringify(price),
+    priceSmall: formData.get('small'),
+    priceMiddle: formData.get('middle'),
+    priceLarge: formData.get('large'),
     photo: imgData,
     introduce: formData.get('introduce'),
   };
-
-  console.log(eventData);
 
   try {
     const updatedUser = await pb.from('places').create(eventData);
