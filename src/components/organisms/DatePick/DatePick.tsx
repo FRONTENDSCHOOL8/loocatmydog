@@ -3,6 +3,7 @@ import useReservationStore from '@/store/useReservationStore';
 import useDateRangeStore from '@/store/useDateRange';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const StyledDatePick = styled.div`
   & p {
@@ -14,12 +15,6 @@ const StyledDatePick = styled.div`
 `;
 
 const DatePick = ({ minDate, maxDate }: { minDate: Date; maxDate: Date }) => {
-  const { dateRange } = useDateRangeStore();
-  const { setReservation, reservation } = useReservationStore();
-  useEffect(() => {
-    setReservation({ date: dateRange }, 'vfmxkb6b62e5rvm');
-  }, [dateRange]);
-
   // console.log(format(dateRange[0], 'yy.MM.dd'));
 
   return (

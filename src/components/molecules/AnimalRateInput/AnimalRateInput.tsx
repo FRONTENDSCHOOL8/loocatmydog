@@ -19,13 +19,17 @@ const StyledAnimalRateInput = styled.div`
   ${(props) => props.theme.fontStyles.textRegularMd};
   color: ${(props) => props.theme.colors.textBlack};
   & span {
-    min-inline-size: 25px;
+    min-inline-size: 35px;
   }
   div {
     display: flex;
     min-inline-size: 70px;
     flex-grow: 1;
     align-items: center;
+  }
+  & input::-webkit-inner-spin-button,
+  input::-webkit-outer-spin-button {
+    appearance: none;
   }
 `;
 
@@ -45,11 +49,13 @@ const AnimalRateInput = ({
     <StyledAnimalRateInput {...restProps}>
       <span className="span-title">{size}</span>
       <InputWrapper
+        type="number"
         placeholder={isChecked ? '-' : '단위) 천'}
         name={name}
-        value={price}
+        value={isChecked ? '-' : price}
         onChange={handlePrice}
         disabled={isChecked}
+        required={size === '소형' ? true : false}
       />
       <div>
         <CheckBox

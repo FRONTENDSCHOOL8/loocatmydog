@@ -2,11 +2,15 @@ import Button from '@/components/atoms/Button/Button';
 import CheckBox from '@/components/atoms/CheckBox/CheckBox';
 import PaymentCard from '@/components/molecules/PaymentCard/PaymentCard';
 import ReservationInfo from '@/components/organisms/ReservationInfo/ReservationInfo';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RequestPayParams, RequestPayResponse } from 'iamport-typings';
 import { useAuthStore } from '@/store/useAuthStore';
 import pb from '@/api/pocketbase';
+import { Link, redirect, useLoaderData, useNavigate } from 'react-router-dom';
+import { maskingName } from '@/utils';
+import useReservationStore from '@/store/useReservationStore';
+import { getDay, getMonth, getWeek } from 'date-fns';
 //type 지정
 
 interface PaymentProps {
@@ -82,6 +86,17 @@ const Payment = ({
   info = '서울 구로구 김*경',
   totalPrice = 60000,
 }: PaymentProps) => {
+  const placeData = useLoaderData() as any;
+  const { reservation } = useReservationStore();
+  const userData = useAuthStore.getState().user;
+  const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
+
+  const minDate = reservation.reservationData.date[0];
+  const maxDate = reservation.reservationData.date[1];
+  const { require, etc, petId } = reservation.reservationData;
+  const petData = userData?.expand.petId[0];
+
   useEffect(() => {
     const jquery = document.createElement('script');
     jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
@@ -108,8 +123,8 @@ const Payment = ({
       pg: `html5_inicis.${InicisStoreId}`,
       pay_method: 'card',
       merchant_uid: `mid_${new Date().getTime()}`,
-      name: '플레이스 이름',
-      amount: 100, // 가격
+      name: placeData.title,
+      amount: placeData.priceSmall, // 가격
       buyer_name: userData?.name,
       buyer_tel: userData?.phone,
       buyer_email: userData?.email,
@@ -121,7 +136,7 @@ const Payment = ({
 
   const callback = async (response: RequestPayResponse) => {
     const {
-      success,
+      success = true,
       error_msg,
       imp_uid,
       merchant_uid,
@@ -133,61 +148,68 @@ const Payment = ({
     if (success) {
       const userData = useAuthStore.getState().user;
       const reservationData = {
-        placeId: '8fbjkfh1jyvrsas',
+        placeId: placeData.id,
         userId: userData?.id,
-        // petId: '',
-        // date:,
+        petId: petId,
+        minDate: minDate?.toISOString(),
+        maxDate: maxDate?.toISOString(),
         reviewed: false,
-        price: 100,
-        required: '',
-        etc: '',
+        price: placeData.priceSmall,
+        required: require,
+        etc: etc,
       };
 
       await pb.collection('reservation').create(reservationData);
 
       alert('결제 성공');
+      return navigate(`/reservation_done/${placeData.id}`);
     } else {
       alert(`결제 실패: ${error_msg}`);
     }
   };
-
+  //checkbox handler
+  function handleCheckbox() {
+    setIsChecked(!isChecked);
+  }
   return (
     <StyledPaymentContainer>
       <StyledBanner />
       <div className="innerWrapper">
-        <p className="title">{title}</p>
-        <span className="info">{info}</span>
+        <p className="title">{placeData.title}</p>
+        <span className="info">
+          {placeData.address} {maskingName(placeData.expand.userId.name)}
+        </span>
         <div className="borderLine"></div>
         <ReservationInfo
-          mindate="2월 22일(목)"
-          maxdate="2월 24일(토)"
-          require={'엄청긴말'}
-          etc="엄청긴말2"
+          mindate={`${getMonth(minDate) + 1}월 ${getDay(minDate)}일`}
+          maxdate={`${getMonth(maxDate) + 1}월 ${getDay(maxDate)}일`}
+          require={require}
+          etc={etc}
         />
         <div className="borderLine"></div>
         <div className="payInfo">
           <p>총 금액</p>
-          <p>{totalPrice}</p>
+          <p>{placeData.priceSmall}</p>
         </div>
       </div>
       <div className="innerWrapper">
         <div className="payInfo">
           <p>총 금액</p>
-          <p className="orange">{totalPrice}</p>
+          <p className="orange">{placeData.priceSmall}</p>
         </div>
         <div className="borderLine"></div>
         <ul className="infoDetail">
           <li>
             <span>예약자 성함</span>
-            <span className="price">홍길동</span>
+            <span className="price">{userData?.name}</span>
           </li>
           <li>
             <span>반려 동물</span>
-            <span className="price">별이(1마리)</span>
+            <span className="price">{petData.petName}</span>
           </li>
           <li>
             <span>연락처</span>
-            <span className="price">010-1234-5678</span>
+            <span className="price">{userData?.phone}</span>
           </li>
         </ul>
       </div>
@@ -200,25 +222,33 @@ const Payment = ({
       <div className="innerWrapper">
         <div className="payInfo">
           <p>총 금액</p>
-          <p className="orange">{totalPrice}</p>
+          <p className="orange">{placeData.priceSmall}</p>
         </div>
         <div className="borderLine"></div>
         <ul className="infoDetail">
           <li>
             <span>소형 1마리 x 1일</span>
-            <span className="price">60,000원</span>
+            <span className="price">{placeData.priceSmall}원</span>
           </li>
         </ul>
       </div>
       <div className="innerWrapper" style={{ marginBottom: '0px' }}>
-        <CheckBox>환불 규정 동의</CheckBox>
+        <CheckBox isChecked={isChecked} onChange={handleCheckbox}>
+          환불 규정 동의
+        </CheckBox>
         <div className="borderLine"></div>
         <ul className="agreeInfo">
           <li>예약 시작 72시간 전까지: 100% 환불</li>
           <li>예약 시작 24-72시간 전까지: 50% 환불</li>
           <li>예약 시작 24시간 이내: 환불 불가</li>
         </ul>
-        <Button size="100%" mode="normal" onClick={onClickPayment}>
+        <Button
+          // as={Link}
+          size="100%"
+          mode={isChecked ? 'normal' : 'disabled'}
+          // to="/reservation_done"
+          onClick={onClickPayment}
+        >
           결제하기
         </Button>
       </div>

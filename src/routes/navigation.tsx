@@ -20,6 +20,7 @@ import { RouteObject } from 'react-router-dom';
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
 import AddPlace, { placeFormAction } from '@/pages/AddPlace/AddPlace';
 import Payment from '@/pages/Payment/Payment';
+import ReservationDone from '@/pages/ReservationDone/ReservationDone';
 
 type NavigationRouteObject = RouteObject & {
   headerType?: [HeaderProps['type'], HeaderProps['title']];
@@ -110,12 +111,14 @@ export const navigationItems: NavigationRouteObject[] = [
   {
     path: '/payment/:id',
     element: <Payment />,
+    loader: detail,
     withAuthorization: true,
   },
   {
-    path: '/reservation_done',
-    element: '',
+    path: '/reservation_done/:id',
+    element: <ReservationDone />,
     headerType: ['popup', null],
+    loader: detail,
     withAuthorization: true,
   },
 
