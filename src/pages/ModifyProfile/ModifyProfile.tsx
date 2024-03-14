@@ -146,9 +146,10 @@ const ModifyProfile = () => {
   };
 
   const user = useAuthStore.getState().user;
-  const avatarUrl = user
-    ? getPbImageURL(user?.collectionId, user.id, user.avatar)
-    : '/images/profileNone.svg';
+  const avatarUrl =
+    user && user.avatar !== ''
+      ? getPbImageURL(user?.collectionId, user.id, user.avatar)
+      : '/images/profileNone.svg';
 
   //데이터 불러오는 훅
   useEffect(() => {
