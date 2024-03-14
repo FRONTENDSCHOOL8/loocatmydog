@@ -4,6 +4,7 @@ import { useChatRoomData } from './useChatRoomData';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import pb from '@/api/pocketbase';
 import { useAuthStore } from '@/store/useAuthStore';
+import setChatRead from './setChatRead';
 
 const StyledChatRoom = styled.div`
   inline-size: 100%;
@@ -107,17 +108,32 @@ const ChatRoom = () => {
   useEffect(() => {
     pb.collection('chatRooms').subscribe(roomId, async (e) => {
       if (e.record.messageBox) {
-        setObserver(true);
+        setObserver(!observer);
       }
     });
 
     return () => {
       pb.collection('chatRooms').unsubscribe(roomId);
-      setObserver(false);
     };
   });
 
-  const { data, isLoading } = useChatRoomData(roomId, currentUserId, observer);
+  const { data, isLoading, refetch } = useChatRoomData(roomId, currentUserId);
+
+  useEffect(() => {
+    if (data) {
+      setChatRead(roomId, currentUserId, data.default);
+    }
+
+    return () => {
+      if (data) {
+        setChatRead(roomId, currentUserId, data.default);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [observer]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -140,7 +156,6 @@ const ChatRoom = () => {
     const message = (textInput as HTMLInputElement).value;
 
     const currentDate = new Date();
-    const currentTime = currentDate.getTime();
 
     const messageData = {
       message: message,

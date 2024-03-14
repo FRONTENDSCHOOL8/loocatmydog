@@ -35,14 +35,14 @@ const ChatList = () => {
 
   useEffect(() => {
     pb.from('chatRooms').subscribe('*', async (e) => {
-      if (e.record) {
-        setObserver(true);
-      }
+      // if (e.record) {
+      //   setObserver(true);
+      // }
     });
 
     return () => {
       pb.collection('chatRooms').unsubscribe();
-      setObserver(false);
+      // setObserver(false);
     };
   });
 
