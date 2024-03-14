@@ -70,11 +70,12 @@ const MyPage = () => {
 
   const user = useAuthStore.getState().user;
   const [petData, setPetData] = useState<any>(null);
-  const avatarUrl = user
-    ? getPbImageURL(user?.collectionId, user.id, user.avatar)
-    : '/images/profileNone.svg';
+  const avatarUrl =
+    user && user.avatar !== ''
+      ? getPbImageURL(user?.collectionId, user.id, user.avatar)
+      : '/images/profileNone.svg';
 
-  useEffect(() => {
+  const petImage = useEffect(() => {
     const fetchPetData = async () => {
       const record = await pb.from('users').getOne(user?.id, {
         select: {
