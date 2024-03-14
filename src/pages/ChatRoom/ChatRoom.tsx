@@ -140,7 +140,6 @@ const ChatRoom = () => {
     const message = (textInput as HTMLInputElement).value;
 
     const currentDate = new Date();
-    const currentTime = currentDate.getTime();
 
     const messageData = {
       message: message,

@@ -18,12 +18,10 @@ const createChatRoom = async (
     ),
   });
 
-  console.log(findRoom);
   if (findRoom.length > 0) {
     location.href = `/chat_room/${findRoom[0].id}`;
   } else {
     const currentDate = new Date();
-    const currentTime = currentDate.getTime();
 
     const data = {
       placeId: placeId,
@@ -32,7 +30,7 @@ const createChatRoom = async (
         {
           message: message,
           read: false,
-          sendDate: currentTime,
+          sendDate: currentDate,
           userId: senderId,
         },
       ],
@@ -40,8 +38,6 @@ const createChatRoom = async (
 
     const record = await pb.from('chatRooms').create(data);
     location.href = `/chat_list`;
-
-    console.log(record);
   }
 };
 
