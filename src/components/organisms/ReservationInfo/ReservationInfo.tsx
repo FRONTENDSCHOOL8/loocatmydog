@@ -10,6 +10,7 @@ interface ReservationInfoProps {
 
 const StyledReservationInfo = styled.div`
   display: flex;
+  inline-size: 100%;
   flex-direction: column;
   gap: 10px;
   border-radius: 8px;

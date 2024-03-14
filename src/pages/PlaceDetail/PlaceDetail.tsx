@@ -33,7 +33,6 @@ const PlaceDetail = () => {
     display: flex;
     justify-content: space-between;
   `;
-  //userId를 통한 validation 확인 아직 안됨
 
   // 문의하기
   const handleInquire = (e: MouseEvent) => {
@@ -56,7 +55,7 @@ const PlaceDetail = () => {
         <Button
           as={Link}
           size="65%"
-          mode={reservation ? 'normal' : 'disabled'}
+          mode={reservation.reservationData ? 'normal' : 'disabled'}
           to={`/payment/${placeData.id}`}
           style={{ textAlign: 'center' }}
         >
@@ -82,7 +81,7 @@ const PlaceDetail = () => {
       <PlaceSection title={''}>
         <DatePick minDate={placeData.minDate} maxDate={placeData.maxDate} />
         <AnimalPick />
-        <ServicePrice />
+        <ServicePrice data={placeData} />
       </PlaceSection>
       <PlaceLocation address={placeData.address} />
       <PlaceIntroduce introduce={placeData.introduce} />

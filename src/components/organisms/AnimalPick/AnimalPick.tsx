@@ -12,9 +12,9 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { Form, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuthStore } from '@/store/useAuthStore';
+import useDateRangeStore from '@/store/useDateRange';
 
 //test
-const nowUser = 'gukoblvn0comp9j';
 
 //type 지정
 type modeProps = 'normal' | 'gray' | 'disabled' | 'kakao' | 'google' | 'chat';
@@ -75,14 +75,6 @@ const StyledPlusButton = styled.button`
   block-size: 24px;
 `;
 
-async function fetchUserRecords(userId: string) {
-  const records = await pb
-    .from('users')
-    .getOne(nowUser, { select: { expand: { petId: true } } });
-
-  return records;
-}
-
 const AnimalProfile = ({
   src,
   ...restProps
@@ -102,28 +94,35 @@ const AnimalProfile = ({
 };
 
 const AnimalPick = () => {
+  const [petSelect, setPetSelect] = useState<Array<string | null>>([]);
+  const { dateRange } = useDateRangeStore();
   const userData = useAuthStore.getState().user;
+  const userId = useAuthStore.getState().user?.id;
   const modalRef = useRef<HTMLDialogElement>(null);
-  const requireRef = useRef(null);
-  const etcRef = useRef(null);
-  const [petList, setPetList] = useState<PetResponse[] | undefined>([]);
+  const [petList, setPetList] = useState<PetResponse[] | undefined>(
+    userData?.expand?.petId
+  );
   const [petId, setPetId] = useState<PetResponse>(Object);
   const [isChecked, setIsChecked] = useState(false);
   const [mode, setMode] = useState<modeProps>('disabled');
+  const prevState = {
+    petId: [],
+    require: '',
+    etc: '',
+  };
   const [inputTextValue, setInputTextValue] = useState({
+    petId: [],
     require: '',
     etc: '',
   });
   const { setReservation, reservation } = useReservationStore();
-  useEffect(() => {
-    setPetList(userData?.expand?.petId);
-  }, [userData?.expand?.petId]);
+
+  //pet validation
   useEffect(() => {
     function petValidation() {
       if (isChecked && inputTextValue.require) {
         setMode('normal');
       } else if (inputTextValue.require === '' || !isChecked) {
-        console.log('aa', inputTextValue.require);
         setMode('disabled');
       }
     }
@@ -133,26 +132,32 @@ const AnimalPick = () => {
   function handleChange(e: React.ChangeEvent<HTMLElement>) {
     setIsChecked(!isChecked);
   }
-  const prevState = {
-    require: '',
-    etc: '',
-  };
+
   function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setInputTextValue((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+    if (petSelect === null) {
+      setPetSelect([petId.id]);
+    } else if (!petSelect.includes(petId.id)) {
+      setPetSelect((prevPetSelect: any) => [...prevPetSelect, petId.id]);
+    }
   }
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setReservation(inputTextValue, petId.id);
     modalRef.current?.close();
     setIsChecked(false);
-    setInputTextValue(prevState);
-  }
+    // setInputTextValue(prevState);
 
+    setReservation({
+      ...inputTextValue,
+      petId: petSelect,
+      date: dateRange,
+      userId: userId,
+    });
+  }
   return (
     <>
       <StyledAnimalPickModal as="dialog" ref={modalRef}>
@@ -225,6 +230,11 @@ const AnimalPick = () => {
                     setPetId(item);
                     modalRef.current?.showModal();
                   }}
+                  style={
+                    petSelect.includes(item.id)
+                      ? { border: '2px solid #FFB62B ' }
+                      : { border: '2px solid #F1F1F1 ' }
+                  }
                 />
               ))
             )}
