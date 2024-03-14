@@ -1,5 +1,3 @@
-import { useAuthStore } from '@/store/useAuthStore';
-import { convertFilterString } from '@/utils';
 import { useState } from 'react';
 
 export type InitialSortType = {
@@ -12,11 +10,7 @@ export const initialState: InitialSortType[] = [
     label: '전체',
   },
   {
-    id: 'distance',
-    label: '가까운순',
-  },
-  {
-    id: 'price',
+    id: 'priceSmall',
     label: '가격순',
   },
 ];

@@ -1,3 +1,4 @@
+import { useLayoutEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -13,70 +14,66 @@ interface StyledGlobalNavListProps {
 
 const StyledGlobalNavLink = styled(NavLink)<StyledGlobalNavListProps>`
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   gap: 4px;
-
   text-decoration: none;
+  min-inline-size: 52px;
+  block-size: 100%;
   ${(props) => props.theme.fontStyles.textMediumBase}
-
   color: ${(props) => props.theme.colors.textGray};
 
-  &:active,
-  &:visited {
-    color: ${(props) => props.theme.colors.textGray};
+  & > span {
+    position: relative;
+    inline-size: 100%;
+    block-size: 100%;
+    text-align: center;
+    padding-block-start: 30px;
+    &::before {
+      position: absolute;
+      content: '';
+      inline-size: 25px;
+      aspect-ratio: 1/1;
+      top: 0px;
+      left: 50%;
+      translate: -50% 0%;
+    }
   }
-
-  .icon {
-    content: ${(props) => {
-      const dataName = props.$name;
-
-      const imageUrl = `/images/navigation/${dataName}-inactive.svg`;
-
-      return css`
-        url(${imageUrl})
-      `;
-    }};
-  }
-
-  &:hover {
-    color: #3b6b77;
-
-    .icon {
-      content: ${(props) => {
-        const dataName = props.$name;
-
-        const imageUrl = `/images/navigation/${dataName}-active.svg`;
-
-        return css`
-            url(${imageUrl})
-          `;
-      }};
+  &.active > span {
+    color: ${(props) => props.theme.colors.textEmphasis};
+    &::before {
+      background: ${(props) =>
+        `url('/images/navigation/${props.$name}-active.svg')`};
     }
   }
 
-  .active {
-    content: ${(props) => {
-      const dataName = props.$name;
+  & > span::before,
+  &.pending > span::before {
+    background: ${(props) =>
+      `url('/images/navigation/${props.$name}-inactive.svg')`};
+  }
 
-      const imageUrl = `/images/navigation/${dataName}-active.svg`;
-
-      return css`
-            url(${imageUrl})
-          `;
-    }};
+  &:hover {
+    color: ${(props) => props.theme.colors.textEmphasis};
+    & > span::before {
+      background: ${(props) =>
+        `url('/images/navigation/${props.$name}-active.svg')`};
+    }
   }
 `;
 
 const GlobalNavList = ({ path = '/', text, dataName }: GlobalNavListProps) => {
-  const location = useLocation();
-  const className = location.pathname === path ? 'active' : 'icon';
-
   return (
-    <StyledGlobalNavLink to={path} data-name={dataName} $name={dataName}>
-      <img className={className} aria-labelledby={dataName} />
-      <span id={dataName}>{text}</span>
+    <StyledGlobalNavLink
+      className={({ isActive, isPending }) =>
+        isPending ? 'pending' : isActive ? 'active' : ''
+      }
+      to={path}
+      data-name={dataName}
+      $name={dataName}
+    >
+      <span>{text}</span>
     </StyledGlobalNavLink>
   );
 };

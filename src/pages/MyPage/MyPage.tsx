@@ -70,8 +70,11 @@ const MyPage = () => {
 
   const user = useAuthStore.getState().user;
   const [petData, setPetData] = useState<any>(null);
+  const avatarUrl = user
+    ? getPbImageURL(user?.collectionId, user.id, user.avatar)
+    : '/images/profileNone.svg';
 
-  const petImage = useEffect(() => {
+  useEffect(() => {
     const fetchPetData = async () => {
       const record = await pb.from('users').getOne(user?.id, {
         select: {
@@ -92,7 +95,7 @@ const MyPage = () => {
       <UserProfile
         style={{ marginBlock: 35 }}
         name={user?.name}
-        src={user?.avatar === '' ? '/images/profileNone.svg' : user?.avatar}
+        src={avatarUrl}
       />
       <ProfileCardSection>
         <span className="petSpan">반려동물</span>

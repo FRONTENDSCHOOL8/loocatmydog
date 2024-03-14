@@ -27,7 +27,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   justify-content: space-between;
   align-items: center;
   column-gap: 10px;
-  border-bottom: 1px solid ${(props) => props.theme.colors.gray300};
+  background: linear-gradient(to bottom, #ffe587 70%, #fff0b8);
 
   & > .left-side {
     inline-size: 23px;
@@ -115,14 +115,18 @@ function Header({ type = 'logo', title = '', phase = '1/1' }: HeaderProps) {
       ),
       right: (
         <h1>
-          <LogoInline inlineSize={67} />
+          <Link to={'/main'} title="메인으로 이동">
+            <LogoInline inlineSize={67} />
+          </Link>
         </h1>
       ),
     },
     logo: {
       center: (
         <h1 className="text-title">
-          <LogoInline inlineSize={67} />
+          <Link to={'/main'} title="메인으로 이동">
+            <LogoInline inlineSize={67} />
+          </Link>
         </h1>
       ),
       right: null,

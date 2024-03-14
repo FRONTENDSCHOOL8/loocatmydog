@@ -34,7 +34,6 @@ const HeartButton = ({ id: placeId, ...restProps }: HeartButtonProps) => {
   const heartIcon = isChecked ? 'heart_fill.svg' : 'heart.svg';
   const heartAlt = isChecked ? '찜했음' : '찜하기';
   const handleCheck = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('체크!', e.currentTarget.checked);
     e.stopPropagation();
     await toggleBookmark(user?.id, placeId, e.currentTarget.checked);
     await update();

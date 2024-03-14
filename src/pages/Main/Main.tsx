@@ -27,6 +27,7 @@ import { queryClient } from '@/app/App';
 import { createPortal } from 'react-dom';
 import SideMenu from '@/components/organisms/SideMenu/SideMenu';
 import useModalControlStore from '@/store/useModalControl';
+import PetSpinner from '@/components/molecules/LoadingSpinner/PetSpinner';
 
 const shortcutMenuObject = [
   {
@@ -59,15 +60,15 @@ export function Component() {
   );
 
   // 전체 플레이스 리스트 인피니트 쿼리
+
   const {
     data: cachedPlaceAllData,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    ...getPlaceInfiniteQueryOptions(queryKey as string[], 3, {
+    ...getPlaceInfiniteQueryOptions(queryKey, 3, {
       sort: sortString,
     }),
-    initialData: loadedPlaceData,
   });
   const placeListData = cachedPlaceAllData
     ? cachedPlaceAllData.pages.flatMap((data) => data.items)
@@ -166,7 +167,6 @@ export function Component() {
         <div className="section-content">
           {placeListData?.map((item) => {
             const myData = useAuthStore.getState().user;
-            const heartFill = myData?.heart.includes(item.id);
             const shortAddress = item.address.split(' ').slice(0, 2).join(' ');
             return (
               <Place
@@ -178,7 +178,7 @@ export function Component() {
                 rate={item.averageStar}
                 reviewNumber={item.reviewCount}
                 address={shortAddress}
-                price={item.price.small}
+                price={item.priceSmall}
                 isActive={true}
               />
             );
@@ -186,7 +186,7 @@ export function Component() {
         </div>
       </S.MainSection>
       {hasNextPage ? (
-        <div ref={ref}>더보기</div>
+        <PetSpinner ref={ref} />
       ) : (
         <div ref={ref} role="none"></div>
       )}
